@@ -1,5 +1,5 @@
 import { dbReady } from "@/lib/db";
-import { rateLimiterHealth } from "@/lib/rate-limit";
+import { probeRateLimiter } from "@/lib/rate-limit";
 
 /**
  * Liveness/readiness probe for uptime monitors and container orchestrators.
@@ -12,24 +12,42 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   const ready = await dbReady().catch(() => false);
-  const limiter = rateLimiterHealth();
+  // Probed rather than read from a cached flag, so the answer reflects now.
+  const limiter = await probeRateLimiter();
   // In-memory rate limiting means every instance enforces its own quota, which
   // is not a working brute-force control on a multi-replica deploy. Treat it as
   // degraded in production so a missing REDIS_URL is visible to monitoring
   // rather than discovered during an incident.
   const limiterMisconfigured = process.env.NODE_ENV === "production" && limiter.backend === "memory";
+
+  // Redis is configured but not answering. The limiter is failing open, so
+  // requests still succeed and DB lockout still protects the login path — the
+  // instance is working, just degraded. Reporting 503 here would make an
+  // orchestrator restart every replica during a Redis blip, which does not fix
+  // Redis and drops capacity exactly when the fleet is already impaired. Redis
+  // being *unconfigured* is different: that is a misconfiguration to catch.
+  const limiterDown = !limiter.reachable;
+
+  const healthy = ready && !limiterMisconfigured;
   const payload = {
-    status: ready && !limiterMisconfigured ? "ok" : "degraded",
+    status: healthy && !limiterDown ? "ok" : "degraded",
     db: ready ? "ready" : "unreachable",
     rateLimit: {
       backend: limiter.backend,
-      ...(limiter.lastRedisError ? { lastError: limiter.lastRedisError } : {}),
+      ...(limiter.error ? { lastError: limiter.error } : {}),
       ...(limiterMisconfigured ? { warning: "REDIS_URL is not set; rate limits are per-instance" } : {}),
+      ...(limiterDown
+        ? {
+            warning:
+              "REDIS_URL is set but Redis is unreachable; requests are allowed (fail-open) and " +
+              "rate limits are not being enforced",
+          }
+        : {}),
     },
     timestamp: new Date().toISOString(),
   };
   return new Response(JSON.stringify(payload, null, 2), {
-    status: ready && !limiterMisconfigured ? 200 : 503,
+    status: healthy ? 200 : 503,
     headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
   });
 }

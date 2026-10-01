@@ -75,6 +75,10 @@ Seeded accounts (LOCAL ONLY — rotate before any deployment):
 - Rate limiting: sliding window in Redis (`REDIS_URL`), sliding not fixed so a caller cannot
   spend the full quota twice across a window boundary. Fails **open** if Redis is unreachable,
   because account lockout lives in MySQL and survives; `RATE_LIMIT_FAIL_CLOSED=true` inverts that.
+  Redis reconnects indefinitely, so a brief blip cannot retire throttling for the life of the
+  process. `/api/healthz` PINGs Redis rather than reporting a cached flag: `degraded` + HTTP 200
+  when Redis is unreachable (the instance still serves traffic, so an orchestrator should not
+  restart it), HTTP 503 only when the database is down or Redis is unconfigured in production.
 - Audit log: append-only, enforced by MySQL grants rather than convention (`npm run db:harden`).
 - CSP: per-request nonce, `script-src` has no `'unsafe-inline'`; see `proxy.ts`.
 - Restricted records return a real HTTP 404, not a 200 wrapping a 404 body. Do not reintroduce a
@@ -82,14 +86,20 @@ Seeded accounts (LOCAL ONLY — rotate before any deployment):
 
 ## Verification
 - `npm run check` — typecheck, `eslint .`, production build.
-- `scripts/smoke-test.ts <base-url>` — 32 assertions against a running server (auth boundaries,
-  slug non-enumeration, contact round trip, rate limiting, page status codes). Run against
-  `next start`, not dev.
+- `scripts/smoke-test.ts <base-url>` (`npm run smoke -- <base-url>`) — 32 assertions against
+  a running server (auth boundaries, slug non-enumeration, contact round trip, rate limiting,
+  page status codes). Run against `next start`, not dev.
 - `scripts/cleanup-smoke-data.ts` — removes smoke-test contacts afterwards.
-- `scripts/check-rate-limit.ts` — exercises both limiter backends, including that the window
-  actually slides and that a second store handle sees the first instance's hits. Set
-  `REDIS_URL` to cover the distributed path.
+- `scripts/check-rate-limit.ts` (`npm run check:ratelimit`) — exercises both limiter backends,
+  including that the window actually slides and that a second store handle sees the first
+  instance's hits. Set `REDIS_URL` to cover the distributed path.
 - `scripts/harden-db.ts` — the MySQL grant hardening, also runnable as `npm run db:harden`.
+- `scripts/check-csp-browser.ts <base-url> [path]` (`npm run check:csp`) — drives headless
+  Chrome over the DevTools Protocol and asserts the page actually hydrates with **no** CSP
+  violation. `curl -I` cannot catch the failure that matters: a nonce that never reaches a
+  script leaves the page returning 200 with its server HTML while React is dead. It also
+  includes a liveness control (a cross-origin fetch that `connect-src 'self'` must block),
+  so "no violations" cannot pass by having no listener attached. No npm dependencies.
 
 ## Before production deployment
 1. `NEXTAUTH_SECRET` (≥32 random chars), all passwords, MySQL credentials — rotate everything.

@@ -22,9 +22,12 @@
  * survive both Redis loss and instance restarts.
  *
  * Set `RATE_LIMIT_FAIL_CLOSED=true` if your threat model prefers availability
- * loss over unthrottled attempts. For the credential path this is the safer
- * default in production, since account lockout already exists in the database.
+ * loss over unthrottled attempts. Note the trade-off runs both ways: failing
+ * open during a Redis outage means nothing throttles the non-credential routes
+ * (contact form, account creation) for the duration, and the durable MySQL
+ * lockout only covers the credential path.
  */
+import { randomUUID } from "node:crypto";
 import Redis from "ioredis";
 
 type Bucket = { hits: number[] };
@@ -54,12 +57,19 @@ function resolveStore(): Store {
   }
   try {
     const client = new Redis(url, {
-      // Bound the damage a slow or dead Redis can do: give up quickly rather
-      // than queueing commands indefinitely and turning a cache outage into a
-      // slow login for every user.
+      // Bound the damage a slow or dead Redis can do to a single request: give
+      // up quickly rather than queueing commands indefinitely and turning a
+      // cache outage into a slow login for every user.
       maxRetriesPerRequest: 2,
       connectTimeout: 2_000,
-      retryStrategy: (times) => (times > 5 ? null : Math.min(times * 200, 2_000)),
+      // Reconnect indefinitely, backing off to a 10s ceiling. An earlier
+      // version stopped after 5 attempts, which meant a 30-second Redis blip
+      // silently disabled rate limiting for the remaining life of the process:
+      // every later request failed open and the instance looked healthy. A blip
+      // must not be able to retire a security control permanently.
+      retryStrategy: (times) => Math.min(times * 200, 10_000),
+      // ioredis stops reconnecting once it has accumulated this many errors,
+      // so leave it unset and let retryStrategy own the backoff.
     });
     client.on("error", (err: Error) => {
       lastRedisError = err.message;
@@ -93,6 +103,40 @@ export function rateLimiterHealth(): {
   return { backend: active.kind, lastRedisError };
 }
 
+/**
+ * Ask Redis directly whether it is answering right now.
+ *
+ * Reading `lastRedisError` alone is not enough: it only changes when some
+ * request happens to touch the limiter, so a recovered Redis keeps reporting
+ * the previous outage until a user happens to log in, and a fresh outage looks
+ * healthy until someone is throttled. Health must not depend on traffic.
+ */
+export async function probeRateLimiter(): Promise<{
+  backend: "redis" | "memory";
+  reachable: boolean;
+  error: string | null;
+}> {
+  const active = resolveStore();
+  if (active.kind === "memory") return { backend: "memory", reachable: true, error: null };
+
+  try {
+    // PING is the cheapest command that proves the connection is usable.
+    // Without a timeout a dead socket could hang the probe itself, which is
+    // exactly the case the probe exists to report.
+    await Promise.race([
+      active.client.ping(),
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("PING timed out")), 2_000),
+      ),
+    ]);
+    lastRedisError = null;
+    return { backend: "redis", reachable: true, error: null };
+  } catch (err) {
+    lastRedisError = err instanceof Error ? err.message : String(err);
+    return { backend: "redis", reachable: false, error: lastRedisError };
+  }
+}
+
 function failClosedConfigured(): boolean {
   return process.env.RATE_LIMIT_FAIL_CLOSED === "true";
 }
@@ -112,7 +156,11 @@ export async function rateLimit(
 
   if (active.kind === "redis") {
     try {
-      return await redisWindow(active.client, key, limit, windowMs);
+      const result = await redisWindow(active.client, key, limit, windowMs);
+      // Clear the error on success, otherwise /api/healthz reports a stale
+      // outage for the life of the process and an operator stops believing it.
+      lastRedisError = null;
+      return result;
     } catch (err) {
       lastRedisError = err instanceof Error ? err.message : String(err);
       if (failClosedConfigured()) {
@@ -144,7 +192,11 @@ async function redisWindow(
   const redisKey = `rl:${key}`;
   const now = Date.now();
   const cutoff = now - windowMs;
-  const unique = `${now}-${Math.random().toString(36).slice(2, 10)}`;
+  // Sorted-set members must be unique or the add overwrites and the window
+  // silently under-counts. Two concurrent requests can share a millisecond, so
+  // pair the clock with a random suffix — crypto, because the security budget
+  // for guessing another caller's nonce should not be Math.random().
+  const unique = `${now}-${randomUUID()}`;
 
   const pipeline = client.multi();
   pipeline.zremrangebyscore(redisKey, 0, cutoff);
