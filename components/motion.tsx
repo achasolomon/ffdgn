@@ -44,10 +44,7 @@ export function CountUp({ to, duration = 1.4 }: { to: number; duration?: number 
   const [val, setVal] = useState(0);
 
   useEffect(() => {
-    if (!inView || reduce) {
-      if (inView && reduce) setVal(to);
-      return;
-    }
+    if (!inView || reduce) return;
     const controls = animate(0, to, {
       duration,
       ease: EASE_OUT,
@@ -56,7 +53,10 @@ export function CountUp({ to, duration = 1.4 }: { to: number; duration?: number 
     return () => controls.stop();
   }, [inView, reduce, to, duration]);
 
-  return <span ref={ref}>{val}</span>;
+  // Reduced-motion readers get the final figure immediately, derived during
+  // render rather than written back into state from an effect.
+  const shown = reduce && inView ? to : val;
+  return <span ref={ref}>{shown}</span>;
 }
 
 /** Staggered fade-in group for grids (children must be <StaggerItem>). */

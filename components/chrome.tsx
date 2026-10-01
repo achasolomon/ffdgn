@@ -122,7 +122,6 @@ export function Header() {
             className="overflow-hidden border-b border-gold/40 bg-forest-950 text-white"
           >
             <div className="mx-auto flex max-w-shell items-center gap-3 px-5 py-1.5">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/assets/events/conference.png" alt="" aria-hidden className="hidden h-9 w-14 shrink-0 rounded-[2px] object-cover object-top sm:block" />
               <p className="min-w-0 flex-1 truncate text-[12.5px]">
                 <span className="font-bold uppercase tracking-[0.14em] text-gold">5th National Conference</span>

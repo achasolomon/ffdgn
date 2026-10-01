@@ -70,7 +70,6 @@ export function VideoPlayer({ item }: { item: MediaItem }) {
       className="group relative block aspect-video w-full overflow-hidden bg-forest-950 text-left"
     >
       {item.thumbnailUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
         <img src={item.thumbnailUrl} alt="" className="h-full w-full object-cover opacity-80 group-hover:opacity-60" loading="lazy" />
       ) : (
         <span className="absolute inset-0 grid place-items-center">

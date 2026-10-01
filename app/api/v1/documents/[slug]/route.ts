@@ -11,10 +11,11 @@ const VISIBILITIES = ["PUBLIC", "MEMBERS_ONLY", "COMMITTEE_ONLY", "SECRETARIAT_O
  * GET /api/v1/documents/:slug — single record.
  * Published + PUBLIC is open; anything else requires `documents.view`.
  */
-export async function GET(_: Request, { params }: { params: { slug: string } }) {
+export async function GET(_: Request, { params }: { params: Promise<{ slug: string }> }) {
   try {
+    const { slug } = await params;
     if (!(await dbReady())) return fail("UNAVAILABLE", "Document detail requires the MySQL database.", 503);
-    const d = await db.knowledgeDoc.findUnique({ where: { slug: params.slug } });
+    const d = await db.knowledgeDoc.findUnique({ where: { slug } });
     if (!d) return fail("NOT_FOUND", "Document not found.", 404);
     const open = d.status === "Published" && d.visibility === "PUBLIC";
     if (!open) {
@@ -53,8 +54,9 @@ export async function GET(_: Request, { params }: { params: { slug: string } }) 
  * Both are also applied when a record leaves Published (Archived, or re-opened
  * as Draft) so a withdrawn document cannot keep serving as public.
  */
-export async function PATCH(req: Request, { params }: { params: { slug: string } }) {
+export async function PATCH(req: Request, { params }: { params: Promise<{ slug: string }> }) {
   try {
+    const { slug } = await params;
     if (!(await dbReady())) return fail("UNAVAILABLE", "Workflow requires the MySQL database.", 503);
 
     // Authenticate before touching the record. Looking the document up first
@@ -70,7 +72,7 @@ export async function PATCH(req: Request, { params }: { params: { slug: string }
       return fail("VALIDATION", `Unknown visibility. Allowed: ${VISIBILITIES.join(", ")}.`, 422);
     }
 
-    const d = await db.knowledgeDoc.findUnique({ where: { slug: params.slug } });
+    const d = await db.knowledgeDoc.findUnique({ where: { slug } });
     if (!d) return fail("NOT_FOUND", "Document not found.", 404);
 
     const from = d.status as unknown as DocStatusKey;

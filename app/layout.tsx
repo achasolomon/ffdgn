@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import { Header, Footer, UtilityBar } from "@/components/chrome";
@@ -25,7 +26,10 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Minted per request by proxy.ts. Handing it to the JSON-LD script lets the
+  // page carry structured data without re-opening `'unsafe-inline'`.
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   const orgSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -40,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:bg-gold focus:px-4 focus:py-2 focus:text-ink">
           Skip to main content
         </a>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
+        <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
         <Providers>
         <UtilityBar />
         <Header />

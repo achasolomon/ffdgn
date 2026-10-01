@@ -26,38 +26,15 @@ const nextConfig = {
   },
 
   /**
-   * Response headers applied to every route.
+   * Static response headers applied to every route.
    *
-   * CSP caveat worth knowing: `script-src` keeps 'unsafe-inline' because the
-   * App Router inlines the RSC flight payload and bootstrap scripts into the
-   * HTML, and static nonce generation is not wired up here. That means CSP
-   * currently limits exfiltration and remote script sources but does not fully
-   * stop an injected inline script. Closing that properly needs per-request
-   * nonces threaded through the root layout — tracked as a follow-up, not
-   * silently assumed solved.
+   * Content-Security-Policy is NOT set here. It must carry a per-request nonce
+   * so that `'unsafe-inline'` is unnecessary in `script-src`; Next.js also
+   * propagates the `x-nonce` request header onto the framework's own bootstrap
+   * scripts. See `proxy.ts`, which mints the nonce and sets the header.
    */
   async headers() {
-    const csp = [
-      "default-src 'self'",
-      // Next.js injects inline bootstrap scripts; allow them without 'unsafe-eval'.
-      "script-src 'self' 'unsafe-inline'",
-      // Video embeds are limited to the two approved players.
-      "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://player.vimeo.com",
-      "img-src 'self' data: blob: https://i.ytimg.com https://img.youtube.com",
-      "media-src 'self' blob:",
-      "font-src 'self' data:",
-      // Tailwind inline styles require 'unsafe-inline' here.
-      "style-src 'self' 'unsafe-inline'",
-      "connect-src 'self'",
-      "form-action 'self'",
-      "frame-ancestors 'none'",
-      "base-uri 'self'",
-      "object-src 'none'",
-      ...(process.env.NODE_ENV === "production" ? ["upgrade-insecure-requests"] : []),
-    ].join("; ");
-
     const headers = [
-      { key: "Content-Security-Policy", value: csp },
       { key: "X-Content-Type-Options", value: "nosniff" },
       { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
       { key: "X-Frame-Options", value: "DENY" },

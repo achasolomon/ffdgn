@@ -4,13 +4,14 @@ import { requirePermission, audit } from "@/lib/server-auth";
 import { clientIp } from "@/lib/rate-limit";
 import { revalidatePublicSite } from "@/lib/revalidate";
 
-export async function GET(_: Request, { params }: { params: { slug: string } }) {
+export async function GET(_: Request, { params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   if (await dbReady()) {
-    const m = await db.member.findUnique({ where: { slug: params.slug }, include: { service: true } });
+    const m = await db.member.findUnique({ where: { slug }, include: { service: true } });
     if (!m || m.visibility !== "PUBLIC") return fail("NOT_FOUND", "Member not found.", 404);
     return ok({ ...toPublicMember(m), source: "mysql" });
   }
-  const m = getMember(params.slug);
+  const m = getMember(slug);
   if (!m || m.visibility !== "PUBLIC") return fail("NOT_FOUND", "Member not found.", 404);
   return ok(m);
 }
@@ -23,8 +24,9 @@ const VISIBILITIES = ["PUBLIC", "MEMBERS_ONLY", "COMMITTEE_ONLY", "SECRETARIAT_O
  * Body may contain `status` and/or `visibility`. Requires `members.update`.
  * Every change is audit-logged with previous → new values (§30).
  */
-export async function PATCH(req: Request, { params }: { params: { slug: string } }) {
+export async function PATCH(req: Request, { params }: { params: Promise<{ slug: string }> }) {
   try {
+    const { slug } = await params;
     if (!(await dbReady())) return fail("UNAVAILABLE", "Membership management requires the MySQL database.", 503);
     // Authorize before reading the record so slug existence stays opaque to
     // unauthenticated callers.
@@ -41,7 +43,7 @@ export async function PATCH(req: Request, { params }: { params: { slug: string }
       return fail("VALIDATION", `Unknown visibility. Allowed: ${VISIBILITIES.join(", ")}.`, 422);
     }
 
-    const m = await db.member.findUnique({ where: { slug: params.slug } });
+    const m = await db.member.findUnique({ where: { slug } });
     if (!m) return fail("NOT_FOUND", "Member not found.", 404);
 
     const updated = await db.member.update({
