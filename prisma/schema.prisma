@@ -1,0 +1,456 @@
+// FFDGN institutional schema — MySQL 8 production target (§27 / §31).
+// Normalized: users ↔ members ↔ service history; events ↔ programme;
+// documents with approval workflow; committees; audit trail (append-only).
+// Managed with Prisma Migrate: `npx prisma migrate dev`.
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  super_admin
+  secretariat_admin
+  membership_admin
+  content_editor
+  events_manager
+  knowledge_manager
+  committee_manager
+  communications_officer
+  auditor
+  member
+  associate
+}
+
+enum Visibility {
+  PUBLIC
+  MEMBERS_ONLY
+  COMMITTEE_ONLY
+  SECRETARIAT_ONLY
+  PRIVATE
+}
+
+enum MemberCategory {
+  Former
+  Serving
+  Secretariat
+}
+
+enum MemberStatus {
+  Active
+  Associate
+  Honorary
+  Pending
+}
+
+enum EventStatus {
+  Upcoming
+  Ongoing
+  Past
+}
+
+enum DocStatus {
+  Draft
+  Editorial_Review
+  Institutional_Review
+  Approved
+  Published
+  Archived
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique @db.VarChar(255)
+  name         String   @db.VarChar(192)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  role         Role     @default(member)
+  isActive     Boolean  @default(true) @map("is_active")
+  lastLoginAt  DateTime? @map("last_login_at")
+  failedLogins Int      @default(0) @map("failed_logins")
+  lockedUntil  DateTime? @map("locked_until")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  member       Member?
+  auditActions AuditLog[] @relation("AuditActor")
+
+  @@index([role])
+  @@map("users")
+}
+
+model Member {
+  id             String         @id @default(uuid())
+  userId         String?        @unique @map("user_id")
+  user           User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  slug           String         @unique @db.VarChar(128)
+  fullName       String         @map("full_name") @db.VarChar(192)
+  title          String         @db.VarChar(128)
+  state          String         @db.VarChar(64)
+  region         String         @db.VarChar(32)
+  category       MemberCategory
+  status         MemberStatus   @default(Pending)
+  leadershipRole String?        @map("leadership_role") @db.VarChar(128)
+  photoUrl       String?        @map("photo_url") @db.VarChar(512)
+  bio            String?        @db.Text
+  visibility     Visibility     @default(PUBLIC)
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+  service        ServiceRecord[]
+  committeeSeats CommitteeSeat[]
+  speakingAt     EventSpeaker[]
+  engagedEvents  MemberEvent[]
+  authoredDocs   MemberPublication[]
+
+  @@index([state])
+  @@index([category, status])
+  @@fulltext([fullName, bio])
+  @@map("members")
+}
+
+model ServiceRecord {
+  id        String @id @default(uuid())
+  memberId  String @map("member_id")
+  member    Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  office    String @db.VarChar(128)
+  state     String @db.VarChar(64)
+  startYear Int    @map("start_year")
+  endYear   Int    @map("end_year")
+
+  @@index([memberId])
+  @@map("service_history")
+}
+
+model ForumEvent {
+  id        String      @id @default(uuid())
+  slug      String      @unique @db.VarChar(128)
+  title     String      @db.VarChar(255)
+  theme     String      @db.VarChar(255)
+  kind      String      @db.VarChar(64)
+  startDate DateTime    @map("start_date") @db.Date
+  endDate   DateTime    @map("end_date") @db.Date
+  venue     String      @db.VarChar(255)
+  city      String      @db.VarChar(128)
+  status    EventStatus
+  summary   String      @db.Text
+  guestList String?     @map("guest_list") @db.Text
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+  programme EventProgramme[]
+  documents KnowledgeDoc[] @relation("EventDocuments")
+  speakers  EventSpeaker[]
+  engagedMembers MemberEvent[]
+  partnerLinks   PartnershipEvent[]
+  newsLinks      NewsArticle[] @relation("NewsEvent")
+  media     MediaAsset[] @relation("EventMedia")
+  coverUrl  String?     @map("cover_url") @db.VarChar(512)
+
+  @@index([status, startDate])
+  @@map("events")
+}
+
+model EventProgramme {
+  id        String     @id @default(uuid())
+  eventId   String     @map("event_id")
+  event     ForumEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  slotTime  String     @map("slot_time") @db.VarChar(16)
+  session   String     @db.VarChar(255)
+  speaker   String?    @db.VarChar(192)
+  position  Int        @default(0)
+
+  @@index([eventId, position])
+  @@map("event_programme")
+}
+
+model KnowledgeDoc {
+  id         String     @id @default(uuid())
+  slug       String     @unique @db.VarChar(128)
+  title      String     @db.VarChar(255)
+  type       String     @db.VarChar(64)
+  status     DocStatus  @default(Draft)
+  publishedOn DateTime? @map("published_on") @db.Date
+  author     String     @db.VarChar(192)
+  topic      String     @db.VarChar(128)
+  year       Int
+  committee  String?    @db.VarChar(128)
+  eventId    String?    @map("event_id")
+  event      ForumEvent? @relation("EventDocuments", fields: [eventId], references: [id], onDelete: SetNull)
+  pages      Int        @default(0)
+  sizeLabel  String     @map("size_label") @db.VarChar(32)
+  summary    String     @db.Text
+  visibility Visibility @default(SECRETARIAT_ONLY)
+  version    Int        @default(1)
+  fileUrl    String?    @map("file_url") @db.VarChar(512)
+  downloads  Int        @default(0)
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  memberPubs MemberPublication[]
+  newsLinks  NewsDoc[]
+
+  @@index([status, visibility])
+  @@index([year])
+  @@fulltext([title, topic])
+  @@map("documents")
+}
+
+model NewsArticle {
+  id        String   @id @default(uuid())
+  slug      String   @unique @db.VarChar(128)
+  title     String   @db.VarChar(255)
+  category  String   @db.VarChar(64)
+  date      DateTime @db.Date
+  location  String   @db.VarChar(128)
+  excerpt   String   @db.Text
+  body      String   @db.LongText
+  official  Boolean  @default(true)
+  imageUrl  String?  @map("image_url") @db.VarChar(512)
+  eventId   String?  @map("event_id")
+  event     ForumEvent? @relation("NewsEvent", fields: [eventId], references: [id], onDelete: SetNull)
+  linkedDocs NewsDoc[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([category, date])
+  @@map("news")
+}
+
+model NewsDoc {
+  id      String      @id @default(uuid())
+  newsId  String      @map("news_id")
+  news    NewsArticle @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  docId   String      @map("doc_id")
+  doc     KnowledgeDoc @relation(fields: [docId], references: [id], onDelete: Cascade)
+
+  @@unique([newsId, docId])
+  @@index([docId])
+  @@map("news_docs")
+}
+
+model Committee {
+  id        String   @id @default(uuid())
+  slug      String   @unique @db.VarChar(128)
+  name      String   @db.VarChar(192)
+  mandate   String   @db.Text
+  chairSlug String   @map("chair_slug") @db.VarChar(128)
+  meetings  Int      @default(0)
+  status    String   @db.VarChar(32)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  seats     CommitteeSeat[]
+
+  @@map("committees")
+}
+
+model CommitteeSeat {
+  id         String    @id @default(uuid())
+  committeeId String   @map("committee_id")
+  committee  Committee @relation(fields: [committeeId], references: [id], onDelete: Cascade)
+  memberId   String    @map("member_id")
+  member     Member    @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([committeeId, memberId])
+  @@index([memberId])
+  @@map("committee_seats")
+}
+
+model Partnership {
+  id        String   @id @default(uuid())
+  slug      String   @unique @db.VarChar(128)
+  name      String   @db.VarChar(192)
+  type      String   @db.VarChar(64)
+  since     Int
+  purpose   String   @db.Text
+  logoUrl   String?  @map("logo_url") @db.VarChar(512)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  cooperation PartnershipCooperation[]
+  events      PartnershipEvent[]
+
+  @@map("partnerships")
+}
+
+model PartnershipCooperation {
+  id            String      @id @default(uuid())
+  partnershipId String      @map("partnership_id")
+  partnership   Partnership @relation(fields: [partnershipId], references: [id], onDelete: Cascade)
+  area          String      @db.VarChar(255)
+  position      Int         @default(0)
+
+  @@index([partnershipId, position])
+  @@map("partnership_cooperation")
+}
+
+model PartnershipEvent {
+  id            String      @id @default(uuid())
+  partnershipId String      @map("partnership_id")
+  partnership   Partnership @relation(fields: [partnershipId], references: [id], onDelete: Cascade)
+  eventId       String      @map("event_id")
+  event         ForumEvent  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([partnershipId, eventId])
+  @@index([eventId])
+  @@map("partnership_events")
+}
+
+// ——— CMS-managed institutional content (no hardcoded copy) ———
+
+model SiteSetting {
+  key       String   @id @db.VarChar(128)
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("site_settings")
+}
+
+model SiteMetric {
+  id       String @id @default(uuid())
+  key      String @unique @db.VarChar(64)
+  value    String @db.VarChar(32)
+  label    String @db.VarChar(128)
+  href     String @db.VarChar(255)
+  position Int    @default(0)
+
+  @@map("site_metrics")
+}
+
+model FocusArea {
+  id       String @id @default(uuid())
+  slug     String @unique @db.VarChar(64)
+  title    String @db.VarChar(128)
+  text     String @db.Text
+  href     String @db.VarChar(255)
+  imageUrl String? @map("image_url") @db.VarChar(512)
+  position Int    @default(0)
+
+  @@map("focus_areas")
+}
+
+model TimelineEntry {
+  id       String @id @default(uuid())
+  year     Int
+  title    String @db.VarChar(255)
+  summary  String @db.Text
+  imageUrl String? @map("image_url") @db.VarChar(512)
+  position Int    @default(0)
+  links    TimelineLink[]
+
+  @@map("timeline_entries")
+}
+
+model TimelineLink {
+  id      String        @id @default(uuid())
+  entryId String        @map("entry_id")
+  entry   TimelineEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  label   String        @db.VarChar(128)
+  href    String        @db.VarChar(255)
+
+  @@index([entryId])
+  @@map("timeline_links")
+}
+
+model LeadershipSeat {
+  id         String  @id @default(uuid())
+  role       String  @db.VarChar(128)
+  tier       Int     @default(2)
+  memberSlug String  @map("member_slug") @db.VarChar(128)
+  remit      String  @db.Text
+  position   Int     @default(0)
+
+  @@map("leadership_seats")
+}
+
+// ——— Institutional relation joins (memory engine) ———
+
+model EventSpeaker {
+  id       String     @id @default(uuid())
+  eventId  String     @map("event_id")
+  event    ForumEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  memberId String     @map("member_id")
+  member   Member     @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  position Int        @default(0)
+
+  @@unique([eventId, memberId])
+  @@index([memberId])
+  @@map("event_speakers")
+}
+
+model MemberEvent {
+  id       String     @id @default(uuid())
+  memberId String     @map("member_id")
+  member   Member     @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  eventId  String     @map("event_id")
+  event    ForumEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([memberId, eventId])
+  @@index([eventId])
+  @@map("member_events")
+}
+
+model MemberPublication {
+  id       String       @id @default(uuid())
+  memberId String       @map("member_id")
+  member   Member       @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  docId    String       @map("doc_id")
+  doc      KnowledgeDoc @relation(fields: [docId], references: [id], onDelete: Cascade)
+
+  @@unique([memberId, docId])
+  @@index([docId])
+  @@map("member_publications")
+}
+
+// ——— Media library (photos, videos, embeds) ———
+
+enum MediaKind {
+  IMAGE
+  VIDEO
+  DOCUMENT
+  AUDIO
+}
+
+model MediaAsset {
+  id           String     @id @default(uuid())
+  title        String     @db.VarChar(255)
+  description  String?    @db.Text
+  kind         MediaKind  @default(IMAGE)
+  category     String     @db.VarChar(64)
+  url          String     @db.VarChar(512)
+  thumbnailUrl String?    @map("thumbnail_url") @db.VarChar(512)
+  provider     String?    @db.VarChar(16)
+  providerId   String?    @map("provider_id") @db.VarChar(128)
+  durationSecs Int?       @map("duration_secs")
+  width        Int?
+  height       Int?
+  photographer String?    @db.VarChar(192)
+  copyright    String?    @db.VarChar(192)
+  altText      String?    @map("alt_text") @db.VarChar(255)
+  eventId      String?    @map("event_id")
+  event        ForumEvent? @relation("EventMedia", fields: [eventId], references: [id], onDelete: SetNull)
+  visibility   Visibility @default(PUBLIC)
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  @@index([kind, category])
+  @@index([eventId])
+  @@map("media_assets")
+}
+
+// Append-only: no UPDATE/DELETE grants for app user in production.
+model AuditLog {
+  id            String   @id @default(uuid())
+  actorId       String   @map("actor_id")
+  actor         User     @relation("AuditActor", fields: [actorId], references: [id], onDelete: Restrict)
+  actorName     String   @map("actor_name") @db.VarChar(192)
+  action        String   @db.VarChar(128)
+  resource      String   @db.VarChar(255)
+  ip            String   @db.VarChar(64)
+  previousValue String?  @map("previous_value") @db.Text
+  newValue      String?  @map("new_value") @db.Text
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([actorId, createdAt])
+  @@index([action, createdAt])
+  @@map("audit_log")
+}

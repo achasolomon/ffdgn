@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img">
+  
+  <defs>
+    <pattern id="n" width="72" height="72" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+      <line x1="0" y1="0" x2="0" y2="72" stroke="#E2BF59" stroke-opacity="0.10" stroke-width="1.5"/>
+      <line x1="36" y1="0" x2="36" y2="72" stroke="#E2BF59" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="n-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B2E1B"/><stop offset="1" stop-color="#10482A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#n-bg)"/>
+  <rect width="1280" height="720" fill="url(#n)"/>
+  <g stroke="#E2BF59" stroke-width="6" fill="none"><path d="M 440 400 Q 640 300 840 400"/><path d="M 440 400 Q 640 360 840 400"/><circle cx="440" cy="400" r="34" fill="#026E34" stroke="#E2BF59" stroke-width="4"/><circle cx="840" cy="400" r="34" fill="#026E34" stroke="#E2BF59" stroke-width="4"/></g>
+  <text x="80" y="80" font-family="Verdana, sans-serif" font-size="22" letter-spacing="8" fill="#E2BF59">FFDGN · NEWS & MEDIA</text>
+  <text x="80" y="660" font-family="Georgia, serif" font-size="30" fill="#F8F7F2">State–Federal Collaboration</text>
+</svg>

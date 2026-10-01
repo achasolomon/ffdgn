@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img">
+  
+  <defs>
+    <pattern id="h" width="72" height="72" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+      <line x1="0" y1="0" x2="0" y2="72" stroke="#E2BF59" stroke-opacity="0.10" stroke-width="1.5"/>
+      <line x1="36" y1="0" x2="36" y2="72" stroke="#E2BF59" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="h-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B2E1B"/><stop offset="1" stop-color="#10482A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#h-bg)"/>
+  <rect width="1280" height="720" fill="url(#h)"/>
+  
+  <g transform="translate(150 120) scale(1)">
+    <rect x="-3" y="0" width="6" height="150" fill="#5a4a28"/>
+    <rect x="3" y="6" width="30" height="60" fill="#008751"/>
+    <rect x="33" y="6" width="30" height="60" fill="#ffffff"/>
+    <rect x="63" y="6" width="30" height="60" fill="#008751"/>
+  </g>
+  <g transform="translate(1130 120) scale(1)">
+    <rect x="-3" y="0" width="6" height="150" fill="#5a4a28"/>
+    <rect x="3" y="6" width="30" height="60" fill="#008751"/>
+    <rect x="33" y="6" width="30" height="60" fill="#ffffff"/>
+    <rect x="63" y="6" width="30" height="60" fill="#008751"/>
+  </g>
+  <path d="M 180 560 Q 640 500 1100 560" fill="none" stroke="#E2BF59" stroke-opacity="0.7" stroke-width="4"/><path d="M 220 552 Q 640 474 1060 552" fill="none" stroke="#E2BF59" stroke-opacity="0.57" stroke-width="4"/><path d="M 260 544 Q 640 448 1020 544" fill="none" stroke="#E2BF59" stroke-opacity="0.43999999999999995" stroke-width="4"/><path d="M 300 536 Q 640 422 980 536" fill="none" stroke="#E2BF59" stroke-opacity="0.30999999999999994" stroke-width="4"/>
+       <rect x="250" y="528.4" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="296" y="525.64" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="342" y="522.88" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="388" y="520.12" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="434" y="517.36" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="480" y="514.6" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="526" y="511.84" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="572" y="509.08" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="618" y="506.32" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="664" y="506.44" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="710" y="509.2" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="756" y="511.96" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="802" y="514.72" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="848" y="517.48" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="894" y="520.24" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="940" y="523" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="986" y="525.76" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="1032" y="528.52" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="1078" y="531.28" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="1124" y="534.04" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="1170" y="536.8" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="1216" y="539.56" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="1262" y="542.32" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/><rect x="1308" y="545.08" width="26" height="40" rx="4" fill="#026E34" stroke="#E2BF59" stroke-opacity="0.55"/>
+       <rect x="480" y="180" width="320" height="150" rx="6" fill="#0E3B22" stroke="#E2BF59" stroke-width="3"/>
+       <text x="640" y="245" text-anchor="middle" font-family="Georgia, serif" font-size="40" fill="#E2BF59">FFDGN</text>
+       <text x="640" y="285" text-anchor="middle" font-family="Verdana, sans-serif" font-size="16" letter-spacing="4" fill="#F8F7F2">PLENARY HALL · ABUJA</text>
+  
+  <g>
+    <circle cx="640" cy="620" r="44" fill="none" stroke="#E2BF59" stroke-width="3"/>
+    <circle cx="640" cy="620" r="34" fill="none" stroke="#E2BF59" stroke-opacity="0.5" stroke-width="1.5"/>
+    <text x="640" y="614" text-anchor="middle" font-family="Georgia, serif" font-size="14.96" font-weight="bold" fill="#E2BF59">FF</text>
+    <text x="640" y="631.44" text-anchor="middle" font-family="Georgia, serif" font-size="14.96" font-weight="bold" fill="#E2BF59">DGN</text>
+  </g>
+  <text x="80" y="80" font-family="Verdana, sans-serif" font-size="22" letter-spacing="8" fill="#E2BF59">NATIONAL CONFERENCE 2024</text>
+  <text x="80" y="112" font-family="Verdana, sans-serif" font-size="15" letter-spacing="3" fill="#F8F7F2" opacity="0.75">RENEWED HOPE · SUSTAINABLE DEVELOPMENT</text>
+</svg>

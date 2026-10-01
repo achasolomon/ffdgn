@@ -1,0 +1,25 @@
+services:
+  db:
+    # mysql:8.0 — pinned to the locally cached major; 8.x satisfies the schema.
+    # Host port 3307 avoids clashing with other local MySQL instances on 3306.
+    image: mysql:8.0
+    container_name: ffdgn-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-ffdgn-root-change-me}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-ffdgn}
+      MYSQL_USER: ${MYSQL_USER:-ffdgn}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-ffdgn-dev-change-me}
+    ports:
+      - "${MYSQL_PORT:-3307}:3306"
+    volumes:
+      - ffdgn-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-ffdgn-root-change-me}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+volumes:
+  ffdgn-mysql-data:

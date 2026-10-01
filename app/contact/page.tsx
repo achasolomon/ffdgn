@@ -1,0 +1,40 @@
+import { Breadcrumbs } from "@/components/chrome";
+import { SectionHeading } from "@/components/ui";
+import { Mail, Phone, MapPin, Clock } from "lucide-react";
+
+export default function ContactPage({ searchParams }: { searchParams: { subject?: string } }) {
+  return (
+    <div className="mx-auto max-w-shell px-5 py-12">
+      <Breadcrumbs items={[{ label: "Contact the Secretariat" }]} />
+      <SectionHeading eyebrow="Secretariat" title="Contact the Secretariat" lede="The Secretariat provides administrative, research and coordination support to the Forum and its activities." />
+      <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_1.2fr]">
+        <aside className="h-fit bg-forest-950 p-7 text-white">
+          <p className="eyebrow-light">Secretariat address</p>
+          <ul className="mt-4 space-y-4 text-sm text-white/80">
+            <li className="flex gap-2.5"><MapPin size={16} className="mt-0.5 text-gold" /> No. 12 Pope John Paul II Street, Maitama, Abuja, Nigeria</li>
+            <li className="flex gap-2.5"><Phone size={16} className="mt-0.5 text-gold" /> +234 9 4612 3456</li>
+            <li className="flex gap-2.5"><Mail size={16} className="mt-0.5 text-gold" /> info@ffdgn.org.ng</li>
+            <li className="flex gap-2.5"><Clock size={16} className="mt-0.5 text-gold" /> Mon – Fri, 8:00 AM – 5:00 PM</li>
+          </ul>
+          <div className="mt-6 border-t border-white/15 pt-5">
+            <p className="eyebrow-light">5th National Conference enquiries</p>
+            <ul className="mt-3 space-y-2.5 text-sm text-white/80">
+              <li className="flex gap-2.5"><Phone size={16} className="mt-0.5 text-gold" /> 0803 301 3624 · 0916 894 2222</li>
+              <li className="flex gap-2.5"><Mail size={16} className="mt-0.5 text-gold" /> annualconference@ffdgn.org.ng</li>
+            </ul>
+          </div>
+        </aside>
+        <form className="border hairline bg-white p-6 md:p-8" aria-label="Contact form">
+          <div className="grid gap-4 md:grid-cols-2">
+            <div><label htmlFor="cname" className="text-[13px] font-semibold">Full name</label><input id="cname" required className="mt-1 w-full border hairline px-4 py-2.5 text-sm" /></div>
+            <div><label htmlFor="cemail" className="text-[13px] font-semibold">Email</label><input id="cemail" type="email" required className="mt-1 w-full border hairline px-4 py-2.5 text-sm" /></div>
+          </div>
+          <div className="mt-4"><label htmlFor="csubject" className="text-[13px] font-semibold">Subject</label><input id="csubject" defaultValue={searchParams.subject ?? ""} className="mt-1 w-full border hairline px-4 py-2.5 text-sm" /></div>
+          <div className="mt-4"><label htmlFor="cmsg" className="text-[13px] font-semibold">Message</label><textarea id="cmsg" rows={5} required className="mt-1 w-full border hairline px-4 py-2.5 text-sm" /></div>
+          <button className="mt-5 bg-primary px-6 py-3 text-sm font-semibold text-white">Send message →</button>
+          <p className="mt-3 text-[12.5px] text-ink/50">Submissions route to the Secretariat queue (Communications module, Phase 2 connects email/SMS/WhatsApp).</p>
+        </form>
+      </div>
+    </div>
+  );
+}

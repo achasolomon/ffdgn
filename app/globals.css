@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ffdgn-green: #026e34;
+  --ffdgn-green-deep: #0b2e1b;
+  --ffdgn-accent: #00a85a;
+  --ffdgn-gold: #e2bf59;
+  --ffdgn-cream: #f0ed86;
+  --ffdgn-ink: #1c1c1c;
+  --ffdgn-paper: #f8f7f2;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  @apply bg-paper text-ink font-sans antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Institutional typographic rhythm */
+.font-display { letter-spacing: -0.015em; }
+
+.eyebrow {
+  @apply text-[11px] font-semibold uppercase tracking-[0.22em] text-primary;
+}
+.eyebrow-gold { @apply text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-deep; }
+.eyebrow-light { @apply text-[11px] font-semibold uppercase tracking-[0.22em] text-gold; }
+
+.hairline { border-color: rgba(28, 28, 28, 0.12); }
+.hairline-light { border-color: rgba(255, 255, 255, 0.16); }
+
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: left calc(100% - 1px);
+  transition: background-size 220ms ease;
+}
+.link-underline:hover { background-size: 100% 1px; }
+
+/* Reveal motion — calm, deliberate */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 500ms ease, transform 500ms ease; }
+  .reveal.is-visible { opacity: 1; transform: none; }
+  .img-zoom img { transition: transform 600ms ease; }
+  .img-zoom:hover img { transform: scale(1.04); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* Focus visibility — WCAG 2.1 AA */
+:focus-visible {
+  outline: 2px solid #00a85a;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Numbered editorial rows */
+.role-row { transition: background 200ms ease, padding 200ms ease; }
+.role-row:hover { background: #fff; }
+
+/* Thin scrollbar for drawers */
+.thin-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.thin-scroll::-webkit-scrollbar-thumb { background: rgba(2,110,52,.35); border-radius: 99px; }
+
+/* Print: documents read cleanly */
+@media print {
+  .no-print { display: none !important; }
+}

@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+.env
+.env*.local
+!.env.example
+public/uploads/*
+*.tsbuildinfo
+
+# Oversized source videos live outside the repository; serve via object storage/CDN.
+public/assets/videos/

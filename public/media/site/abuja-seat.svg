@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img">
+  
+  <defs>
+    <pattern id="s" width="72" height="72" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+      <line x1="0" y1="0" x2="0" y2="72" stroke="#E2BF59" stroke-opacity="0.10" stroke-width="1.5"/>
+      <line x1="36" y1="0" x2="36" y2="72" stroke="#E2BF59" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="s-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B2E1B"/><stop offset="1" stop-color="#10482A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#s-bg)"/>
+  <circle cx="1020" cy="150" r="70" fill="#E2BF59" opacity="0.85"/>
+  <rect x="0" y="560" width="1280" height="160" fill="#071f12"/>
+  <g fill="#0E3B22" stroke="#E2BF59" stroke-opacity="0.5">
+    <rect x="120" y="380" width="120" height="180"/><rect x="270" y="430" width="90" height="130"/>
+    <rect x="880" y="400" width="110" height="160"/><rect x="1020" y="450" width="140" height="110"/>
+  </g>
+  <g>
+    <rect x="470" y="300" width="340" height="260" fill="#0E3B22" stroke="#E2BF59" stroke-width="3"/>
+    <path d="M 640 170 A 130 130 0 0 1 770 300 L 510 300 A 130 130 0 0 1 640 170" fill="#026E34" stroke="#E2BF59" stroke-width="3"/>
+    <rect x="632" y="120" width="16" height="60" fill="#E2BF59"/>
+    <rect x="470" y="380" width="340" height="10" fill="#E2BF59" opacity="0.6"/>
+    <rect x="470" y="430" width="340" height="10" fill="#E2BF59" opacity="0.35"/>
+    <rect x="470" y="480" width="340" height="10" fill="#E2BF59" opacity="0.2"/>
+  </g>
+  
+  <g transform="translate(400 380) scale(0.9)">
+    <rect x="-3" y="0" width="6" height="150" fill="#5a4a28"/>
+    <rect x="3" y="6" width="30" height="60" fill="#008751"/>
+    <rect x="33" y="6" width="30" height="60" fill="#ffffff"/>
+    <rect x="63" y="6" width="30" height="60" fill="#008751"/>
+  </g>
+  <g transform="translate(880 380) scale(0.9)">
+    <rect x="-3" y="0" width="6" height="150" fill="#5a4a28"/>
+    <rect x="3" y="6" width="30" height="60" fill="#008751"/>
+    <rect x="33" y="6" width="30" height="60" fill="#ffffff"/>
+    <rect x="63" y="6" width="30" height="60" fill="#008751"/>
+  </g>
+  <text x="80" y="100" font-family="Verdana, sans-serif" font-size="22" letter-spacing="8" fill="#E2BF59">ABUJA · NIGERIA</text>
+  <text x="80" y="132" font-family="Georgia, serif" font-size="34" fill="#F8F7F2">Seat of the Forum</text>
+</svg>
