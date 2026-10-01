@@ -19,10 +19,22 @@ function LoginForm() {
     const res = await signIn("credentials", { email, password, callbackUrl, redirect: false });
     setPending(false);
     if (!res || res.error) {
-      setError(res?.error ?? "Sign in failed.");
+      // Never surface the raw provider error string: it can carry server-side
+      // detail or a specific reason ("account locked", "no such user") that
+      // helps an attacker map registered addresses. The server already returns
+      // one generic message for every failure mode; echo that shape.
+      setError(
+        "Sign in failed. Check your email address and password, then try again. " +
+          "After five failed attempts an account is locked for 15 minutes.",
+      );
+      setPending(false);
       return;
     }
-    window.location.href = res.url ?? callbackUrl;
+    // Only same-origin relative paths are accepted as a redirect target, so a
+    // crafted ?callbackUrl=https://evil.example cannot be used to bounce a
+    // freshly authenticated user off-site.
+    const target = /^\/(?!\/)/.test(callbackUrl) ? callbackUrl : "/portal";
+    window.location.href = res.url ?? target;
   }
 
   return (

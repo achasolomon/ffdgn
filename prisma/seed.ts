@@ -2,8 +2,11 @@
  * FFDGN institutional seed — loads the CMS baseline (lib/data.ts) into MySQL.
  * Run: `npx prisma migrate dev` then `npm run db:seed`.
  *
- * Dev credentials below are for local use only and must be rotated in every
- * deployed environment (see .env.example / deployment notes in README).
+ * The development accounts below carry published, well-known passwords. Seeding
+ * them into a production database would hand six privileged logins to anyone
+ * who has read this repository, so the seed refuses to run against a
+ * production environment unless an explicit override is set. Content rows are
+ * always safe to load; only the accounts are gated.
  */
 import { PrismaClient, DocStatus, EventStatus } from "@prisma/client";
 import bcrypt from "bcryptjs";
@@ -21,12 +24,38 @@ const DEV_USERS = [
   { email: "member@ffdgn.org.ng", name: "H.E. Atim Tyonongu", role: "member" as const, password: "FFDGN-Member-2026!" },
 ];
 
+/**
+ * Guards the fixed development passwords. A plain console warning is not
+ * enough for credentials that are visible in source control, so this refuses.
+ * Set ALLOW_DEV_ACCOUNTS=true to seed content plus demo accounts on a staging
+ * host, and provision real accounts with POST /api/v1/users instead.
+ */
+function assertDevAccountsAllowed() {
+  if (process.env.ALLOW_DEV_ACCOUNTS === "true") {
+    console.warn("⚠ ALLOW_DEV_ACCOUNTS=true — seeding accounts with published passwords.");
+    return;
+  }
+  const nodeEnv = process.env.NODE_ENV ?? "development";
+  const url = process.env.DATABASE_URL ?? "";
+  const isProduction = nodeEnv === "production" || /@?(prod|live)[.-]/i.test(url);
+  if (isProduction) {
+    throw new Error(
+      "Refusing to seed development accounts into a production environment.\n" +
+        "The seed contains six accounts with passwords committed to source control, including a super_admin.\n" +
+        "Content will still load if you run with ALLOW_DEV_ACCOUNTS=false and comment out this block, but the\n" +
+        "recommended path is to seed content only and provision accounts via POST /api/v1/users.",
+    );
+  }
+}
+
 const toDocStatus = (s: string): DocStatus =>
   s.replace(/ /g, "_") as DocStatus; // "Editorial Review" -> Editorial_Review
 const toEventStatus = (s: string): EventStatus => s as EventStatus;
 
 async function main() {
   console.log("Seeding FFDGN institutional baseline…");
+
+  assertDevAccountsAllowed();
 
   // Users (auth) — bcrypt-hashed, never plaintext.
   for (const u of DEV_USERS) {
@@ -301,7 +330,10 @@ async function main() {
     news: await prisma.newsArticle.count(), committees: await prisma.committee.count(),
   };
   console.log("Seed complete:", counts);
-  console.warn("⚠ Dev credentials are local-only. Rotate NEXTAUTH_SECRET and all passwords before any deployment.");
+  console.warn(
+    "⚠ Six accounts were seeded with passwords committed to source control, including a super_admin.\n" +
+      "  Rotate every one of them, and NEXTAUTH_SECRET, before this database is reachable by anyone else.",
+  );
 }
 
 main()
