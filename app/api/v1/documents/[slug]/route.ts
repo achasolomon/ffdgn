@@ -56,6 +56,12 @@ export async function GET(_: Request, { params }: { params: { slug: string } }) 
 export async function PATCH(req: Request, { params }: { params: { slug: string } }) {
   try {
     if (!(await dbReady())) return fail("UNAVAILABLE", "Workflow requires the MySQL database.", 503);
+
+    // Authenticate before touching the record. Looking the document up first
+    // lets an anonymous caller distinguish a real slug (workflow error) from a
+    // fake one (404), which enumerates unpublished and restricted documents.
+    await requireAuth();
+
     const body = (await req.json().catch(() => null)) as { to?: string; visibility?: string } | null;
     const to = (body?.to ?? "").replace(/ /g, "_") as DocStatusKey;
     if (!to) return fail("VALIDATION", "Target status `to` is required.", 422);
@@ -72,6 +78,8 @@ export async function PATCH(req: Request, { params }: { params: { slug: string }
     if (!edge) {
       return fail("VALIDATION", `Illegal transition: ${prettyStatus(from)} → ${prettyStatus(to)}.`, 422);
     }
+    // Capability is checked after the target edge is known, so the requirement
+    // reflects the specific transition being attempted.
     const auth = await requirePermission(edge.permission);
 
     const isPublishing = to === "Published";

@@ -26,6 +26,8 @@ const VISIBILITIES = ["PUBLIC", "MEMBERS_ONLY", "COMMITTEE_ONLY", "SECRETARIAT_O
 export async function PATCH(req: Request, { params }: { params: { slug: string } }) {
   try {
     if (!(await dbReady())) return fail("UNAVAILABLE", "Membership management requires the MySQL database.", 503);
+    // Authorize before reading the record so slug existence stays opaque to
+    // unauthenticated callers.
     const auth = await requirePermission("members.update");
 
     const body = (await req.json().catch(() => null)) as { status?: string; visibility?: string } | null;
