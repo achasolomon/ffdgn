@@ -1,7 +1,7 @@
 # FFDGN Digital Platform — MySQL + Real Auth (Phase 1.5)
 
 Institutional digital platform for the Forum of Former Deputy Governors of Nigeria.
-Modular monolith: Next.js 14 + MySQL 8 (Prisma) + NextAuth credentials + capability RBAC.
+Modular monolith: Next.js 16 + MySQL 8 (Prisma) + NextAuth credentials + capability RBAC.
 
 ## Quick start (local)
 ```bash
@@ -29,7 +29,8 @@ Seeded accounts (LOCAL ONLY — rotate before any deployment):
 - `prisma/seed.ts` — loads the CMS baseline from `lib/data.ts`; bcrypt-hashed passwords (cost 12).
 - `lib/auth-options.ts` — NextAuth credentials provider: email/password, brute-force lockout
   (5 failures → 15 min lock), rate limiting, `auth.login` audit entry, JWT sessions (8h, hourly role refresh).
-- `middleware.ts` — `/portal` requires any institutional role; `/admin` requires staff role; `noindex` preserved.
+- `proxy.ts` — Next 16's renamed `middleware` convention. `/portal` requires any institutional
+  role; `/admin` requires staff role; `noindex` preserved. Also mints the per-request CSP nonce.
 - `lib/server-auth.ts` — `requireAuth()` / `requirePermission()` for server-side authorization; `audit()` writer.
 - API migrated to MySQL with seeded-data fallback (no `DATABASE_URL` → preview mode):
   `members`, `events`, `documents`, `search` (public records only), `audit` (requires `audit.view`),
@@ -66,10 +67,20 @@ Seeded accounts (LOCAL ONLY — rotate before any deployment):
 
 ## Security posture
 - Passwords: bcrypt cost 12, never logged; 12-char minimum; current-password required for changes.
-- Sessions: JWT, 8h max age, role re-validated from DB hourly (deactivation revokes within the hour).
+- Sessions: JWT, 8h max age; the jwt callback re-reads the account on every token read, so
+  deactivation and password changes revoke live sessions immediately rather than within the hour.
 - Auth: per-email+IP rate limits, account lockout, login audit entries, generic error messages (no enumeration).
-- Authorization: middleware (route) + `requirePermission()` (operation) — client checks are cosmetic only.
+- Authorization: `proxy.ts` (route) + `requirePermission()` (operation) — client checks are cosmetic only.
 - Private surfaces: `noindex` headers + robots disallow + session gate.
+- CSP: per-request nonce, `script-src` has no `'unsafe-inline'`; see `proxy.ts`.
+- Restricted records return a real HTTP 404, not a 200 wrapping a 404 body. Do not reintroduce a
+  streaming root `loading.tsx` — it flushes a 200 before `notFound()` runs.
+
+## Verification
+- `npm run check` — typecheck, `eslint .`, production build.
+- `scripts/smoke-test.ts <base-url>` — 30 assertions against a running server (auth boundaries,
+  slug non-enumeration, contact round trip, page status codes). Run against `next start`, not dev.
+- `scripts/cleanup-smoke-data.ts` — removes smoke-test contacts and audit rows afterwards.
 
 ## Before production deployment
 1. `NEXTAUTH_SECRET` (≥32 random chars), all passwords, MySQL credentials — rotate everything.
