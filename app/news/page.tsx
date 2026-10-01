@@ -6,9 +6,9 @@ import { AssetImage } from "@/components/media";
 import { listNews } from "@/lib/repo";
 import { formatDate } from "@/lib/search";
 
-export default async function NewsIndex({ searchParams }: { searchParams: { cat?: string } }) {
+export default async function NewsIndex({ searchParams }: { searchParams: Promise<{ cat?: string }> }) {
   const news = await listNews();
-  const cat = searchParams.cat ?? "";
+  const cat = (await searchParams).cat ?? "";
   const filtered = news.filter((n) => !cat || n.category === cat);
   const [lead, ...rest] = filtered;
   return (

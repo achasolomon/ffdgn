@@ -3,10 +3,11 @@ import { Breadcrumbs } from "@/components/chrome";
 import { SectionHeading, EmptyState } from "@/components/ui";
 import { listMembers } from "@/lib/repo";
 
-export default async function MembersPage({ searchParams }: { searchParams: { q?: string; category?: string } }) {
+export default async function MembersPage({ searchParams }: { searchParams: Promise<{ q?: string; category?: string }> }) {
   const members = (await listMembers()).filter((m) => m.visibility === "PUBLIC");
-  const q = (searchParams.q ?? "").toLowerCase();
-  const category = searchParams.category ?? "";
+  const sp = await searchParams;
+  const q = (sp.q ?? "").toLowerCase();
+  const category = sp.category ?? "";
   const filtered = members.filter(
     (m) =>
       (!q || `${m.name} ${m.title}`.toLowerCase().includes(q)) &&
@@ -18,7 +19,7 @@ export default async function MembersPage({ searchParams }: { searchParams: { q?
       <SectionHeading eyebrow="Members" title="The membership directory" lede="An institutional database — search, filter, open a profile to see service history, committees, events and publications." />
       <form className="mt-8 grid gap-3 border hairline bg-white p-4 md:grid-cols-[1fr_200px_auto]" role="search" aria-label="Member directory">
         <label className="sr-only" htmlFor="mq">Search members</label>
-        <input id="mq" name="q" defaultValue={searchParams.q ?? ""} placeholder="Search member…" className="border hairline px-4 py-2.5 text-sm" />
+        <input id="mq" name="q" defaultValue={sp.q ?? ""} placeholder="Search member…" className="border hairline px-4 py-2.5 text-sm" />
         <select name="category" defaultValue={category} className="border hairline px-3 py-2.5 text-sm bg-white" aria-label="Filter by category">
           <option value="">Everyone</option><option>Former</option><option>Serving</option><option>Secretariat</option>
         </select>

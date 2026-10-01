@@ -6,8 +6,8 @@ import { getDocTitles, getEventGallery, getEventRepo, listMembers } from "@/lib/
 import { Gallery, AssetImage } from "@/components/media";
 import { formatDate } from "@/lib/search";
 
-export default async function EventDetail({ params }: { params: { slug: string } }) {
-  const e = await getEventRepo(params.slug);
+export default async function EventDetail({ params }: { params: Promise<{ slug: string }> }) {
+  const e = await getEventRepo((await params).slug);
   if (!e) notFound();
   const [docTitles, members, gallery] = await Promise.all([getDocTitles(e.documents), listMembers(), getEventGallery(e.slug)]);
   const speakerName = (slug: string) => members.find((m) => m.slug === slug)?.name ?? slug;

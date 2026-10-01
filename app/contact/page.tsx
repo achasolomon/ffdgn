@@ -3,7 +3,8 @@ import { SectionHeading } from "@/components/ui";
 import { ContactForm } from "@/components/contact-form";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 
-export default function ContactPage({ searchParams }: { searchParams: { subject?: string } }) {
+export default async function ContactPage({ searchParams }: { searchParams: Promise<{ subject?: string }> }) {
+  const subject = (await searchParams).subject ?? "";
   return (
     <div className="mx-auto max-w-shell px-5 py-12">
       <Breadcrumbs items={[{ label: "Contact the Secretariat" }]} />
@@ -25,7 +26,7 @@ export default function ContactPage({ searchParams }: { searchParams: { subject?
             </ul>
           </div>
         </aside>
-        <ContactForm subject={searchParams.subject ?? ""} />
+        <ContactForm subject={subject} />
       </div>
     </div>
   );

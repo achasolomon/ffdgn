@@ -3,8 +3,8 @@ import { Breadcrumbs } from "@/components/chrome";
 import { SectionHeading, EmptyState } from "@/components/ui";
 import { searchAll } from "@/lib/repo";
 
-export default async function SearchPage({ searchParams }: { searchParams: { q?: string } }) {
-  const q = searchParams.q ?? "";
+export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  const q = (await searchParams).q ?? "";
   const results = q ? await searchAll(q) : null;
   const total = results ? Object.values(results).reduce((n, r) => n + r.length, 0) : 0;
   return (

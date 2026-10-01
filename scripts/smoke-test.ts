@@ -149,6 +149,26 @@ async function main() {
     check("unknown page serves 404", res.status === 404, `got ${res.status}`);
   }
 
+  // 10 — detail pages.
+  //
+  // A streaming `loading.tsx` makes Next flush the shell with a 200 before the
+  // page body calls `notFound()`, so a missing or restricted record renders the
+  // 404 body under a 200 status. That defeats the restricted-record guarantee
+  // in spirit — crawlers and clients index it as a live page — so the status
+  // code is asserted, not just the body.
+  for (const [path, want] of [
+    ["/members/atim-tyonongu", 200],
+    ["/members/no-such-member-xyz", 404],
+    ["/knowledge/end-of-term-governance-2024", 200],
+    // Restricted: Published + MEMBERS_ONLY must not be publicly addressable.
+    ["/knowledge/subnational-finance-2025", 404],
+    ["/news/state-federal-collaboration-call", 200],
+    ["/events/national-conference-2025", 200],
+  ] as const) {
+    const res = await fetch(`${BASE}${path}`);
+    check(`GET ${path} serves ${want}`, res.status === want, `got ${res.status}`);
+  }
+
   console.log(`\n${passed} passed, ${failed} failed\n`);
   process.exit(failed === 0 ? 0 : 1);
 }

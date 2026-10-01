@@ -11,13 +11,14 @@ const TILES = [
   { icon: Bell, t: "Notifications", d: "Mentions, meetings, publications", h: "/portal/notifications" },
 ];
 
-export default async function Portal({ params }: { params: { section?: string[] } }) {
-  if (params.section?.length) {
-    const section = params.section.join(" / ");
+export default async function Portal({ params }: { params: Promise<{ section?: string[] }> }) {
+  const { section: segments } = await params;
+  if (segments?.length) {
+    const section = segments.join(" / ");
     return (
       <div className="mx-auto max-w-shell px-5 py-12">
         <p className="eyebrow">Member portal</p>
-        <h1 className="font-display mt-2 text-4xl capitalize text-forest-950">{params.section[0]}</h1>
+        <h1 className="font-display mt-2 text-4xl capitalize text-forest-950">{segments[0]}</h1>
         <div className="mt-6 border hairline bg-white p-8 text-center">
           <p className="font-semibold">“{section}” workspace</p>
           <p className="mx-auto mt-2 max-w-md text-sm text-ink/60">Scaffolded under the portal information architecture (§17). Connects to the same institutional data via <code>/api/v1</code> with member-scoped visibility.</p>

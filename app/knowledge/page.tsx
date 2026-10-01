@@ -15,7 +15,8 @@ const COVERS: Record<string, string> = {
 };
 const coverFor = (type: string) => COVERS[type] ?? "/assets/hero/national.jpg";
 
-export default async function KnowledgePage({ searchParams }: { searchParams: { type?: string; q?: string; year?: string; sort?: string } }) {
+export default async function KnowledgePage({ searchParams: sp }: { searchParams: Promise<{ type?: string; q?: string; year?: string; sort?: string }> }) {
+  const searchParams = await sp;
   const type = searchParams.type ?? "";
   const year = searchParams.year ?? "";
   const sort = searchParams.sort ?? "newest";

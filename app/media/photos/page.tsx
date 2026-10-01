@@ -6,9 +6,9 @@ import { listMedia } from "@/lib/repo";
 
 const CATS = ["Conference", "Portrait", "Press", "Site", "Hero"];
 
-export default async function PhotosPage({ searchParams }: { searchParams: { cat?: string; event?: string } }) {
-  const cat = searchParams.cat ?? "";
-  const items = await listMedia({ kind: "IMAGE", ...(cat ? { category: cat } : {}), ...(searchParams.event ? { eventSlug: searchParams.event } : {}) });
+export default async function PhotosPage({ searchParams }: { searchParams: Promise<{ cat?: string; event?: string }> }) {
+  const { cat = "", event } = await searchParams;
+  const items = await listMedia({ kind: "IMAGE", ...(cat ? { category: cat } : {}), ...(event ? { eventSlug: event } : {}) });
   return (
     <div className="mx-auto max-w-shell px-5 py-12">
       <Breadcrumbs items={[{ label: "News & Media", href: "/news" }, { label: "Photo Gallery" }]} />

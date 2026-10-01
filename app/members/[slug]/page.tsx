@@ -4,12 +4,10 @@ import { Breadcrumbs } from "@/components/chrome";
 import { AssetImage } from "@/components/media";
 import { getCommitteesMap, getDocTitles, getEventTitles, getMemberRepo } from "@/lib/repo";
 
-export function generateStaticParams() {
-  return [];
-}
+export const dynamic = "force-dynamic";
 
-export default async function MemberProfile({ params }: { params: { slug: string } }) {
-  const m = await getMemberRepo(params.slug);
+export default async function MemberProfile({ params }: { params: Promise<{ slug: string }> }) {
+  const m = await getMemberRepo((await params).slug);
   if (!m || m.visibility !== "PUBLIC") notFound();
   const [committeeNames, eventTitles, docTitles] = await Promise.all([
     getCommitteesMap(), getEventTitles(m.events), getDocTitles(m.publications),

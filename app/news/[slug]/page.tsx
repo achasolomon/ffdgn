@@ -5,8 +5,8 @@ import { AssetImage, MediaCredit } from "@/components/media";
 import { getDocTitles, getEventTitles, getNewsRepo } from "@/lib/repo";
 import { formatDate } from "@/lib/search";
 
-export default async function NewsDetail({ params }: { params: { slug: string } }) {
-  const n = await getNewsRepo(params.slug);
+export default async function NewsDetail({ params }: { params: Promise<{ slug: string }> }) {
+  const n = await getNewsRepo((await params).slug);
   if (!n) notFound();
   const [eventTitles, docTitles] = await Promise.all([
     getEventTitles(n.relatedEvent ? [n.relatedEvent] : []),

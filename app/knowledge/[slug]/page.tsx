@@ -15,8 +15,8 @@ const COVERS: Record<string, string> = {
   "Speech": "/assets/gallery/gallery8.jpg",
 };
 
-export default async function DocPage({ params }: { params: { slug: string } }) {
-  const d = await getDocRepo(params.slug);
+export default async function DocPage({ params }: { params: Promise<{ slug: string }> }) {
+  const d = await getDocRepo((await params).slug);
   // Public route serves Published + PUBLIC only — restricted records 404 here
   // and remain available to authorised roles via the portal + /api/v1.
   if (!d || d.visibility !== "PUBLIC" || d.status !== "Published") notFound();
