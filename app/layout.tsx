@@ -7,11 +7,21 @@ import { Providers } from "@/components/providers";
 const display = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-display" });
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ffdgn.org.ng";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ffdgn.org.ng"),
+  metadataBase: new URL(SITE_URL),
   title: { default: "FFDGN — Forum of Former Deputy Governors of Nigeria", template: "%s · FFDGN" },
   description: "A national forum bringing together former Deputy Governors to share experience, strengthen institutional knowledge and contribute to Nigeria's development.",
-  openGraph: { type: "website", siteName: "FFDGN", title: "Forum of Former Deputy Governors of Nigeria", description: "Experience in Service. Knowledge for the Future." },
+  openGraph: {
+    type: "website",
+    siteName: "FFDGN",
+    title: "Forum of Former Deputy Governors of Nigeria",
+    description: "Experience in Service. Knowledge for the Future.",
+    url: SITE_URL,
+    locale: "en_NG",
+  },
+  twitter: { card: "summary_large_image", title: "Forum of Former Deputy Governors of Nigeria", description: "Experience in Service. Knowledge for the Future." },
   robots: { index: true, follow: true },
 };
 
@@ -21,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "@type": "Organization",
     name: "Forum of Former Deputy Governors of Nigeria",
     alternateName: "FFDGN",
-    url: "https://ffdgn.org.ng",
+    url: SITE_URL,
     address: { "@type": "PostalAddress", addressLocality: "Abuja", addressCountry: "NG" },
   };
   return (
