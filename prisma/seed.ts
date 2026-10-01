@@ -30,22 +30,31 @@ const DEV_USERS = [
  * Set ALLOW_DEV_ACCOUNTS=true to seed content plus demo accounts on a staging
  * host, and provision real accounts with POST /api/v1/users instead.
  */
-function assertDevAccountsAllowed() {
+/**
+ * Decides whether the fixed development passwords may be written.
+ *
+ * Only the accounts are gated — the institutional content below is safe and
+ * must still load, which is why this returns a boolean instead of throwing.
+ * An earlier version threw, which meant a production deploy had no way to load
+ * the CMS baseline at all short of editing this file.
+ */
+function devAccountsAllowed(): boolean {
   if (process.env.ALLOW_DEV_ACCOUNTS === "true") {
     console.warn("⚠ ALLOW_DEV_ACCOUNTS=true — seeding accounts with published passwords.");
-    return;
+    return true;
   }
   const nodeEnv = process.env.NODE_ENV ?? "development";
   const url = process.env.DATABASE_URL ?? "";
   const isProduction = nodeEnv === "production" || /@?(prod|live)[.-]/i.test(url);
   if (isProduction) {
-    throw new Error(
-      "Refusing to seed development accounts into a production environment.\n" +
-        "The seed contains six accounts with passwords committed to source control, including a super_admin.\n" +
-        "Content will still load if you run with ALLOW_DEV_ACCOUNTS=false and comment out this block, but the\n" +
-        "recommended path is to seed content only and provision accounts via POST /api/v1/users.",
+    console.warn(
+      "⚠ Skipping six development accounts (fixed passwords in source control, including a super_admin).\n" +
+        "  Institutional content will still be seeded. Provision real accounts with POST /api/v1/users,\n" +
+        "  or set ALLOW_DEV_ACCOUNTS=true on a staging host to create the demo logins.",
     );
+    return false;
   }
+  return true;
 }
 
 const toDocStatus = (s: string): DocStatus =>
@@ -55,19 +64,23 @@ const toEventStatus = (s: string): EventStatus => s as EventStatus;
 async function main() {
   console.log("Seeding FFDGN institutional baseline…");
 
-  assertDevAccountsAllowed();
-
-  // Users (auth) — bcrypt-hashed, never plaintext.
-  for (const u of DEV_USERS) {
-    const passwordHash = await bcrypt.hash(u.password, BCRYPT_ROUNDS);
-    await prisma.user.upsert({
-      where: { email: u.email },
-      update: { name: u.name, role: u.role, passwordHash, isActive: true },
-      create: { email: u.email, name: u.name, role: u.role, passwordHash },
-    });
+  // Users (auth) — bcrypt-hashed, never plaintext. Skipped in production; the
+  // relation joins further down need actors, so they fall back to null rather
+  // than aborting the content load.
+  let memberUser: { id: string } | null = null;
+  let secretariat: { id: string; name: string } | null = null;
+  if (devAccountsAllowed()) {
+    for (const u of DEV_USERS) {
+      const passwordHash = await bcrypt.hash(u.password, BCRYPT_ROUNDS);
+      await prisma.user.upsert({
+        where: { email: u.email },
+        update: { name: u.name, role: u.role, passwordHash, isActive: true },
+        create: { email: u.email, name: u.name, role: u.role, passwordHash },
+      });
+    }
+    memberUser = await prisma.user.findUniqueOrThrow({ where: { email: "member@ffdgn.org.ng" } });
+    secretariat = await prisma.user.findUniqueOrThrow({ where: { email: "secretariat@ffdgn.org.ng" } });
   }
-  const memberUser = await prisma.user.findUniqueOrThrow({ where: { email: "member@ffdgn.org.ng" } });
-  const secretariat = await prisma.user.findUniqueOrThrow({ where: { email: "secretariat@ffdgn.org.ng" } });
 
   // Members + service history.
   for (const m of members) {
@@ -77,13 +90,13 @@ async function main() {
         fullName: m.name, title: m.title, state: m.state, region: m.region,
         category: m.category, status: m.status, leadershipRole: m.leadershipRole ?? null,
         bio: m.bio, visibility: m.visibility, photoUrl: m.photo ?? `/media/portraits/${m.slug}.svg`,
-        userId: m.slug === "atim-tyonongu" ? memberUser.id : null,
+        userId: m.slug === "atim-tyonongu" ? memberUser?.id ?? null : null,
       },
       create: {
         slug: m.slug, fullName: m.name, title: m.title, state: m.state, region: m.region,
         category: m.category, status: m.status, leadershipRole: m.leadershipRole ?? null,
         bio: m.bio, visibility: m.visibility, photoUrl: m.photo ?? `/media/portraits/${m.slug}.svg`,
-        userId: m.slug === "atim-tyonongu" ? memberUser.id : null,
+        userId: m.slug === "atim-tyonongu" ? memberUser?.id ?? null : null,
       },
     });
     await prisma.serviceRecord.deleteMany({ where: { memberId: member.id } });
@@ -317,12 +330,21 @@ async function main() {
   }
 
   // Baseline audit entries.
-  await prisma.auditLog.createMany({
-    data: [
-      { actorId: secretariat.id, actorName: secretariat.name, action: "seed.baseline", resource: "database", ip: "local", newValue: "Institutional baseline loaded" },
-      { actorId: secretariat.id, actorName: secretariat.name, action: "members.status.change", resource: "Member: ngozi-eze", ip: "local", previousValue: "Pending", newValue: "Associate" },
-    ],
-  });
+  //
+  // audit_log.actor_id is NOT NULL with a required FK to User, and the log is
+  // append-only — every entry is meant to name the actor responsible for a real
+  // change. A content-only production seed has no actor, and inventing one
+  // (or making the column nullable) would either forge an attribution or weaken
+  // the constraint that makes the log trustworthy. So the seed writes nothing
+  // here rather than write something untrue.
+  if (secretariat) {
+    await prisma.auditLog.createMany({
+      data: [
+        { actorId: secretariat.id, actorName: secretariat.name, action: "seed.baseline", resource: "database", ip: "local", newValue: "Institutional baseline loaded" },
+        { actorId: secretariat.id, actorName: secretariat.name, action: "members.status.change", resource: "Member: ngozi-eze", ip: "local", previousValue: "Pending", newValue: "Associate" },
+      ],
+    });
+  }
 
   const counts = {
     users: await prisma.user.count(), members: await prisma.member.count(),
