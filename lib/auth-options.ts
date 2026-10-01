@@ -66,8 +66,8 @@ export const authOptions: NextAuthOptions = {
 
         // Brute-force protection is keyed on IP alone as well as email+IP, so a
         // distributed attempt across many addresses from one host still trips it.
-        const perAccount = rateLimit(`login:acct:${email}:${ip}`, 10, 10 * 60 * 1000);
-        const perHost = rateLimit(`login:host:${ip}`, 60, 10 * 60 * 1000);
+        const perAccount = await rateLimit(`login:acct:${email}:${ip}`, 10, 10 * 60 * 1000);
+        const perHost = await rateLimit(`login:host:${ip}`, 60, 10 * 60 * 1000);
         if (!perAccount.ok || !perHost.ok) {
           // Spend the same time as a real verification so the throttle window is
           // not distinguishable from a credential check.

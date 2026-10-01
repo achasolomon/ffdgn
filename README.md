@@ -72,23 +72,37 @@ Seeded accounts (LOCAL ONLY — rotate before any deployment):
 - Auth: per-email+IP rate limits, account lockout, login audit entries, generic error messages (no enumeration).
 - Authorization: `proxy.ts` (route) + `requirePermission()` (operation) — client checks are cosmetic only.
 - Private surfaces: `noindex` headers + robots disallow + session gate.
+- Rate limiting: sliding window in Redis (`REDIS_URL`), sliding not fixed so a caller cannot
+  spend the full quota twice across a window boundary. Fails **open** if Redis is unreachable,
+  because account lockout lives in MySQL and survives; `RATE_LIMIT_FAIL_CLOSED=true` inverts that.
+- Audit log: append-only, enforced by MySQL grants rather than convention (`npm run db:harden`).
 - CSP: per-request nonce, `script-src` has no `'unsafe-inline'`; see `proxy.ts`.
 - Restricted records return a real HTTP 404, not a 200 wrapping a 404 body. Do not reintroduce a
   streaming root `loading.tsx` — it flushes a 200 before `notFound()` runs.
 
 ## Verification
 - `npm run check` — typecheck, `eslint .`, production build.
-- `scripts/smoke-test.ts <base-url>` — 30 assertions against a running server (auth boundaries,
-  slug non-enumeration, contact round trip, page status codes). Run against `next start`, not dev.
-- `scripts/cleanup-smoke-data.ts` — removes smoke-test contacts and audit rows afterwards.
+- `scripts/smoke-test.ts <base-url>` — 32 assertions against a running server (auth boundaries,
+  slug non-enumeration, contact round trip, rate limiting, page status codes). Run against
+  `next start`, not dev.
+- `scripts/cleanup-smoke-data.ts` — removes smoke-test contacts afterwards.
+- `scripts/check-rate-limit.ts` — exercises both limiter backends, including that the window
+  actually slides and that a second store handle sees the first instance's hits. Set
+  `REDIS_URL` to cover the distributed path.
+- `scripts/harden-db.ts` — the MySQL grant hardening, also runnable as `npm run db:harden`.
 
 ## Before production deployment
 1. `NEXTAUTH_SECRET` (≥32 random chars), all passwords, MySQL credentials — rotate everything.
-2. `GRANT` app user least privilege; make `audit_log` insert-only (revoke UPDATE/DELETE).
-3. Replace in-memory `lib/rate-limit.ts` with Redis/Upstash (multi-instance correctness).
+2. `REDIS_URL` — rate limits are per-instance without it. `/api/healthz` reports `degraded`
+   in production while it is unset. `docker compose up -d redis` provides one locally.
+3. `npm run db:harden` — needs `HARDEN_DB_ADMIN_PASSWORD`. Drops GRANT OPTION and anything
+   outside the app schema, and omits UPDATE/DELETE on `audit_log` so the trail is truly
+   append-only. `--revert` restores the wide grant.
 4. TLS everywhere; `NEXTAUTH_URL` = canonical https origin; secure cookies are automatic on https.
 5. Add 2FA for privileged roles (roadmap) and MySQL backups + point-in-time recovery.
-6. Delete or rotate the seeded dev accounts; create real accounts via `POST /api/v1/users` as super_admin.
+6. Seed content (`npx prisma migrate deploy && npm run db:seed`); the six development
+   accounts are skipped automatically outside development. Create real accounts via
+   `POST /api/v1/users` as the first super_admin.
 
 ## Structure
 - `app/` — public website, `/login`, `/portal`, `/admin`, `/api/v1`, `/api/auth/[...nextauth]`

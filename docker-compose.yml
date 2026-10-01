@@ -8,6 +8,10 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-ffdgn-root-change-me}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-ffdgn}
+      # NOTE: the MySQL image grants MYSQL_USER ALL PRIVILEGES WITH GRANT OPTION.
+      # That is fine for local development and unacceptable in production —
+      # the app user could DROP audit_log or GRANT itself anything. Run
+      # `npm run db:harden` against a production instance to narrow it.
       MYSQL_USER: ${MYSQL_USER:-ffdgn}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-ffdgn-dev-change-me}
     ports:
@@ -20,6 +24,23 @@ services:
       timeout: 5s
       retries: 10
       start_period: 30s
+
+  redis:
+    # Rate-limit backend. Without REDIS_URL the app falls back to an in-process
+    # map, which enforces per-instance quotas only — fine for one instance,
+    # ineffective across replicas. /api/healthz reports "degraded" in
+    # production while this is absent.
+    image: redis:7-alpine
+    container_name: ffdgn-redis
+    restart: unless-stopped
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   ffdgn-mysql-data:

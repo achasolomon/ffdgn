@@ -139,7 +139,42 @@ async function main() {
     check(`GET ${path} is publicly readable`, res.status === 200, `got ${res.status}`);
   }
 
-  // 9 — page routes
+  // 9 — rate limiting must actually engage.
+  //
+  // The contact endpoint allows 5/minute per email+IP, so a seventh
+  // submission is the first that must be refused. Verified through the public
+  // API rather than the limiter module, because a limiter that is correct in
+  // isolation but not wired into the route is still an open door.
+  {
+    const email = `rl.${unique}@example.com`;
+    const send = () =>
+      json("/api/v1/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: "Rate Limit Probe", email, subject: "Automated verification",
+          message: "Rate-limit assertion. Safe to delete.", website: "",
+        }),
+      });
+
+    let last = 0;
+    for (let i = 0; i < 7; i++) last = (await send()).status;
+    check("contact endpoint throttles past its quota", last === 429, `got ${last}`);
+
+    // A different key must not inherit the previous key's exhausted budget,
+    // otherwise one abusive caller locks out everyone sharing the process.
+    const other = await json("/api/v1/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: "Rate Limit Probe", email: `rl.other.${unique}@example.com`,
+        subject: "Automated verification", message: "Independent-key assertion. Safe to delete.", website: "",
+      }),
+    });
+    check("a fresh rate-limit key is not pre-throttled", other.status === 200, `got ${other.status}`);
+  }
+
+  // 10 — page routes
   for (const path of ["/", "/contact", "/news", "/knowledge", "/leadership", "/sitemap.xml", "/robots.txt"]) {
     const res = await fetch(`${BASE}${path}`);
     check(`GET ${path} serves 200`, res.status === 200, `got ${res.status}`);
@@ -149,7 +184,7 @@ async function main() {
     check("unknown page serves 404", res.status === 404, `got ${res.status}`);
   }
 
-  // 10 — detail pages.
+  // 11 — detail pages.
   //
   // A streaming `loading.tsx` makes Next flush the shell with a 200 before the
   // page body calls `notFound()`, so a missing or restricted record renders the

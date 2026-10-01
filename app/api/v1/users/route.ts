@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     // Abuse ceiling is keyed on the authenticated actor, not the client IP —
     // otherwise one hostile network could throttle the whole Secretariat, and
     // an IP key behind a shared proxy would throttle everyone at once.
-    const gate = rateLimit(`users:create:${auth.user.id}`, 20, 60_000);
+    const gate = await rateLimit(`users:create:${auth.user.id}`, 20, 60_000);
     if (!gate.ok) return fail("RATE_LIMITED", "Too many account creations. Try again shortly.", 429);
 
     const body = (await req.json().catch(() => null)) as {

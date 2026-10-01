@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     if (honeypot) return ok({ received: true });
 
     const ip = clientIp(req.headers);
-    const gate = rateLimit(`contact:${email || "anon"}:${ip}`, 5, 60_000);
+    const gate = await rateLimit(`contact:${email || "anon"}:${ip}`, 5, 60_000);
     if (!gate.ok) {
       return fail("RATE_LIMITED", "Too many messages sent. Please try again in a minute.", 429);
     }

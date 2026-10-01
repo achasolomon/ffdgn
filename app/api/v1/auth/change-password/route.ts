@@ -10,7 +10,7 @@ import { rateLimit, clientIp } from "@/lib/rate-limit";
 export async function POST(req: Request) {
   try {
     if (!(await dbReady())) return fail("UNAVAILABLE", "Password change requires the MySQL database.", 503);
-    const gate = rateLimit(`pw:${clientIp(req.headers)}`, 10, 10 * 60 * 1000);
+    const gate = await rateLimit(`pw:${clientIp(req.headers)}`, 10, 10 * 60 * 1000);
     if (!gate.ok) return fail("RATE_LIMITED", "Too many attempts. Try again later.", 429);
 
     const auth = await requireAuth();
