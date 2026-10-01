@@ -1,6 +1,7 @@
 import { db, dbReady, fail, failFrom, ok } from "../../_lib";
 import { requirePermission, audit } from "@/lib/server-auth";
 import { clientIp } from "@/lib/rate-limit";
+import { revalidatePublicSite } from "@/lib/revalidate";
 
 const ALLOWED_KEYS = new Set([
   "hero.eyebrow", "hero.title", "hero.lede", "hero.cta_primary", "hero.cta_secondary",
@@ -39,6 +40,7 @@ export async function PATCH(req: Request) {
       previousValue: prev?.value?.slice(0, 200), newValue: value.slice(0, 200),
       ip: clientIp(req.headers), actorOverride: auth,
     });
+    revalidatePublicSite(`setting ${key}`);
     return ok({ key: updated.key, value: updated.value });
   } catch (e) {
     return failFrom(e);

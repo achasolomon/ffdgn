@@ -1,6 +1,7 @@
 import { db, dbReady, fail, failFrom, ok } from "../../_lib";
 import { requirePermission, audit } from "@/lib/server-auth";
 import { clientIp } from "@/lib/rate-limit";
+import { revalidatePublicSite } from "@/lib/revalidate";
 
 /**
  * GET /api/v1/cms/metrics — public intelligence-strip figures.
@@ -41,6 +42,7 @@ export async function PATCH(req: Request) {
       newValue: `${value} | ${updated.label}`,
       ip: clientIp(req.headers), actorOverride: auth,
     });
+    revalidatePublicSite(`metric ${key}`);
     return ok(updated);
   } catch (e) {
     return failFrom(e);

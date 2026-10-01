@@ -2,6 +2,7 @@ import { getMember } from "@/lib/data";
 import { db, dbReady, fail, failFrom, ok, toPublicMember } from "../../_lib";
 import { requirePermission, audit } from "@/lib/server-auth";
 import { clientIp } from "@/lib/rate-limit";
+import { revalidatePublicSite } from "@/lib/revalidate";
 
 export async function GET(_: Request, { params }: { params: { slug: string } }) {
   if (await dbReady()) {
@@ -63,6 +64,8 @@ export async function PATCH(req: Request, { params }: { params: { slug: string }
         previousValue: m.visibility, newValue: body.visibility, ip: clientIp(req.headers), actorOverride: auth,
       });
     }
+    // Directory, homepage counts and member pages all read this record.
+    if (changes.length > 0) revalidatePublicSite(`member ${m.slug}: ${changes.join(", ")}`);
     return ok({ ...updated, changes });
   } catch (e) {
     return failFrom(e);

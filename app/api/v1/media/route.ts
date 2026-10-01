@@ -3,10 +3,17 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { db, dbReady, fail, failFrom, ok } from "../_lib";
 import { requirePermission, audit } from "@/lib/server-auth";
-import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { clientIp } from "@/lib/rate-limit";
+import { verifyImageUpload, verifyVideoUpload } from "@/lib/upload-security";
+import { revalidatePublicSite } from "@/lib/revalidate";
 
+/**
+ * Accepted upload types. SVG is deliberately absent: it is an XML document that
+ * can carry <script> and event handlers, and we serve uploads from the same
+ * origin as the app, so an uploaded SVG is stored XSS. Raster formats only.
+ */
 const IMAGE_MIMES: Record<string, string> = {
-  "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/gif": "gif", "image/svg+xml": "svg",
+  "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/gif": "gif",
 };
 const VIDEO_MIMES: Record<string, string> = { "video/mp4": "mp4", "video/webm": "webm" };
 const MAX_IMAGE = 10 * 1024 * 1024;
@@ -46,13 +53,15 @@ export async function GET(req: Request) {
 /**
  * POST /api/v1/media — upload a photo or video file. Requires `media.manage`.
  * Multipart: file, title, category, altText?, eventSlug?, description?.
- * Validates MIME + size; stores under public/uploads (swap to S3 in production).
+ *
+ * Order matters: authorization is checked before the body is read, so an
+ * anonymous caller cannot force the server to buffer a large multipart payload.
+ * Declared MIME is only half the check — the bytes are sniffed and compared, and
+ * raster images are rejected if they contain active markup.
  */
 export async function POST(req: Request) {
   try {
     if (!(await dbReady())) return fail("UNAVAILABLE", "Media upload requires the MySQL database.", 503);
-    const gate = rateLimit(`media:upload:${clientIp(req.headers)}`, 30, 60_000);
-    if (!gate.ok) return fail("RATE_LIMITED", "Too many uploads. Slow down.", 429);
     const auth = await requirePermission("media.manage");
 
     const form = await req.formData().catch(() => null);
@@ -66,13 +75,24 @@ export async function POST(req: Request) {
     if (!file || typeof file === "string" || file.size === 0) return fail("VALIDATION", "A file is required.", 422);
     if (!title) return fail("VALIDATION", "A title is required.", 422);
 
-    const ext = IMAGE_MIMES[file.type] ?? VIDEO_MIMES[file.type];
-    if (!ext) {
-      return fail("VALIDATION", `Unsupported file type ${file.type}. Images: JPEG/PNG/WebP/GIF/SVG. Video: MP4/WebM.`, 422);
+    const isImage = file.type in IMAGE_MIMES;
+    const isVideo = file.type in VIDEO_MIMES;
+    if (!isImage && !isVideo) {
+      return fail(
+        "VALIDATION",
+        `Unsupported file type ${file.type || "(unknown)"}. Images: JPEG/PNG/WebP/GIF. Video: MP4/WebM. SVG is not accepted because it can carry executable script.`,
+        422,
+      );
     }
-    const kind = IMAGE_MIMES[file.type] ? "IMAGE" : "VIDEO";
-    const limit = kind === "IMAGE" ? MAX_IMAGE : MAX_VIDEO;
-    if (file.size > limit) return fail("VALIDATION", `File too large (max ${limit / 1024 / 1024} MB).`, 422);
+
+    const kind = isImage ? "IMAGE" : "VIDEO";
+    const limit = isImage ? MAX_IMAGE : MAX_VIDEO;
+    if (file.size > limit) return fail("VALIDATION", `File too large (max ${Math.round(limit / 1024 / 1024)} MB).`, 422);
+
+    // Read once; the same bytes drive both validation and persistence.
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const verified = isImage ? verifyImageUpload(file.type, buffer) : verifyVideoUpload(file.type, buffer);
+    if (!verified.ok) return fail("VALIDATION", verified.message, 422);
 
     let eventId: string | null = null;
     if (eventSlug) {
@@ -82,12 +102,14 @@ export async function POST(req: Request) {
     }
 
     const now = new Date();
-    const dir = join(process.cwd(), "public", "uploads", String(now.getFullYear()), String(now.getMonth() + 1).padStart(2, "0"));
+    const year = String(now.getFullYear());
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const dir = join(process.cwd(), "public", "uploads", year, month);
     await mkdir(dir, { recursive: true });
-    const name = `${randomUUID()}.${ext}`;
-    const buffer = Buffer.from(await file.arrayBuffer());
+    // Extension comes from the verified content type, not from user input.
+    const name = `${randomUUID()}.${verified.ext}`;
     await writeFile(join(dir, name), buffer);
-    const url = `/uploads/${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, "0")}/${name}`;
+    const url = `/uploads/${year}/${month}/${name}`;
 
     const asset = await db.mediaAsset.create({
       data: {
@@ -97,9 +119,10 @@ export async function POST(req: Request) {
       },
     });
     await audit("media.upload", `media:${asset.id}`, {
-      newValue: `${kind} ${title} (${(file.size / 1024).toFixed(0)} KB)`,
+      newValue: `${kind} ${title} (${(file.size / 1024).toFixed(0)} KB, ${verified.mime})`,
       ip: clientIp(req.headers), actorOverride: auth,
     });
+    revalidatePublicSite(`media upload ${title}`);
     return ok({ id: asset.id, title, kind, category, url }, null);
   } catch (e) {
     return failFrom(e);

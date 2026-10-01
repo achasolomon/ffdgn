@@ -1,6 +1,7 @@
 import { db, dbReady, fail, failFrom, ok } from "../../_lib";
 import { requirePermission, audit } from "@/lib/server-auth";
 import { clientIp } from "@/lib/rate-limit";
+import { revalidatePublicSite } from "@/lib/revalidate";
 
 const YOUTUBE_ID = /^[A-Za-z0-9_-]{6,20}$/;
 const VIMEO_ID = /^[0-9]{6,12}$/;
@@ -51,6 +52,7 @@ export async function POST(req: Request) {
     await audit("media.link", `media:${asset.id}`, {
       newValue: `${provider} ${providerId} — ${title}`, ip: clientIp(req.headers), actorOverride: auth,
     });
+    revalidatePublicSite(`media link ${title}`);
     return ok({ id: asset.id, title, provider, providerId, thumbnailUrl }, null);
   } catch (e) {
     return failFrom(e);

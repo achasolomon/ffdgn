@@ -25,10 +25,22 @@ export async function POST(req: Request) {
 
     await db.user.update({
       where: { id: user.id },
-      data: { passwordHash: await bcrypt.hash(body.newPassword, 12), failedLogins: 0, lockedUntil: null },
+      data: {
+        passwordHash: await bcrypt.hash(body.newPassword, 12),
+        failedLogins: 0,
+        lockedUntil: null,
+        // Advancing the epoch invalidates every session already issued for this
+        // account — the jwt callback rejects tokens minted before this instant.
+        // Changing a password must not leave stolen sessions usable.
+        passwordChangedAt: new Date(),
+      },
     });
     await audit("auth.password.change", `user:${user.email}`, { ip: clientIp(req.headers) });
-    return ok({ changed: true });
+    return ok({
+      changed: true,
+      message: "Password updated. All other sessions for this account have been signed out.",
+      sessionsRevoked: true,
+    });
   } catch (e) {
     return failFrom(e);
   }
