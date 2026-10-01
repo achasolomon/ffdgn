@@ -82,9 +82,16 @@ export default async function KnowledgePage({ searchParams }: { searchParams: { 
                 {featured.author} · {featured.pages} pp · {featured.size} · {featured.downloads.toLocaleString()} downloads
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
-                <button className="inline-flex items-center gap-2 bg-gold px-5 py-2.5 text-sm font-bold text-forest-950 hover:bg-gold-soft">
-                  <Download size={15} /> Download PDF
-                </button>
+                {featured.fileUrl ? (
+                  <a href={featured.fileUrl} download aria-label={`Download PDF, ${featured.size}`}
+                    className="inline-flex items-center gap-2 bg-gold px-5 py-2.5 text-sm font-bold text-forest-950 hover:bg-gold-soft">
+                    <Download size={15} /> Download PDF
+                  </a>
+                ) : (
+                  <span className="inline-flex items-center gap-2 border border-white/30 px-5 py-2.5 text-sm text-white/60">
+                    <Download size={15} /> PDF not yet uploaded
+                  </span>
+                )}
                 <Link href={`/knowledge/${featured.slug}`} className="inline-flex items-center gap-2 border border-white/40 px-5 py-2.5 text-sm font-semibold text-white hover:border-gold hover:text-gold">
                   Record details <ArrowRight size={15} />
                 </Link>

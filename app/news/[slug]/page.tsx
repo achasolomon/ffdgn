@@ -26,7 +26,11 @@ export default async function NewsDetail({ params }: { params: { slug: string } 
       )}
       <div className="mt-6 space-y-4 text-[15.5px] leading-relaxed text-ink/80">{n.body.map((p, i) => <p key={i}>{p}</p>)}</div>
       <footer className="mt-8 border hairline bg-paper p-5 text-[13px] text-ink/65">
-        <p><strong className="text-forest-950">Official {n.category.toLowerCase()}</strong> — Issued by the Secretariat, {formatDate(n.date)}.</p>
+        {n.official ? (
+          <p><strong className="text-forest-950">Official {n.category.toLowerCase()}</strong> — Issued by the Secretariat, {formatDate(n.date)}.</p>
+        ) : (
+          <p><strong className="text-forest-950">Media coverage</strong> — Published externally on {formatDate(n.date)}. Reproduced here for reference; not an official communication of the Secretariat.</p>
+        )}
         {n.relatedEvent && eventTitles.get(n.relatedEvent) && <p className="mt-1">Related: <Link href={`/events/${n.relatedEvent}`} className="font-semibold text-primary">{eventTitles.get(n.relatedEvent)} →</Link></p>}
         {n.relatedDocs?.map((d) => docTitles.get(d) ? <p key={d} className="mt-1">Document: <Link href={`/knowledge/${d}`} className="font-semibold text-primary">{docTitles.get(d)} →</Link></p> : null)}
       </footer>

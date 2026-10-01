@@ -94,6 +94,7 @@ export async function listDocs(): Promise<KnowledgeDoc[]> {
       committee: d.committee ?? undefined, event: d.event?.slug,
       pages: d.pages, size: d.sizeLabel, summary: d.summary,
       visibility: d.visibility as KnowledgeDoc["visibility"], downloads: d.downloads,
+      fileUrl: d.fileUrl ?? undefined,
     }));
   }
   return seed.documents;

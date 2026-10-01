@@ -1,4 +1,4 @@
-import { dbReady, db, ok, fail, failFrom, paging, pageOf, toPublicMember, members } from "../_lib";
+import { dbReady, db, ok, failFrom, paging, pageOf, toPublicMember, members } from "../_lib";
 
 /** GET /api/v1/members — public records only (visibility = PUBLIC). */
 export async function GET(req: Request) {

@@ -5,6 +5,7 @@ import { formatDate } from "@/lib/search";
 import { Reveal, SectionHeading, GoldRule } from "@/components/ui";
 import { Stagger, StaggerItem } from "@/components/motion";
 import { AssetImage } from "@/components/media";
+import { NewsletterForm } from "@/components/newsletter-form";
 import { Hero } from "@/components/hero";
 import { MetricsStrip } from "@/components/metrics-strip";
 
@@ -323,11 +324,7 @@ export default async function HomePage() {
               <p className="text-sm text-ink/60">Receive official publications, conference announcements and Forum updates.</p>
             </div>
           </div>
-          <form className="flex w-full max-w-md gap-2" action="/contact" aria-label="Subscribe">
-            <label htmlFor="nl-email" className="sr-only">Email address</label>
-            <input id="nl-email" name="email" type="email" required placeholder="Enter your email address" className="w-full border hairline bg-white px-4 py-2.5 text-sm" />
-            <button className="shrink-0 bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-forest-700">Subscribe →</button>
-          </form>
+          <NewsletterForm />
         </div>
       </section>
 

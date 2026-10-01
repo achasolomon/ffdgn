@@ -265,27 +265,44 @@ export const news: NewsItem[] = [
     slug: "state-federal-collaboration-call", title: "FFDGN Calls for Stronger State-Federal Collaboration on National Development",
     category: "News", date: "2026-05-12", location: "Abuja",
     excerpt: "Forum emphasizes collaborative governance, policy coherence and institutional strengthening as pathways to sustainable development.",
-    body: ["The Forum of Former Deputy Governors of Nigeria has called for deeper state–federal collaboration…", "Speaking through its Secretariat, the Forum said policy coherence…"],
+    body: [
+      "The Forum of Former Deputy Governors of Nigeria has called for deeper state–federal collaboration as a practical route to faster, more equitable development.",
+      "Speaking through its Secretariat, the Forum said policy coherence between national and subnational governments remains the central gap in Nigeria's federal experience — and that closing it requires institutional, not merely political, commitment.",
+      "The Forum identified three priorities: aligning development planning cycles between national and state authorities; establishing shared data and review mechanisms for the delivery of capital projects; and expanding consultation with subnational leadership on federal policy formulation.",
+      "Members reaffirmed that the Forum's standing committees will track implementation and report on progress to members and partners through the Knowledge Centre.",
+    ],
     relatedEvent: "fifth-national-conference-2026", relatedDocs: ["state-federal-cooperation-2025"], official: true,
   },
   {
     slug: "polish-nigeria-partnership", title: "FFDGN Partners with Polish-Nigeria Business Council",
     category: "Press Release", date: "2025-09-10", location: "Abuja",
     excerpt: "Structured cooperation on economic ties, knowledge exchange and sustainable growth.",
-    body: ["The Forum has formalised a structured partnership with the Polish-Nigeria Business Council…"],
+    body: [
+      "The Forum has formalised a structured partnership with the Polish-Nigeria Business Council, focused on economic ties, knowledge exchange and sustainable growth.",
+      "Areas of cooperation include trade facilitation, skills development, agricultural value chains, and the exchange of administrative and policy practice between the two countries.",
+      "A joint working group will convene in Abuja to agree an implementation calendar, with the first progress update expected within the quarter.",
+    ],
     official: true,
   },
   {
     slug: "strategic-meeting-2025", title: "Forum Holds Strategic Meeting on National Development",
     category: "News", date: "2025-08-28", location: "Abuja",
     excerpt: "Leadership reviewed the policy calendar and conference intelligence cycle.",
-    body: ["The meeting reviewed preparations for the Annual Conference…"], official: true,
+    body: [
+      "The Forum held a strategic meeting on national development, reviewing preparations for the Annual Conference and the institutional policy calendar.",
+      "The meeting considered the state of subnational administration in Nigeria, the evidence base informing the Forum's programme of work, and the calendar of publications and convenings for the coming year.",
+      "Members reviewed outstanding items from prior meetings and assigned responsibility for follow-through within the Secretariat.",
+    ], official: true,
   },
   {
     slug: "2024-communique-publication", title: "Publication of 2024 Communiqué Now Available",
     category: "Statement", date: "2025-08-15", location: "Abuja",
     excerpt: "The official 2024 conference outcomes are now available in the Knowledge Centre.",
-    body: ["Members of the public and researchers can now access…"],
+    body: [
+      "Members of the public, researchers and practitioners can now access the official outcomes of the 2024 conference in the Forum's Knowledge Centre.",
+      "The communiqué records the resolutions adopted by members on subnational governance, fiscal federalism and the constitutional reform of institutions, together with the recommendations directed at federal and state authorities.",
+      "The record is published with full provenance details so that it can be cited in academic and policy work.",
+    ],
     relatedDocs: ["end-of-term-governance-2024"], official: true,
   },
 ];

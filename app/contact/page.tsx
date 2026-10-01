@@ -1,5 +1,6 @@
 import { Breadcrumbs } from "@/components/chrome";
 import { SectionHeading } from "@/components/ui";
+import { ContactForm } from "@/components/contact-form";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 
 export default function ContactPage({ searchParams }: { searchParams: { subject?: string } }) {
@@ -24,16 +25,7 @@ export default function ContactPage({ searchParams }: { searchParams: { subject?
             </ul>
           </div>
         </aside>
-        <form className="border hairline bg-white p-6 md:p-8" aria-label="Contact form">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div><label htmlFor="cname" className="text-[13px] font-semibold">Full name</label><input id="cname" required className="mt-1 w-full border hairline px-4 py-2.5 text-sm" /></div>
-            <div><label htmlFor="cemail" className="text-[13px] font-semibold">Email</label><input id="cemail" type="email" required className="mt-1 w-full border hairline px-4 py-2.5 text-sm" /></div>
-          </div>
-          <div className="mt-4"><label htmlFor="csubject" className="text-[13px] font-semibold">Subject</label><input id="csubject" defaultValue={searchParams.subject ?? ""} className="mt-1 w-full border hairline px-4 py-2.5 text-sm" /></div>
-          <div className="mt-4"><label htmlFor="cmsg" className="text-[13px] font-semibold">Message</label><textarea id="cmsg" rows={5} required className="mt-1 w-full border hairline px-4 py-2.5 text-sm" /></div>
-          <button className="mt-5 bg-primary px-6 py-3 text-sm font-semibold text-white">Send message →</button>
-          <p className="mt-3 text-[12.5px] text-ink/50">Submissions route to the Secretariat queue (Communications module, Phase 2 connects email/SMS/WhatsApp).</p>
-        </form>
+        <ContactForm subject={searchParams.subject ?? ""} />
       </div>
     </div>
   );

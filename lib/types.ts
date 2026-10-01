@@ -29,6 +29,8 @@ export interface KnowledgeDoc {
   published: string; author: string; topic: string; year: number;
   committee?: string; event?: string; pages: number; size: string;
   summary: string; visibility: Visibility; downloads: number;
+  /** Direct link to the publication file, when one has been uploaded. */
+  fileUrl?: string;
 }
 export interface NewsItem {
   slug: string; title: string; category: "News" | "Press Release" | "Statement" | "Media Coverage" | "Speech";

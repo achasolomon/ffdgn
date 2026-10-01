@@ -73,6 +73,7 @@ model User {
   lastLoginAt  DateTime? @map("last_login_at")
   failedLogins Int      @default(0) @map("failed_logins")
   lockedUntil  DateTime? @map("locked_until")
+  passwordChangedAt DateTime? @map("password_changed_at")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
   member       Member?
@@ -453,4 +454,20 @@ model AuditLog {
   @@index([actorId, createdAt])
   @@index([action, createdAt])
   @@map("audit_log")
+}
+
+// Public contact + newsletter submissions (no actor: unauthenticated visitors).
+// Not part of the append-only audit trail — read by the Secretariat console.
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String   @db.VarChar(120)
+  email     String   @db.VarChar(255)
+  subject   String   @db.VarChar(200)
+  message   String   @db.Text
+  ip        String?  @db.VarChar(64)
+  handled   Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([handled, createdAt])
+  @@map("contact_messages")
 }

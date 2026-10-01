@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/chrome";
 import { SectionHeading } from "@/components/ui";
@@ -14,7 +15,7 @@ export default async function NewsIndex({ searchParams }: { searchParams: { cat?
     <div className="mx-auto max-w-shell px-5 py-12">
       <Breadcrumbs items={[{ label: "News & Media" }]} />
       <SectionHeading eyebrow="News & media" title="Official communications from the Forum" lede="News, press releases, statements and speeches — every item carries issuing body and date (institutional trust layer)." />
-      <div className="mt-4 flex gap-2 text-[13px]">{["", "News", "Press Release", "Statement"].map((c) => <Link key={c} href={c ? `/news?cat=${encodeURIComponent(c)}` : "/news"} className={`border px-3 py-1.5 ${cat === c || (!cat && !c) ? "bg-primary text-white border-primary" : "border-ink/20 hover:border-primary"}`}>{c || "All"}</Link>)}</div>
+      <div className="mt-4 flex flex-wrap gap-2 text-[13px]">{["", "News", "Press Release", "Statement", "Speech", "Media Coverage"].map((c) => <Link key={c} href={c ? `/news?cat=${encodeURIComponent(c)}` : "/news"} className={`border px-3 py-1.5 ${cat === c || (!cat && !c) ? "bg-primary text-white border-primary" : "border-ink/20 hover:border-primary"}`}>{c || "All"}</Link>)}</div>
       {lead && (
         <Link href={`/news/${lead.slug}`} className="mt-8 grid border hairline bg-white hover:shadow-card md:grid-cols-[1fr_1.4fr]">
           {lead.image ? (
@@ -35,6 +36,22 @@ export default async function NewsIndex({ searchParams }: { searchParams: { cat?
           </Link></li>
         ))}
       </ul>
+      {!lead && (
+        <div className="mt-6 border hairline bg-white p-8 text-center" role="status">
+          <p className="font-display text-xl text-forest-950">No items in this category yet</p>
+          <p className="mt-2 text-sm text-ink/65">
+            {cat ? <>Nothing has been filed under <strong>{cat}</strong> so far.</> : "No news items have been published yet."}
+          </p>
+          {cat && <Link href="/news" className="mt-4 inline-block border border-primary/30 px-5 py-2.5 text-sm font-semibold text-primary hover:bg-primary hover:text-white">Clear filter</Link>}
+        </div>
+      )}
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "News & Media",
+  description:
+    "Official news, press releases, statements and speeches from the Forum of Former Deputy Governors of Nigeria, with issuing body and date on every item.",
+  alternates: { canonical: "/news" },
+};

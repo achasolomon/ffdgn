@@ -85,7 +85,7 @@ export function StaggerItem({ children, className = "" }: { children: React.Reac
 }
 
 /** Hoverable card shell — scale 1.02 lift, transform-only. */
-export function HoverCard({ children, className = "", href }: { children: React.ReactNode; className?: string; href?: string }) {
+export function HoverCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const reduce = useReducedMotion();
   const inner = (
     <motion.div

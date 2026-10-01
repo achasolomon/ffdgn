@@ -38,7 +38,7 @@ const NAV: { label: string; href: string; children: { label: string; href: strin
     label: "Events & Conferences", href: "/events",
     children: [
       { label: "Upcoming Events", href: "/events", desc: "Conferences, dialogues, roundtables" },
-      { label: "Annual Conference 2026", href: "/events/national-conference-2026", desc: "15–17 October · Abuja" },
+      { label: "Annual Conference 2026", href: "/events/fifth-national-conference-2026", desc: "20–21 October 2026 · Abuja" },
       { label: "Conference Archive", href: "/events", desc: "Past convenings and records" },
     ],
   },
@@ -126,7 +126,7 @@ export function Header() {
               <img src="/assets/events/conference.png" alt="" aria-hidden className="hidden h-9 w-14 shrink-0 rounded-[2px] object-cover object-top sm:block" />
               <p className="min-w-0 flex-1 truncate text-[12.5px]">
                 <span className="font-bold uppercase tracking-[0.14em] text-gold">5th National Conference</span>
-                <span className="text-white/70"> · Oct 20–21, 2026 · Abuja Continental Hotel</span>
+                <span className="text-white/70"> · 20–21 October 2026 · Abuja Continental Hotel</span>
               </p>
               <Link href="/events/fifth-national-conference-2026" className="shrink-0 bg-gold px-3 py-1 text-[12px] font-bold text-forest-950 hover:bg-gold-soft">
                 View flyer & register →
@@ -244,7 +244,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-shell gap-10 px-5 py-12 md:grid-cols-[1.3fr_repeat(4,1fr)]">
         <div>
           <Seal compact />
-          <p className="mt-3 text-[13px] leading-relaxed text-white/65">A non-partisan forum of former Deputy Governors committed to Nigeria's unity, democratic governance and institutional excellence.</p>
+          <p className="mt-3 text-[13px] leading-relaxed text-white/65">A non-partisan forum of former Deputy Governors committed to Nigeria&rsquo;s unity, democratic governance and institutional excellence.</p>
           <p className="mt-4 text-[12px] text-white/50">Experience&nbsp;&nbsp;|&nbsp;&nbsp;Collaboration&nbsp;&nbsp;|&nbsp;&nbsp;Better Governance</p>
         </div>
         {cols.map((c) => (

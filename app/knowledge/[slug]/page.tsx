@@ -38,7 +38,16 @@ export default async function DocPage({ params }: { params: { slug: string } }) 
           </figure>
           <p className="mt-5 text-[15px] leading-relaxed text-ink/75">{d.summary}</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <button className="inline-flex items-center gap-2 bg-primary px-5 py-2.5 text-sm font-semibold text-white"><Download size={15} /> Download PDF ({d.size})</button>
+            {d.fileUrl ? (
+              <a href={d.fileUrl} download aria-label={`Download PDF, ${d.size}`}
+                className="inline-flex items-center gap-2 bg-primary px-5 py-2.5 text-sm font-semibold text-white">
+                <Download size={15} /> Download PDF ({d.size})
+              </a>
+            ) : (
+              <span className="inline-flex items-center gap-2 border border-ink/15 px-5 py-2.5 text-sm text-ink/50">
+                <Download size={15} /> PDF not yet uploaded ({d.size})
+              </span>
+            )}
             <Link href="/knowledge" className="border border-primary/30 px-5 py-2.5 text-sm font-semibold text-primary">← Back to Knowledge Centre</Link>
           </div>
           <div className="mt-8 border hairline bg-white p-6 text-[13px] text-ink/60">

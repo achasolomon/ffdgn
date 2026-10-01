@@ -263,7 +263,7 @@ async function main() {
       copyright: "© 2026 FFDGN. Secretariat may replace with official photography.",
       altText: `Portrait placeholder for ${m.name}, ${m.title}, ${m.state} State`,
     })),
-    { title: "Annual Conference 2026 — plenary hall", kind: "IMAGE", category: "Conference", url: "/media/events/conference-2026.svg", photographer: CREDIT, copyright: "© 2026 FFDGN", altText: "Illustrated plenary hall for the 2026 Annual Conference", eventSlug: "national-conference-2026" },
+    { title: "Annual Conference 2026 — plenary hall", kind: "IMAGE", category: "Conference", url: "/media/events/conference-2026.svg", photographer: CREDIT, copyright: "© 2026 FFDGN", altText: "Illustrated plenary hall for the 2026 Annual Conference", eventSlug: "fifth-national-conference-2026" },
     { title: "Leadership Roundtable 2025", kind: "IMAGE", category: "Conference", url: "/media/events/conference-2025.svg", photographer: CREDIT, copyright: "© 2026 FFDGN", altText: "Illustrated roundtable for the 2025 Leadership Roundtable", eventSlug: "national-conference-2025" },
     { title: "National Conference 2024", kind: "IMAGE", category: "Conference", url: "/media/events/conference-2024.svg", photographer: CREDIT, copyright: "© 2026 FFDGN", altText: "Illustrated plenary for the 2024 National Conference", eventSlug: "national-conference-2024" },
     { title: "Policy dialogue session", kind: "IMAGE", category: "Conference", url: "/media/events/dialogue-session.svg", photographer: CREDIT, copyright: "© 2026 FFDGN", altText: "Illustrated policy dialogue session" },
