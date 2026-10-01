@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { EASE_OUT, DUR } from "@/lib/motion";
 
@@ -40,13 +41,35 @@ export function GoldRule({ className = "" }: { className?: string }) {
   return <div aria-hidden className={`h-[2px] w-10 bg-gold ${className}`} />;
 }
 
-export function EmptyState({ title, body, action }: { title: string; body: string; action?: React.ReactNode }) {
+export function EmptyState({
+  title,
+  description,
+  body,
+  action,
+  eyebrow = "No records",
+  href,
+  actionLabel,
+}: {
+  title: string;
+  description?: string;
+  /** @deprecated use `description` */
+  body?: string;
+  action?: React.ReactNode;
+  eyebrow?: string;
+  href?: string;
+  actionLabel?: string;
+}) {
+  const link = action ?? (href && actionLabel ? (
+    <Link href={href} className="inline-block border border-primary/30 px-5 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white">
+      {actionLabel}
+    </Link>
+  ) : undefined);
   return (
-    <div className="border hairline bg-white px-8 py-14 text-center">
-      <p className="eyebrow">No records</p>
+    <div className="flex h-full flex-col items-center justify-center border hairline bg-white px-8 py-14 text-center" role="status">
+      <p className="eyebrow">{eyebrow}</p>
       <h3 className="font-display mt-2 text-2xl text-forest-950">{title}</h3>
-      <p className="mx-auto mt-2 max-w-md text-sm text-ink/65">{body}</p>
-      {action && <div className="mt-6">{action}</div>}
+      <p className="mx-auto mt-2 max-w-md text-sm text-ink/65">{description ?? body}</p>
+      {link && <div className="mt-6">{link}</div>}
     </div>
   );
 }

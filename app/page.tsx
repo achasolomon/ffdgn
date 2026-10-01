@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight, CalendarDays, MapPin, FileText, Users, Handshake, Landmark, ShieldCheck, BookOpen, Sprout } from "lucide-react";
 import { getSettings, listDocs, listEvents, listFocusAreas, listLeadership, listMedia, listMembers, listMetrics, listNews, listPartnerships, listTimeline } from "@/lib/repo";
 import { formatDate } from "@/lib/search";
-import { Reveal, SectionHeading, GoldRule } from "@/components/ui";
+import { Reveal, SectionHeading, GoldRule, EmptyState } from "@/components/ui";
 import { Stagger, StaggerItem } from "@/components/motion";
 import { AssetImage } from "@/components/media";
 import { NewsletterForm } from "@/components/newsletter-form";
@@ -25,13 +25,14 @@ export default async function HomePage() {
   const featured = news[0];
   const upcoming = events.find((e) => e.status === "Upcoming") ?? events[0];
   const past = events.filter((e) => e.status === "Past");
+  const pastFeatured = past[0];
   const pubDocs = documents.filter((d) => d.status === "Published" && d.visibility === "PUBLIC");
   const photoBySlug = new Map(members.map((m) => [m.slug, m.photo]));
 
   return (
     <>
       <Hero settings={settings} />
-      <MetricsStrip metrics={metrics} />
+      {metrics.length > 0 && <MetricsStrip metrics={metrics} />}
 
       {/* ——— LATEST ACTIVITY ——— */}
       <section className="mx-auto max-w-shell px-5 py-14" aria-labelledby="latest">
@@ -43,8 +44,9 @@ export default async function HomePage() {
         </Reveal>
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
           <Reveal>
+            {featured ? (
             <article className="grid h-full border hairline bg-white shadow-card sm:grid-cols-[240px_1fr]">
-              <div className="img-zoom relative min-h-[200px] overflow-hidden bg-forest-900" aria-hidden={undefined}>
+              <div className="img-zoom relative min-h-[200px] overflow-hidden bg-forest-900">
                 {featured.image ? (
                   <AssetImage src={featured.image} alt={featured.title} width={480} height={400} className="absolute inset-0 h-full w-full object-cover" sizes="(max-width: 768px) 100vw, 240px" />
                 ) : (
@@ -59,13 +61,23 @@ export default async function HomePage() {
                   <Link href={`/news/${featured.slug}`} className="hover:text-primary">{featured.title}</Link>
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-ink/65">{featured.excerpt}</p>
-                <p className="mt-4 text-[12px] font-medium uppercase tracking-wider text-ink/45">{formatDate(featured.date)} · {featured.location}</p>
+                <p className="mt-4 text-[12px] font-medium uppercase tracking-wider text-ink/70">{formatDate(featured.date)} · {featured.location}</p>
               </div>
             </article>
+            ) : (
+              <EmptyState
+                eyebrow="Awaiting publication"
+                title="No news published yet"
+                description="Institutional announcements, press releases and statements will appear here once the Secretariat publishes them."
+                href="/contact"
+                actionLabel="Contact the Secretariat"
+              />
+            )}
           </Reveal>
           <Reveal>
+            {upcoming ? (
             <article className="relative grid h-full overflow-hidden bg-forest-950 text-white sm:grid-cols-[1fr_1fr]">
-              <div className="relative min-h-[240px]" aria-hidden={upcoming.coverUrl ? undefined : true}>
+              <div className="relative min-h-[240px]">
                 {upcoming.coverUrl ? (
                   <AssetImage src={upcoming.coverUrl} alt={`${upcoming.title} — official flyer`} width={640} height={640} className="absolute inset-0 h-full w-full object-cover object-top" sizes="(max-width: 768px) 100vw, 500px" />
                 ) : (
@@ -84,6 +96,15 @@ export default async function HomePage() {
                 </div>
               </div>
             </article>
+            ) : (
+              <EmptyState
+                eyebrow="No scheduled events"
+                title="No upcoming events scheduled"
+                description="Conference and programme announcements will be published here. The Secretariat can be contacted for engagement enquiries."
+                href="/contact"
+                actionLabel="Contact the Secretariat"
+              />
+            )}
           </Reveal>
         </div>
       </section>
@@ -93,7 +114,11 @@ export default async function HomePage() {
         <div className="mx-auto max-w-shell px-5 py-14">
           <Reveal><SectionHeading eyebrow="Our role" title={<span id="role">What the Forum does</span>} lede="Six standing areas of engagement. Each connects to live publications, members, events and committees — not a brochure list." /></Reveal>
           <Stagger className="mt-8 grid border-t hairline md:grid-cols-2 lg:grid-cols-3">
-            {focus.map((r, i) => {
+            {focus.length === 0 ? (
+              <p className="col-span-full border-b hairline px-5 py-8 text-center text-sm text-ink/55" role="status">
+                The Forum&rsquo;s areas of engagement are being updated by the Secretariat.
+              </p>
+            ) : focus.map((r, i) => {
               const Icon = FOCUS_ICONS[i % FOCUS_ICONS.length];
               return (
                 <StaggerItem key={r.slug}>
@@ -128,7 +153,11 @@ export default async function HomePage() {
         </Reveal>
         <Reveal>
           <ol className="relative mt-10 grid gap-5 md:grid-cols-3 lg:grid-cols-6">
-            {timeline.map((t, i) => (
+            {timeline.length === 0 ? (
+              <li className="col-span-full border hairline bg-white px-6 py-8 text-center text-sm text-ink/55" role="status">
+                The institutional timeline is being assembled from Forum records.
+              </li>
+            ) : timeline.map((t, i) => (
               <li key={t.year} className="relative border hairline border-t-2 border-t-gold bg-white pt-0">
                 {t.image && (
                   <span className="block h-28 overflow-hidden border-b hairline" aria-hidden>
@@ -157,25 +186,40 @@ export default async function HomePage() {
             </div>
           </Reveal>
           <div className="mt-10">
+            {leadership.length === 0 ? (
+              <EmptyState
+                eyebrow="Awaiting CMS data"
+                title="Leadership directory not yet published"
+                description="The Forum's leadership records are managed in the Secretariat console and will appear here once published."
+                href="/leadership"
+                actionLabel="Open leadership page"
+              />
+            ) : (
+            <>
             <Reveal>
               <div className="mx-auto max-w-xl border border-gold/60 bg-paper px-6 py-6 text-center">
                 {photoBySlug.get(leadership[0].member?.slug ?? "") && (
                   <AssetImage src={photoBySlug.get(leadership[0].member?.slug ?? "")!} alt={`Portrait of ${leadership[0].member?.name}`} width={224} height={224} className="mx-auto h-28 w-28 rounded-full object-cover ring-2 ring-gold/60" sizes="112px" />
                 )}
                 <p className="eyebrow-gold mt-3">{leadership[0].role}</p>
-                <p className="font-display mt-1 text-2xl text-forest-950">{leadership[0].member?.name}</p>
+                <p className="font-display mt-1 text-2xl text-forest-950">{leadership[0].member?.name ?? "Position vacant"}</p>
                 <GoldRule className="mx-auto mt-3" />
               </div>
-              <div className="mx-auto h-6 w-px bg-primary/30" aria-hidden />
-              <div className="mx-auto max-w-xl border hairline bg-white px-6 py-6 text-center shadow-card">
-                {photoBySlug.get(leadership[1].member?.slug ?? "") && (
-                  <AssetImage src={photoBySlug.get(leadership[1].member?.slug ?? "")!} alt={`Portrait of ${leadership[1].member?.name}`} width={224} height={224} className="mx-auto h-28 w-28 rounded-full object-cover ring-2 ring-gold/60" sizes="112px" />
-                )}
-                <p className="eyebrow mt-3">{leadership[1].role}</p>
-                <p className="font-display mt-1 text-2xl text-forest-950">{leadership[1].member?.name}</p>
-                <p className="mt-1 text-[13px] text-ink/60">{leadership[1].member?.title}</p>
-              </div>
+              {leadership[1] && (
+                <>
+                <div className="mx-auto h-6 w-px bg-primary/30" aria-hidden />
+                <div className="mx-auto max-w-xl border hairline bg-white px-6 py-6 text-center shadow-card">
+                  {photoBySlug.get(leadership[1].member?.slug ?? "") && (
+                    <AssetImage src={photoBySlug.get(leadership[1].member?.slug ?? "")!} alt={`Portrait of ${leadership[1].member?.name}`} width={224} height={224} className="mx-auto h-28 w-28 rounded-full object-cover ring-2 ring-gold/60" sizes="112px" />
+                  )}
+                  <p className="eyebrow mt-3">{leadership[1].role}</p>
+                  <p className="font-display mt-1 text-2xl text-forest-950">{leadership[1].member?.name ?? "Position vacant"}</p>
+                  <p className="mt-1 text-[13px] text-ink/60">{leadership[1].member?.title ?? ""}</p>
+                </div>
+                </>
+              )}
             </Reveal>
+            {leadership.length > 2 && (
             <Stagger className="mx-auto mt-6 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {leadership.slice(2, 6).map((l) => {
                 const m = l.member;
@@ -195,6 +239,9 @@ export default async function HomePage() {
                 );
               })}
             </Stagger>
+            )}
+            </>
+            )}
           </div>
         </div>
       </section>
@@ -202,10 +249,11 @@ export default async function HomePage() {
       {/* ——— FEATURED CONFERENCE + KNOWLEDGE ——— */}
       <section className="mx-auto max-w-shell grid gap-6 px-5 py-14 lg:grid-cols-2" aria-label="Conference and knowledge">
         <Reveal>
+          {pastFeatured ? (
           <article className="grid h-full overflow-hidden bg-forest-950 text-white sm:grid-cols-[1fr_1.1fr]">
-            <div className="relative min-h-[220px] bg-forest-900" aria-hidden={past[0]?.coverUrl ? undefined : true}>
-              {past[0]?.coverUrl ? (
-                <AssetImage src={past[0].coverUrl} alt={past[0].title} width={640} height={520} className="absolute inset-0 h-full w-full object-cover" sizes="(max-width: 768px) 100vw, 400px" />
+            <div className="relative min-h-[220px] bg-forest-900" aria-hidden={pastFeatured.coverUrl ? undefined : true}>
+              {pastFeatured.coverUrl ? (
+                <AssetImage src={pastFeatured.coverUrl} alt={pastFeatured.title} width={640} height={520} className="absolute inset-0 h-full w-full object-cover" sizes="(max-width: 768px) 100vw, 400px" />
               ) : (
                 <div className="grid h-full min-h-[220px] place-items-center p-8" aria-hidden>
                   <div className="text-center"><CalendarDays size={40} className="mx-auto text-gold" strokeWidth={1.25} /><p className="mt-3 text-[11px] uppercase tracking-[0.2em] text-white/50">Featured conference</p></div>
@@ -214,19 +262,29 @@ export default async function HomePage() {
             </div>
             <div className="p-7">
               <p className="eyebrow-light">Featured conference</p>
-              <h3 className="font-display mt-2 text-2xl leading-tight">{past[0].title}</h3>
-              <p className="mt-2 text-sm text-white/65">Theme: “{past[0].theme}”</p>
-              <p className="mt-1 text-[13px] text-white/55">{formatDate(past[0].startDate)} · {past[0].venue}, {past[0].city}</p>
-              <Link href={`/events/${past[0].slug}`} className="mt-5 inline-flex items-center gap-2 bg-gold px-5 py-2.5 text-sm font-bold text-forest-950 hover:bg-gold-soft">Explore Conference <ArrowRight size={15} /></Link>
+              <h3 className="font-display mt-2 text-2xl leading-tight">{pastFeatured.title}</h3>
+              {pastFeatured.theme && <p className="mt-2 text-sm text-white/65">Theme: “{pastFeatured.theme}”</p>}
+              <p className="mt-1 text-[13px] text-white/55">{formatDate(pastFeatured.startDate)} · {pastFeatured.venue}, {pastFeatured.city}</p>
+              <Link href={`/events/${pastFeatured.slug}`} className="mt-5 inline-flex items-center gap-2 bg-gold px-5 py-2.5 text-sm font-bold text-forest-950 hover:bg-gold-soft">Explore Conference <ArrowRight size={15} /></Link>
             </div>
           </article>
+          ) : (
+            <div className="flex h-full flex-col justify-center border hairline bg-white px-8 py-14 text-center" role="status">
+              <p className="eyebrow">Conference archive</p>
+              <h3 className="font-display mt-2 text-2xl text-forest-950">No past conference archived yet</h3>
+              <p className="mx-auto mt-2 max-w-md text-sm text-ink/65">Records of past conferences and their communiqués will appear here once the Secretariat archives them.</p>
+              <Link href="/events" className="mt-6 inline-block self-center border border-primary/30 px-5 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white">Browse events</Link>
+            </div>
+          )}
         </Reveal>
         <Reveal>
           <article className="h-full border hairline bg-white p-7">
             <p className="eyebrow">Knowledge Centre</p>
             <h3 className="font-display mt-2 text-2xl text-forest-950">Latest publications & communiqués</h3>
             <ul className="mt-5 divide-y divide-ink/10">
-              {pubDocs.slice(0, 3).map((d) => (
+              {pubDocs.length === 0 ? (
+                <li className="py-4 text-sm text-ink/55" role="status">No public publications have been released yet. The Secretariat is preparing the latest records and communiqués.</li>
+              ) : pubDocs.slice(0, 3).map((d) => (
                 <li key={d.slug} className="flex items-start justify-between gap-4 py-3.5">
                   <div>
                     <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-gold-deep">{d.type} · {d.year}</p>
@@ -268,6 +326,11 @@ export default async function HomePage() {
                 </li>
               ))}
             </ul>
+            {news.length <= 1 && (
+              <p className="mt-4 text-sm text-ink/55" role="status">
+                Further announcements will appear here as the Secretariat publishes them.
+              </p>
+            )}
           </div>
           <div>
             <div className="flex items-center justify-between">
@@ -276,7 +339,9 @@ export default async function HomePage() {
             </div>
             <p className="mt-2 text-sm text-ink/60">Collaborating for good governance and national development.</p>
             <ul className="mt-5 grid grid-cols-1 gap-3">
-              {partnerships.slice(0, 4).map((p) => (
+              {partnerships.length === 0 ? (
+                <li className="border hairline bg-paper px-4 py-3 text-sm text-ink/55" role="status">Partnership agreements are still being formalised and will be listed here once countersigned.</li>
+              ) : partnerships.slice(0, 4).map((p) => (
                 <li key={p.slug} className="flex items-center gap-3 border hairline bg-paper px-4 py-3">
                   {p.logo ? (
                     <span className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-full border hairline bg-white" role="img" aria-label={`Logo of ${p.name}`}>
@@ -311,6 +376,11 @@ export default async function HomePage() {
               </StaggerItem>
             ))}
           </Stagger>
+          {galleryPreview.length === 0 && (
+            <p className="mt-6 border hairline bg-white px-6 py-8 text-center text-sm text-ink/55" role="status">
+              The photo archive is being curated. Images from past conferences will appear here once cleared for publication.
+            </p>
+          )}
         </div>
       </section>
 
@@ -331,7 +401,11 @@ export default async function HomePage() {
       {/* Members preview strip (quiet, avoids card-noise) */}
       <section className="mx-auto max-w-shell px-5 pb-16" aria-label="Members preview">
         <div className="flex items-end justify-between">
-          <p className="eyebrow">The membership · {members.length} profiles in this release</p>
+          <p className="eyebrow">
+          The membership · {members.length === 0
+            ? "profiles are being verified"
+            : `${members.length} ${members.length === 1 ? "profile" : "profiles"} in this release`}
+        </p>
           <Link href="/members" className="text-sm font-semibold text-primary link-underline">Open directory →</Link>
         </div>
       </section>
