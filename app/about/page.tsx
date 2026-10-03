@@ -1,54 +1,69 @@
+import { websiteMetadata } from "@/lib/website-repo";
+import { managedWebsitePage } from "@/components/website-page";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/chrome";
-import { SectionHeading } from "@/components/ui";
+import { SectionHeading, Reveal } from "@/components/ui";
 import { AssetImage } from "@/components/media";
-export const metadata: Metadata = { title: "About the Forum" };
+import { ForumMoments } from "@/components/forum-moments";
+import { getInstitutionalPage, listMedia } from "@/lib/repo";
+import { asRoute } from "@/lib/routes";
+import type { InstitutionalSectionContent } from "@/lib/institutional-pages";
 
-export default function AboutPage() {
-  return (
-    <div className="mx-auto max-w-shell px-5 py-12">
-      <Breadcrumbs items={[{ label: "About the Forum" }]} />
-      <SectionHeading eyebrow="The Forum" title="A national forum for experience, dialogue and institutional continuity" lede="The Forum of Former Deputy Governors of Nigeria (FFDGN) is a non-partisan organisation of former and serving deputy governors committed to national development through knowledge sharing, policy advocacy, mentorship and strategic partnerships." />
-      <div className="mt-8 grid gap-6 border hairline bg-white p-6 sm:grid-cols-2" aria-label="Institutional identity">
-        <figure>
-          <AssetImage src="/assets/brand/logo_fdgn.jpeg" alt="Official seal of the Forum of Former Deputy Governors of Nigeria" width={800} height={500} className="aspect-[8/5] w-full object-contain bg-white" sizes="(max-width: 768px) 100vw, 600px" />
-          <figcaption className="mt-2 text-[12px] text-ink/50">The official seal of the Forum</figcaption>
-        </figure>
-        <figure>
-          <AssetImage src="/assets/brand/logo-whitebg.jpg" alt="FFDGN wordmark" width={800} height={500} className="aspect-[8/5] w-full object-contain bg-white" sizes="(max-width: 768px) 100vw, 600px" />
-          <figcaption className="mt-2 text-[12px] text-ink/50">Forum wordmark</figcaption>
-        </figure>
-      </div>
-      <div className="mt-10 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
-        <div className="prose max-w-none text-[15px] leading-relaxed text-ink/75">
-          <h2 className="font-display text-2xl text-forest-950">Mandate & objectives</h2>
-          <ul className="mt-4 list-disc space-y-2 pl-5">
-            <li>Provide a structured platform for experience-sharing among former and serving Deputy Governors.</li>
-            <li>Convert executive experience into evidence-based policy recommendations.</li>
-            <li>Strengthen democratic governance through peer review, dialogue and mentorship.</li>
-            <li>Preserve institutional memory — conferences, communiqués, reports and decisions — as permanent public knowledge.</li>
-            <li>Build strategic partnerships that advance good governance and sustainable development.</li>
-          </ul>
-          <h2 className="font-display mt-8 text-2xl text-forest-950">Non-partisan character</h2>
-          <p className="mt-3">Membership cuts across party, region and generation. The Forum speaks as an institution — through approved communiqués, reports and statements — never as individuals.</p>
-          <h2 className="font-display mt-8 text-2xl text-forest-950">Patrons</h2>
-          <p className="mt-3">The Forum enjoys the guidance of its Grand Patron, former President Dr Goodluck Ebele Jonathan, GCFR, and National Patrons H.E. Sen. Aliyu M. Wamakko, CON and H.E. Dr Abdullahi Umar Ganduje, CON. Meet them and the full hierarchy on the <Link href="/leadership" className="font-semibold text-primary">leadership page</Link>.</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/about/history" className="bg-primary px-5 py-2.5 text-sm font-semibold text-white">Our history →</Link>
-            <Link href="/about/governance" className="border border-primary/30 px-5 py-2.5 text-sm font-semibold text-primary">Governance →</Link>
-            <Link href="/leadership" className="border border-primary/30 px-5 py-2.5 text-sm font-semibold text-primary">Leadership →</Link>
-          </div>
-        </div>
-        <aside className="h-fit border border-gold/60 bg-white p-6" aria-label="At a glance">
-          <p className="eyebrow-gold">At a glance</p>
-          <dl className="mt-4 space-y-4 text-sm">
-            {[["Founded", "2008"], ["Seat", "Abuja, Nigeria"], ["Membership", "Former & serving Deputy Governors"], ["Character", "Non-partisan"], ["Outputs", "Communiqués · Reports · Policy briefs"]].map(([k, v]) => (
-              <div key={k} className="border-b hairline pb-3"><dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-ink/45">{k}</dt><dd className="mt-0.5 font-semibold text-forest-950">{v}</dd></div>
-            ))}
-          </dl>
-        </aside>
-      </div>
-    </div>
-  );
+export async function generateMetadata(): Promise<Metadata> {
+ const authored = await websiteMetadata("/about");
+ return authored ?? { title: "About the Forum" };
 }
+
+function SectionCopy({ section }: { section: InstitutionalSectionContent }) {
+  return <div className="about-copy">
+    {section.imageUrl && <AssetImage src={section.imageUrl} alt={section.imageAlt ?? section.title} width={1000} height={600} className="mb-6 max-h-[400px] w-full object-cover" sizes="(max-width: 768px) 100vw, 800px" />}
+    {section.body.split(/\n\s*\n/).filter((paragraph) => paragraph.trim()).map((paragraph, index) => <p key={index}>{paragraph.trim()}</p>)}
+  </div>;
+}
+
+export default async function AboutPage() {
+  const managed = await managedWebsitePage("/about");
+  if (managed) return managed;
+
+  const [page, gallery] = await Promise.all([getInstitutionalPage("about"), listMedia({ kind: "IMAGE", galleryOnly: true })]);
+  if (!page) notFound();
+  const seen = new Set<string>();
+  const slides = gallery.filter((item) => {
+    if (item.category === "Portrait" || !/\.(jpe?g|png|webp)(?:\?|$)/i.test(item.url) || seen.has(item.url)) return false;
+    seen.add(item.url); return true;
+  }).slice(0, 8).map((item) => ({ src: item.url, alt: item.altText || item.title, caption: item.title }));
+  const purpose = page.sections.filter((section) => /\b(vision|mission)\b/i.test(section.title));
+  const chapters = page.sections.filter((section) => !purpose.includes(section));
+  const intro = chapters[0];
+  const remaining = chapters.slice(1);
+  const moments = slides.length ? slides : [
+    { src: "/assets/hero/fdg.jpg", alt: "Forum members gathered at a national engagement", caption: "Experience shared. A common purpose." },
+    { src: "/assets/news/visit_ganduje2.jpeg", alt: "Forum representatives during an official visit", caption: "Dialogue that strengthens our institutions" },
+    { src: "/assets/news/polish-nigeria-partnership.jpg", alt: "Forum representatives at a business engagement", caption: "Building connections for national development" },
+  ];
+  return <div className="about-page mx-auto max-w-shell px-5 py-12">
+    <Breadcrumbs items={[{ label: "About the Forum" }]} />
+    <SectionHeading as="h1" eyebrow={page.eyebrow} title={page.title} lede={page.lede} />
+    <ForumMoments slides={moments} />
+    {intro && <Reveal><section className="about-introduction" aria-labelledby="about-introduction">
+      <div><p className="eyebrow">Our identity</p><h2 id="about-introduction" className="font-display">{intro.title}</h2></div><SectionCopy section={intro} />
+    </section></Reveal>}
+    {purpose.length > 0 && <div className="about-purpose">{purpose.map((section, index) => <Reveal key={section.id ?? section.title} delay={index * 0.1}><section>
+      <p className="eyebrow-light">Our purpose / {String(index + 1).padStart(2, "0")}</p><h2 className="font-display">{section.title}</h2><SectionCopy section={section} />
+    </section></Reveal>)}</div>}
+    {remaining.length > 0 && <div className="about-story">
+      <nav className="about-contents" aria-label="About page sections"><p className="eyebrow">Explore the Forum</p>{remaining.map((section, index) => <a key={section.id ?? section.title} href={`#about-chapter-${index}`}><span>{String(index + 1).padStart(2, "0")}</span>{section.title}</a>)}</nav>
+      <div>{remaining.map((section, index) => <Reveal key={section.id ?? section.title}><section id={`about-chapter-${index}`} className="about-chapter" aria-labelledby={`about-heading-${index}`}>
+        <p className="eyebrow">The Forum / {String(index + 1).padStart(2, "0")}</p><h2 id={`about-heading-${index}`} className="font-display">{section.title}</h2><SectionCopy section={section} />
+      </section></Reveal>)}</div>
+    </div>}
+    {page.body.trim() && <section className="about-closing" aria-label="More about the Forum"><div className="about-copy">{page.body.split(/\n\s*\n/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div></section>}
+    <section className="about-discover" aria-labelledby="about-discover"><div><p className="eyebrow-light">Continue exploring</p><h2 id="about-discover" className="font-display">Meet the people.<br />Discover the journey.</h2></div><div className="grid gap-3">{[
+      { href: "/about/history", label: "Our history" }, { href: "/about/governance", label: "Governance" }, { href: "/leadership", label: "Leadership" }, { href: "/members#join", label: "Membership" },
+    ].map((link) => <Link key={link.href} href={asRoute(link.href)}><span>{link.label}</span><ArrowRight size={18} /></Link>)}</div></section>
+  </div>;
+}
+export const revalidate = 300;

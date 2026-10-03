@@ -219,7 +219,9 @@ async function main(): Promise<void> {
   let child: ChildProcess | null = null;
 
   try {
-    console.log(`browser: ${exe}\ntarget:  ${URL}\n`);
+    // Only pages in the public chrome get this treatment; /admin and /portal are
+  // excluded by the proxy matcher and have no CSP to verify.
+  console.log(`browser: ${exe}\ntarget:  ${URL}\n`);
     child = launchBrowser(exe, profile);
     const wsUrl = await waitForTarget();
     const cdp = new Cdp();

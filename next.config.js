@@ -2,6 +2,24 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+
+  // Emit a self-contained server bundle in .next/standalone: the app, the
+  // traced node_modules it actually uses, and a server.js that reads PORT and
+  // HOSTNAME from the environment. This is what cPanel's Passenger-based
+  // "Setup Node.js App" runs, and it avoids a full `npm ci --omit=dev` plus an
+  // on-server `next build` (shared hosting usually cannot spare the CPU/RAM
+  // for a production build). Development is unaffected: `next dev` ignores it.
+  output: "standalone",
+  outputFileTracingExcludes: {
+    "/*": ["./deploy/**/*", "./.git/**/*", "./.env*", "./ffdgn-deploy.zip", "./.data/**/*"],
+  },
+  outputFileTracingIncludes: {
+    "/*": [
+      "node_modules/.prisma/client/*",
+      "node_modules/@img/sharp-linux-x64/**/*",
+      "node_modules/@img/sharp-libvips-linux-x64/**/*",
+    ],
+  },
   images: {
     /**
      * Explicit allowlist.
@@ -58,7 +76,9 @@ const nextConfig = {
     ];
   },
 
-  typedRoutes: false,
+  // Makes a mistyped or dead internal href a build failure instead of a 404
+  // found after deploy. lib/routes.ts holds the shared nav/footer/sitemap paths.
+  typedRoutes: true,
 };
 
 module.exports = nextConfig;

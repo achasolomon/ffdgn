@@ -20,21 +20,28 @@ export function UploadForm({ events }: { events: { slug: string; title: string }
   const [category, setCategory] = useState("Conference");
   const [eventSlug, setEventSlug] = useState("");
   const [altText, setAltText] = useState("");
+  const [year, setYear] = useState("");
+  const [inGallery, setInGallery] = useState(false);
+  const [description,setDescription] = useState("");
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!file) { setMsg({ ok: false, text: "Choose a file first." }); return; }
+    if(inGallery && file.type.startsWith("image/") && !eventSlug) {setMsg({ok:false,text:"Choose an event album before publishing a gallery photograph."});return;}
     setBusy(true); setMsg(null);
     try {
       const form = new FormData();
       form.set("file", file); form.set("title", title); form.set("category", category);
+      form.set("inGallery", String(inGallery));
+      if (year.trim()) form.set("year", year.trim());
       if (eventSlug) form.set("eventSlug", eventSlug);
       if (altText) form.set("altText", altText);
+      if (description) form.set("description",description);
       await post("/api/v1/media", form, false);
       setMsg({ ok: true, text: "Asset uploaded and catalogued." });
-      setFile(null); setTitle(""); setAltText("");
+      setFile(null); setTitle(""); setAltText(""); setYear(""); setDescription("");
       router.refresh();
     } catch (err) {
       setMsg({ ok: false, text: err instanceof Error ? err.message : "Upload failed." });
@@ -60,8 +67,13 @@ export function UploadForm({ events }: { events: { slug: string; title: string }
         <div>
           <label htmlFor="mc" className="text-[13px] font-semibold">Collection</label>
           <select id="mc" value={category} onChange={(e) => setCategory(e.target.value)} className="mt-1 w-full border hairline bg-white px-3 py-2 text-sm">
-            {["Conference", "Portrait", "Press", "Site", "Hero", "Archive"].map((c) => <option key={c}>{c}</option>)}
+            {["Conference", "Portrait", "Press", "Archive", "Site", "Hero", "Brand", "Partner"].map((c) => <option key={c}>{c}</option>)}
           </select>
+        </div>
+        <div>
+          <label htmlFor="my" className="text-[13px] font-semibold">Capture year (optional)</label>
+          <input id="my" inputMode="numeric" maxLength={4} value={year} onChange={(e) => setYear(e.target.value.replace(/\D/g, ""))}
+            className="mt-1 w-full border hairline px-4 py-2 text-sm" placeholder="2025" />
         </div>
         <div>
           <label htmlFor="me" className="text-[13px] font-semibold">Related event (optional)</label>
@@ -75,6 +87,14 @@ export function UploadForm({ events }: { events: { slug: string; title: string }
         <label htmlFor="ma" className="text-[13px] font-semibold">Alt text (accessibility)</label>
         <input id="ma" value={altText} onChange={(e) => setAltText(e.target.value)} className="mt-1 w-full border hairline px-4 py-2 text-sm" placeholder="Describe the image for screen readers" />
       </div>
+      <label className="mt-4 block text-[13px] font-semibold">Caption<textarea value={description} onChange={event=>setDescription(event.target.value)} rows={3} className="mt-2 w-full border hairline px-4 py-2 text-sm" placeholder="Describe the moment shown in this photograph." /></label>
+      <label className="mt-4 flex items-start gap-2.5 text-[13px]">
+        <input type="checkbox" checked={inGallery} onChange={(e) => setInGallery(e.target.checked)} className="mt-0.5 h-4 w-4" />
+        <span>
+          <span className="font-semibold">Show in the public galleries</span>
+          <span className="block text-ink/60">Tick only for event photographs. Untick brand marks, partner logos and site artwork — they stay available to the media picker and admin lists without padding Photo/Video.</span>
+        </span>
+      </label>
       <button disabled={busy} className="mt-5 bg-primary px-6 py-2.5 text-sm font-bold text-white hover:bg-forest-700 disabled:opacity-60">
         {busy ? "Uploading…" : "Upload & catalogue →"}
       </button>

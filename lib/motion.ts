@@ -12,9 +12,9 @@ export const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 export const EASE_EDITORIAL = [0.25, 1, 0.5, 1] as const;
 
 /** Subtle institutional spring — settles, never oscillates visibly. */
-export const SPRING_CALM = { type: "spring", mass: 1, tension: 280, friction: 30 } as const;
+export const SPRING_CALM = { type: "spring", mass: 1, stiffness: 280, damping: 30 } as const;
 /** Snappier spring for small controls (menus, play buttons). */
-export const SPRING_SNAPPY = { type: "spring", mass: 0.8, tension: 350, friction: 28 } as const;
+export const SPRING_SNAPPY = { type: "spring", mass: 0.8, stiffness: 350, damping: 28 } as const;
 
 export const DUR = { fast: 0.18, base: 0.35, slow: 0.6, slower: 0.9 } as const;
 

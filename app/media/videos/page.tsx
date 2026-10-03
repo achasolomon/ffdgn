@@ -1,3 +1,5 @@
+import { websiteMetadata } from "@/lib/website-repo";
+import { managedWebsitePage } from "@/components/website-page";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/chrome";
 import { SectionHeading, EmptyState } from "@/components/ui";
@@ -5,12 +7,15 @@ import { VideoPlayer, MediaCredit } from "@/components/media";
 import { listVideos } from "@/lib/repo";
 
 export default async function VideosPage() {
+  const managed = await managedWebsitePage("/media/videos");
+  if (managed) return managed;
+
   const videos = await listVideos();
   return (
     <div className="mx-auto max-w-shell px-5 py-12">
       <Breadcrumbs items={[{ label: "News & Media", href: "/news" }, { label: "Video Archive" }]} />
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <SectionHeading eyebrow="Media" title="Video archive" lede="Conference recordings, statements and documentaries — embedded from the Forum's official channels." />
+        <SectionHeading as="h1" eyebrow="Media" title="Video archive" lede="Conference recordings, statements and documentaries — embedded from the Forum's official channels." />
         <Link href="/media/photos" className="text-sm font-semibold text-primary link-underline">Photo gallery →</Link>
       </div>
       {videos.length ? (
@@ -41,3 +46,5 @@ export default async function VideosPage() {
 }
 
 export const revalidate = 300;
+
+export async function generateMetadata() {return await websiteMetadata("/media/videos") ?? {}; }

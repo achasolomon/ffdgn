@@ -1,23 +1,8 @@
-import { randomUUID } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
-import { join } from "node:path";
 import { db, dbReady, fail, failFrom, ok } from "../_lib";
 import { requirePermission, audit } from "@/lib/server-auth";
-import { clientIp } from "@/lib/rate-limit";
-import { verifyImageUpload, verifyVideoUpload } from "@/lib/upload-security";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
+import { storeVerifiedUpload } from "@/lib/media-upload";
 import { revalidatePublicSite } from "@/lib/revalidate";
-
-/**
- * Accepted upload types. SVG is deliberately absent: it is an XML document that
- * can carry <script> and event handlers, and we serve uploads from the same
- * origin as the app, so an uploaded SVG is stored XSS. Raster formats only.
- */
-const IMAGE_MIMES: Record<string, string> = {
-  "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/gif": "gif",
-};
-const VIDEO_MIMES: Record<string, string> = { "video/mp4": "mp4", "video/webm": "webm" };
-const MAX_IMAGE = 10 * 1024 * 1024;
-const MAX_VIDEO = 200 * 1024 * 1024;
 
 /**
  * GET /api/v1/media — public library (visibility PUBLIC), filterable by
@@ -32,6 +17,9 @@ export async function GET(req: Request) {
     const eventSlug = url.searchParams.get("event");
     const all = url.searchParams.get("visibility") === "all";
     if (all) await requirePermission("media.manage");
+    const query = (url.searchParams.get("q") ?? "").trim().slice(0, 200);
+    const offset = Number(url.searchParams.get("offset") ?? 0);
+    if (!Number.isSafeInteger(offset) || offset < 0 || offset > 100000) return fail("VALIDATION", "Invalid media page.", 422);
 
     const rows = await db.mediaAsset.findMany({
       where: {
@@ -39,12 +27,14 @@ export async function GET(req: Request) {
         ...(kind ? { kind: kind as never } : {}),
         ...(category ? { category } : {}),
         ...(eventSlug ? { event: { slug: eventSlug } } : {}),
+        ...(query ? { OR: [{ title: { contains: query } }, { category: { contains: query } }, { altText: { contains: query } }] } : {}),
       },
       include: { event: { select: { slug: true, title: true } } },
-      orderBy: { createdAt: "desc" },
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+      skip: offset,
       take: 100,
     });
-    return ok(rows, { source: "mysql", total: rows.length });
+    return ok(rows, { source: "mysql", total: rows.length, nextOffset: rows.length === 100 ? offset + 100 : null });
   } catch (e) {
     return failFrom(e);
   }
@@ -63,6 +53,10 @@ export async function POST(req: Request) {
   try {
     if (!(await dbReady())) return fail("UNAVAILABLE", "Media upload requires the MySQL database.", 503);
     const auth = await requirePermission("media.manage");
+    // Per-account rather than per-IP: an office behind one NAT would otherwise
+    // share a single upload budget.
+    const gate = await rateLimit(`media.upload:${auth.user.id}`, 30, 10 * 60 * 1000);
+    if (!gate.ok) return fail("RATE_LIMITED", "Upload limit reached. Try again shortly.", 429);
 
     const form = await req.formData().catch(() => null);
     const file = form?.get("file") as File | null;
@@ -71,28 +65,17 @@ export async function POST(req: Request) {
     const altText = String(form?.get("altText") ?? "").trim().slice(0, 255) || null;
     const description = String(form?.get("description") ?? "").trim().slice(0, 2000) || null;
     const eventSlug = String(form?.get("eventSlug") ?? "").trim() || null;
+    // Gallery publication is an explicit editorial choice.
+    const inGalleryRaw = form?.get("inGallery");
+    const inGallery = inGalleryRaw != null && !["false", "0", "off"].includes(String(inGalleryRaw).toLowerCase());
+    const yearRaw = String(form?.get("year") ?? "").trim();
+    if (yearRaw && (!/^\d{4}$/.test(yearRaw) || Number(yearRaw) < 1900 || Number(yearRaw) > 2100)) {
+      return fail("VALIDATION", "Capture year must be a four-digit year between 1900 and 2100.", 422);
+    }
+    const year = yearRaw ? Number(yearRaw) : null;
 
     if (!file || typeof file === "string" || file.size === 0) return fail("VALIDATION", "A file is required.", 422);
     if (!title) return fail("VALIDATION", "A title is required.", 422);
-
-    const isImage = file.type in IMAGE_MIMES;
-    const isVideo = file.type in VIDEO_MIMES;
-    if (!isImage && !isVideo) {
-      return fail(
-        "VALIDATION",
-        `Unsupported file type ${file.type || "(unknown)"}. Images: JPEG/PNG/WebP/GIF. Video: MP4/WebM. SVG is not accepted because it can carry executable script.`,
-        422,
-      );
-    }
-
-    const kind = isImage ? "IMAGE" : "VIDEO";
-    const limit = isImage ? MAX_IMAGE : MAX_VIDEO;
-    if (file.size > limit) return fail("VALIDATION", `File too large (max ${Math.round(limit / 1024 / 1024)} MB).`, 422);
-
-    // Read once; the same bytes drive both validation and persistence.
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const verified = isImage ? verifyImageUpload(file.type, buffer) : verifyVideoUpload(file.type, buffer);
-    if (!verified.ok) return fail("VALIDATION", verified.message, 422);
 
     let eventId: string | null = null;
     if (eventSlug) {
@@ -100,26 +83,20 @@ export async function POST(req: Request) {
       if (!event) return fail("VALIDATION", "Unknown eventSlug.", 422);
       eventId = event.id;
     }
-
-    const now = new Date();
-    const year = String(now.getFullYear());
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const dir = join(process.cwd(), "public", "uploads", year, month);
-    await mkdir(dir, { recursive: true });
-    // Extension comes from the verified content type, not from user input.
-    const name = `${randomUUID()}.${verified.ext}`;
-    await writeFile(join(dir, name), buffer);
-    const url = `/uploads/${year}/${month}/${name}`;
+    if (inGallery && !eventId) return fail("VALIDATION", "Choose an event album before publishing to the gallery.", 422);
+    const stored = await storeVerifiedUpload(file);
+    if (!stored.ok) return fail("VALIDATION", stored.error, 422);
+    const { url, kind, mime } = stored.value;
 
     const asset = await db.mediaAsset.create({
       data: {
         title, kind: kind as never, category, url, provider: "FILE",
         photographer: auth.user.name, copyright: "© FFDGN",
-        altText: altText ?? title, description, eventId,
+        altText: altText ?? title, description, eventId, inGallery, year,
       },
     });
     await audit("media.upload", `media:${asset.id}`, {
-      newValue: `${kind} ${title} (${(file.size / 1024).toFixed(0)} KB, ${verified.mime})`,
+      newValue: `${kind} ${title} (${(file.size / 1024).toFixed(0)} KB, ${mime})`,
       ip: clientIp(req.headers), actorOverride: auth,
     });
     revalidatePublicSite(`media upload ${title}`);

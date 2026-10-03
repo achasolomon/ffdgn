@@ -10,7 +10,23 @@
  */
 import { PrismaClient, DocStatus, EventStatus } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { committees, documents, events, leadership, members, metrics, news, partnerships, roles, timeline } from "../lib/data";
+import { INSTITUTIONAL_PAGES, PEER_REVIEW_MEMBERS } from "../lib/institutional-pages";
+
+/**
+ * Fallback portrait for a member with no explicit photo.
+ *
+ * Only returned when the placeholder file actually exists. Inventing the path
+ * regardless produced rows pointing at SVGs that were never committed, and
+ * /leadership then rendered a broken image for anyone whose photo was unset.
+ * Null lets the page fall back to initials instead.
+ */
+function portraitFallback(slug: string): string | null {
+  const file = path.join(process.cwd(), "public", "media", "portraits", `${slug}.svg`);
+  return existsSync(file) ? `/media/portraits/${slug}.svg` : null;
+}
 
 const prisma = new PrismaClient();
 const BCRYPT_ROUNDS = 12;
@@ -89,13 +105,18 @@ async function main() {
       update: {
         fullName: m.name, title: m.title, state: m.state, region: m.region,
         category: m.category, status: m.status, leadershipRole: m.leadershipRole ?? null,
-        bio: m.bio, visibility: m.visibility, photoUrl: m.photo ?? `/media/portraits/${m.slug}.svg`,
+        bio: m.bio, visibility: m.visibility,
+        // Only overwrite a portrait the seed actually knows about. Omitting the
+        // column leaves whatever an editor set in the CMS intact, which matters
+        // because the leadership CMS now writes Member.photoUrl directly.
+        ...(m.photo ? { photoUrl: m.photo } : {}),
         userId: m.slug === "atim-tyonongu" ? memberUser?.id ?? null : null,
       },
       create: {
         slug: m.slug, fullName: m.name, title: m.title, state: m.state, region: m.region,
         category: m.category, status: m.status, leadershipRole: m.leadershipRole ?? null,
-        bio: m.bio, visibility: m.visibility, photoUrl: m.photo ?? `/media/portraits/${m.slug}.svg`,
+        bio: m.bio, visibility: m.visibility,
+        photoUrl: m.photo ?? portraitFallback(m.slug),
         userId: m.slug === "atim-tyonongu" ? memberUser?.id ?? null : null,
       },
     });
@@ -127,6 +148,7 @@ async function main() {
         slug: e.slug, title: e.title, theme: e.theme, kind: e.kind,
         startDate: new Date(e.startDate), endDate: new Date(e.endDate),
         venue: e.venue, city: e.city, status: toEventStatus(e.status), summary: e.summary,
+        published: true,
         coverUrl: EVENT_COVERS[e.slug] ?? e.coverUrl ?? null,
         guestList: e.guests?.join("\n") ?? null,
       },
@@ -245,12 +267,62 @@ async function main() {
     ["hero.lede", "A national forum bringing together former Deputy Governors to share experience, strengthen institutional knowledge, support constructive dialogue and contribute to Nigeria's development."],
     ["hero.cta_primary", "Explore the Forum"],
     ["hero.cta_secondary", "Discover Our Work"],
-    ["site.established", "2008"],
+    ["site.established", "2014"],
     ["site.seat", "Abuja, Nigeria"],
     ["site.character", "Non-partisan"],
   ];
   for (const [key, value] of SETTINGS) {
     await prisma.siteSetting.upsert({ where: { key }, update: { value }, create: { key, value } });
+  }
+  for (const page of INSTITUTIONAL_PAGES) {
+    const { sections, ...fields } = page;
+    const row = await prisma.institutionalPage.upsert({
+      where: { slug: page.slug },
+      update: {},
+      create: { ...fields, published: true },
+    });
+    // Governance kept its layers in `body` as "Title|Description" lines before
+    // sections existed. Sections own that content now, so drop the blob - but
+    // only while it is still the legacy delimited form, so a later editor's real
+    // copy is never destroyed by re-seeding.
+    if (row.slug === "governance" && row.body.includes("|")) {
+      await prisma.institutionalPage.update({ where: { slug: row.slug }, data: { body: "" } });
+    }
+    // Matched on title so re-seeding refreshes content without duplicating rows
+    // an editor may have since reordered or unpublished.
+    for (const section of sections) {
+      const existing = await prisma.institutionalSection.findFirst({
+        where: { pageId: row.id, title: section.title },
+      });
+      if (existing) continue;
+      await prisma.institutionalSection.create({
+        data: {
+          pageId: row.id,
+          title: section.title,
+          body: section.body,
+          imageUrl: section.imageUrl ?? null,
+          imageAlt: section.imageAlt ?? null,
+          position: section.position,
+          published: true,
+        },
+      });
+    }
+  }
+  // Guarded by a count rather than upserted: the roster is a live list an
+  // editor maintains, so re-seeding must never re-add someone who was removed
+  // or clobber an S/N an editor deliberately changed.
+  if ((await prisma.peerReviewMember.count()) === 0) {
+    await prisma.peerReviewMember.createMany({
+      data: PEER_REVIEW_MEMBERS.map((m) => ({
+        position: m.position,
+        name: m.name,
+        zone: m.zone,
+        role: m.role,
+        phone: m.phone ?? null,
+        email: m.email ?? null,
+        published: true,
+      })),
+    });
   }
   for (const [i, m] of metrics.entries()) {
     await prisma.siteMetric.upsert({
@@ -276,10 +348,12 @@ async function main() {
     });
   }
   const TIMELINE_IMAGES: Record<number, string> = {
-    2008: "/assets/events/inaugural-conference.jpg",
+    2010: "/assets/events/inaugural-conference.jpg",
     2012: "/assets/events/national-dialogue.jpg",
+    2014: "/media/site/map-states.svg",
     2016: "/assets/events/2016-institutional-strenghtening.jpg",
     2020: "/assets/events/2020-dialogue-series.jpg",
+    2022: "/assets/gallery/gallery6.jpg",
     2024: "/assets/events/2024-strategic-plan.jpg",
     2026: "/assets/events/2026-digital-institution.jpeg",
   };

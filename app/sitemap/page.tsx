@@ -1,24 +1,27 @@
 import type { Metadata } from "next";
 import { listDocs, listEvents, listMembers, listNews } from "@/lib/repo";
+import { listPublishedWebsitePages } from "@/lib/website-repo";
 
 export default async function Sitemap() {
-  const [events, news, documents, members] = await Promise.all([
-    listEvents(), listNews(), listDocs(), listMembers(),
+  const [events, news, documents, members, pages] = await Promise.all([
+    listEvents(), listNews(), listDocs(), listMembers(), listPublishedWebsitePages(),
   ]);
   const urls = [
     "", "/about", "/about/history", "/about/governance", "/leadership", "/members",
-    "/events", "/knowledge", "/news", "/committees", "/partnerships", "/contact",
+    "/events", "/knowledge", "/news", "/committees", "/peer-review", "/mentorship",  "/contact",
+    "/programs", "/polish-nigeria", "/renewed-hope",
     ...events.map((e) => `/events/${e.slug}`),
     ...news.map((n) => `/news/${n.slug}`),
     ...documents.filter((d) => d.visibility === "PUBLIC" && d.status === "Published").map((d) => `/knowledge/${d.slug}`),
     ...members.filter((m) => m.visibility === "PUBLIC").map((m) => `/members/${m.slug}`),
+    ...pages.map(({ page }) => page.path === "/" ? "" : page.path),
   ];
   return (
     <div className="mx-auto max-w-shell px-5 py-12">
       <p className="eyebrow">Resources</p>
       <h1 className="font-display mt-2 text-4xl text-forest-950">Sitemap</h1>
       <ul className="mt-6 grid gap-1 text-sm md:grid-cols-2">
-        {urls.map((u) => <li key={u}><a href={u || "/"} className="text-primary">ffdgn.org.ng{u || "/"}</a></li>)}
+        {[...new Set(urls)].map((u) => <li key={u}><a href={u || "/"} className="text-primary">ffdgn.org.ng{u || "/"}</a></li>)}
       </ul>
     </div>
   );

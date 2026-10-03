@@ -11,7 +11,7 @@ export default async function PartnershipsPage() {
   return (
     <div className="mx-auto max-w-shell px-5 py-12">
       <Breadcrumbs items={[{ label: "Engagement" }, { label: "Partnerships" }]} />
-      <SectionHeading eyebrow="Engagement" title="Partnerships" lede="Structured relationships that advance good governance — each with purpose, cooperation areas and joint activities." />
+      <SectionHeading as="h1" eyebrow="Engagement" title="Partnerships" lede="Structured relationships that advance good governance — each with purpose, cooperation areas and joint activities." />
 
       {/* Logo band */}
       {withLogos.length > 0 && (
@@ -29,7 +29,10 @@ export default async function PartnershipsPage() {
       <div className="mt-8 grid gap-5 lg:grid-cols-2">
         {partnerships.map((p, i) => (
           <Reveal key={p.slug} delay={Math.min(i * 0.05, 0.2)}>
-            <article className="flex h-full flex-col border hairline bg-white p-6 hover:shadow-card sm:flex-row sm:gap-6">
+            {/* `id` is the anchor institutional search links to (`/partnerships#slug`),
+                so a search hit lands on the specific partner. `scroll-mt` clears the
+                sticky header, which would otherwise cover the row it scrolled to. */}
+            <article id={p.slug} className="flex h-full scroll-mt-28 flex-col border hairline bg-white p-6 hover:shadow-card sm:flex-row sm:gap-6">
               {p.logo ? (
                 <span className="grid h-24 w-24 shrink-0 place-items-center overflow-hidden border hairline bg-white p-2" role="img" aria-label={`Logo of ${p.name}`}>
                   <AssetImage src={p.logo} alt="" width={192} height={192} className="max-h-full max-w-full object-contain" sizes="96px" />

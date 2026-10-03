@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Magnetic } from "./motion";
+import { isMemberRole, landingFor } from "@/lib/routes";
 
 export function AuthButton({ compact = false }: { compact?: boolean }) {
   const { data, status } = useSession();
@@ -26,14 +27,14 @@ export function AuthButton({ compact = false }: { compact?: boolean }) {
       </>
     );
   }
-  const portalHref = role && ["member", "associate"].includes(role) ? "/portal" : "/admin";
+  const member = isMemberRole(role);
   return (
     <>
       <span className="hidden text-[12.5px] text-ink/60 xl:inline" title={role}>
         {data.user.name}
       </span>
-      <Link href={portalHref} className="whitespace-nowrap bg-primary px-3 py-2 text-[12px] font-semibold text-white hover:bg-forest-700">
-        {role && ["member", "associate"].includes(role) ? "Member Portal →" : "Console →"}
+      <Link href={landingFor(role)} className="whitespace-nowrap bg-primary px-3 py-2 text-[12px] font-semibold text-white hover:bg-forest-700">
+        {member ? "Member Portal →" : "Console →"}
       </Link>
       <button
         onClick={() => signOut({ callbackUrl: "/" })}

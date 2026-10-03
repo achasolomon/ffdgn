@@ -1,6 +1,8 @@
 "use client";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import type { Route } from "next";
+import { motion } from "framer-motion";
 import { EASE_OUT, DUR } from "@/lib/motion";
 
 export function Reveal({
@@ -24,16 +26,17 @@ export function Reveal({
 }
 
 export function SectionHeading({
-  eyebrow, title, lede, align = "left", tone = "dark",
-}: { eyebrow: string; title: React.ReactNode; lede?: string; align?: "left" | "center"; tone?: "dark" | "light" }) {
+  eyebrow, title, lede, align = "left", tone = "dark", as: Heading = "h2",
+}: { eyebrow: string; title: React.ReactNode; lede?: string; align?: "left" | "center"; tone?: "dark" | "light"; as?: "h1" | "h2" | "h3" }) {
+  const reduce = useReducedMotion();
   return (
-    <div className={align === "center" ? "text-center mx-auto max-w-2xl" : "max-w-2xl"}>
+    <motion.div initial={reduce || Heading !== "h1" ? false : { opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: DUR.slow, ease: EASE_OUT }} className={`section-heading ${Heading === "h1" ? "page-heading" : ""} ${align === "center" ? "text-center mx-auto max-w-2xl" : "max-w-2xl"}`}>
       <p className={tone === "light" ? "eyebrow-light" : "eyebrow"}>{eyebrow}</p>
-      <h2 className={`font-display mt-3 text-3xl md:text-[2.6rem] leading-[1.08] ${tone === "light" ? "text-white" : "text-forest-950"}`}>
+      <Heading className={`font-display mt-3 text-3xl md:text-[2.6rem] leading-[1.08] ${tone === "light" ? "text-white" : "text-forest-950"}`}>
         {title}
-      </h2>
+      </Heading>
       {lede && <p className={`mt-4 text-[15px] leading-relaxed ${tone === "light" ? "text-white/70" : "text-ink/70"}`}>{lede}</p>}
-    </div>
+    </motion.div>
   );
 }
 
@@ -56,7 +59,8 @@ export function EmptyState({
   body?: string;
   action?: React.ReactNode;
   eyebrow?: string;
-  href?: string;
+  /** Same-origin path; cast because callers build these from dynamic routes. */
+  href?: Route;
   actionLabel?: string;
 }) {
   const link = action ?? (href && actionLabel ? (

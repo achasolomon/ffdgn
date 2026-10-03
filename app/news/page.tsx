@@ -1,3 +1,5 @@
+import { websiteMetadata } from "@/lib/website-repo";
+import { managedWebsitePage } from "@/components/website-page";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/chrome";
@@ -7,6 +9,9 @@ import { listNews } from "@/lib/repo";
 import { formatDate } from "@/lib/search";
 
 export default async function NewsIndex({ searchParams }: { searchParams: Promise<{ cat?: string }> }) {
+  const managed = await managedWebsitePage("/news");
+  if (managed) return managed;
+
   const news = await listNews();
   const cat = (await searchParams).cat ?? "";
   const filtered = news.filter((n) => !cat || n.category === cat);
@@ -14,7 +19,7 @@ export default async function NewsIndex({ searchParams }: { searchParams: Promis
   return (
     <div className="mx-auto max-w-shell px-5 py-12">
       <Breadcrumbs items={[{ label: "News & Media" }]} />
-      <SectionHeading eyebrow="News & media" title="Official communications from the Forum" lede="News, press releases, statements and speeches — every item carries issuing body and date (institutional trust layer)." />
+      <SectionHeading as="h1" eyebrow="News & media" title="Official communications from the Forum" lede="News, press releases, statements and speeches — every item carries issuing body and date (institutional trust layer)." />
       <div className="mt-4 flex flex-wrap gap-2 text-[13px]">{["", "News", "Press Release", "Statement", "Speech", "Media Coverage"].map((c) => <Link key={c} href={c ? `/news?cat=${encodeURIComponent(c)}` : "/news"} className={`border px-3 py-1.5 ${cat === c || (!cat && !c) ? "bg-primary text-white border-primary" : "border-ink/20 hover:border-primary"}`}>{c || "All"}</Link>)}</div>
       {lead && (
         <Link href={`/news/${lead.slug}`} className="mt-8 grid border hairline bg-white hover:shadow-card md:grid-cols-[1fr_1.4fr]">
@@ -49,9 +54,12 @@ export default async function NewsIndex({ searchParams }: { searchParams: Promis
   );
 }
 
-export const metadata: Metadata = {
+export async function generateMetadata(): Promise<Metadata> {
+ const authored = await websiteMetadata("/news");
+ return authored ?? {
   title: "News & Media",
   description:
     "Official news, press releases, statements and speeches from the Forum of Former Deputy Governors of Nigeria, with issuing body and date on every item.",
   alternates: { canonical: "/news" },
 };
+}

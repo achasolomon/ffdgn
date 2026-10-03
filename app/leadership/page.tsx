@@ -1,39 +1,39 @@
+import { websiteMetadata } from "@/lib/website-repo";
+import { managedWebsitePage } from "@/components/website-page";
+import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/chrome";
-import { SectionHeading } from "@/components/ui";
+import { SectionHeading, EmptyState } from "@/components/ui";
+import { Stagger, StaggerItem } from "@/components/motion";
 import { AssetImage } from "@/components/media";
 import { listLeadership } from "@/lib/repo";
 
-export default async function LeadershipPage() {
-  const leadership = await listLeadership();
-  return (
-    <div className="mx-auto max-w-shell px-5 py-12">
-      <Breadcrumbs items={[{ label: "Leadership" }]} />
-      <SectionHeading eyebrow="Leadership" title="Guided by experience, united by purpose" lede="Presented as an institutional hierarchy — every seat links to a member profile, committees, events and publications." />
-      <div className="mt-10 overflow-x-auto">
-        <ol className="min-w-[640px] space-y-0 text-center">
-          {leadership.map((l, i) => {
-            if (!l.member) return null;
-            return (
-              <li key={l.role}>
-                {i > 0 && <div className="mx-auto h-6 w-px bg-primary/30" aria-hidden />}
-                <Link href={`/members/${l.member.slug}`} className={`mx-auto block max-w-md border px-6 py-5 hover:shadow-card ${i < 2 ? "border-gold/70 bg-paper" : "hairline bg-white"}`}>
-                  {l.member.photo && (
-                    <AssetImage src={l.member.photo} alt={`Portrait of ${l.member.name}`} width={192} height={192} className={`mx-auto rounded-full object-cover ring-2 ring-gold/60 ${i < 2 ? "h-28 w-28" : "h-24 w-24"}`} sizes="112px" />
-                  )}
-                  <p className="mt-3 text-[11px] font-bold uppercase leading-relaxed tracking-[0.18em] text-primary text-balance">{l.role}</p>
-                  <p className="font-display mt-1 text-xl text-forest-950">{l.member.name}</p>
-                  <p className="text-[13px] text-ink/60">{l.member.title}</p>
-                  <p className="mx-auto mt-2 max-w-sm text-[12.5px] italic text-ink/50">{l.remit}</p>
-                </Link>
-              </li>
-            );
-          })}
-        </ol>
-      </div>
-      <p className="mt-8 text-sm text-ink/60">Seats are CMS-managed (Secretariat Console). Former leadership is archived in <Link href="/about/history" className="font-semibold text-primary">institutional memory</Link>.</p>
-    </div>
-  );
+export async function generateMetadata(): Promise<Metadata> {
+ const authored = await websiteMetadata("/leadership");
+ return authored ?? { title: "Leadership" };
 }
+export default async function LeadershipPage() {
+  const managed = await managedWebsitePage("/leadership");
+  if (managed) return managed;
 
-export const revalidate = 300; // CMS-driven: refresh from MySQL every 5 minutes
+  const leadership = await listLeadership();
+  const tiers = [...new Set(leadership.map((seat) => seat.tier))].sort((a, b) => a - b);
+  return <div className="leadership-page mx-auto max-w-shell px-5 py-12">
+    <Breadcrumbs items={[{ label: "About", href: "/about" }, { label: "Leadership" }]} />
+    <SectionHeading as="h1" eyebrow="Leadership" title="Guided by experience, united by purpose" lede="Meet the people entrusted with the Forum's direction, stewardship and service to Nigeria." />
+    <div className="people-introduction"><p className="eyebrow">Our people</p><p>Leadership brings together the experience of public service with a shared commitment to the Forum&rsquo;s purpose. Explore each profile to discover the people behind its work.</p></div>
+    {leadership.length === 0 && <EmptyState title="Leadership profiles are being prepared" description="The Secretariat will publish the current leadership here." />}
+    {tiers.map((tier, index) => <section key={tier} className={`leadership-tier ${index === 0 ? "leadership-tier-featured" : ""}`} aria-labelledby={`tier-${tier}`}>
+      <div className="tier-heading"><p className="eyebrow">Stewardship / {String(index + 1).padStart(2, "0")}</p><h2 id={`tier-${tier}`} className="font-display">{index === 0 ? "Leading the Forum" : "Leadership and service"}</h2></div>
+      <Stagger className="leadership-portraits">{leadership.filter((seat) => seat.tier === tier).map((seat, seatIndex) => <StaggerItem key={`${seat.role}-${seat.member?.slug ?? seatIndex}`}>
+        <article className="portrait-card">
+          <div className="portrait-photo">{seat.member?.photo ? <AssetImage src={seat.member.photo} alt={`Portrait of ${seat.member.name}`} width={600} height={750} className="h-full w-full object-cover object-top" sizes="(max-width: 768px) 100vw, 33vw" /> : <span className="font-display" aria-hidden>{seat.member?.name.slice(0, 1) ?? "F"}</span>}</div>
+          <div className="portrait-copy"><p className="eyebrow">{seat.role}</p><h3 className="font-display">{seat.member?.name ?? "Position vacant"}</h3>{seat.member?.title && <p className="portrait-title">{seat.member.title}</p>}<p className="portrait-remit">{seat.remit}</p>{seat.member && <Link href={`/members/${seat.member.slug}`} className="portrait-link">Explore profile <ArrowRight size={16} /></Link>}</div>
+        </article>
+      </StaggerItem>)}</Stagger>
+    </section>)}
+    <div className="editorial-note"><p className="eyebrow">Institutional continuity</p><p>Discover the people and milestones that shaped the Forum in <Link href="/about/history">our history</Link>.</p></div>
+  </div>;
+}
+export const revalidate = 300;

@@ -17,11 +17,27 @@ export function failFrom(e: unknown) {
   return fail("SERVER_ERROR", "An unexpected error occurred.", 500);
 }
 
+/**
+ * Paging and search parameters from the query string.
+ *
+ * `Number()` returns NaN for anything unparseable, and `Math.max(1, NaN)` is
+ * NaN — so `?page=abc` previously flowed through as NaN and produced a Prisma
+ * query error (500) instead of a validation response. Every numeric parameter
+ * is coerced and range-checked here rather than at each call site.
+ */
+function intParam(raw: string | null, fallback: number, min: number, max: number): number {
+  const parsed = Number(raw ?? fallback);
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(max, Math.max(min, Math.trunc(parsed)));
+}
+
 export function paging(req: Request) {
   const url = new URL(req.url);
-  const page = Math.max(1, Number(url.searchParams.get("page") ?? 1));
-  const perPage = Math.min(50, Math.max(1, Number(url.searchParams.get("per_page") ?? 20)));
-  return { page, perPage, q: (url.searchParams.get("q") ?? "").trim() };
+  const page = intParam(url.searchParams.get("page"), 1, 1, 10_000);
+  const perPage = intParam(url.searchParams.get("per_page"), 20, 1, 50);
+  // Capped so a single query cannot make MySQL scan an unbounded expression.
+  const q = (url.searchParams.get("q") ?? "").trim().slice(0, 100);
+  return { page, perPage, q };
 }
 
 export function pageOf<T>(items: T[], page: number, perPage: number) {

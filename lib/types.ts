@@ -20,7 +20,14 @@ export interface LeadershipSeat { role: string; tier: number; memberSlug: string
 export interface ForumEvent {
   slug: string; title: string; theme: string; kind: "Annual Conference" | "Dialogue" | "Roundtable" | "Workshop" | "Summit";
   startDate: string; endDate: string; venue: string; city: string; status: "Upcoming" | "Ongoing" | "Past";
-  summary: string; programme: { time: string; session: string; speaker?: string }[];
+  summary: string;
+  /**
+   * Long-form write-up of what actually happened at a past event: attendance,
+   * resolutions, outcomes. Optional, and only rendered on past events — an
+   * upcoming event has nothing to report yet.
+   */
+  highlights?: string;
+  programme: { time: string; session: string; speaker?: string }[];
   speakers: string[]; documents: string[]; gallery: string[]; communique?: string;
   coverUrl?: string; guests?: string[];
 }
@@ -40,6 +47,7 @@ export interface NewsItem {
 export interface Committee {
   slug: string; name: string; mandate: string; chair: string;
   members: string[]; meetings: number; documents: string[]; status: "Active" | "Standing" | "Ad-hoc";
+  imageUrl?: string; imageAlt?: string;
 }
 export interface Partnership {
   slug: string; name: string; type: string; since: number;

@@ -6,7 +6,7 @@ export const PERMISSIONS = [
   "members.view", "members.create", "members.update", "members.delete",
   "documents.view", "documents.create", "documents.edit", "documents.publish", "documents.archive", "documents.approve",
   "events.view", "events.create", "events.edit", "events.publish",
-  "committees.manage", "users.manage", "audit.view",
+  "committees.manage", "users.manage", "audit.view", "contact.manage",
   "news.publish", "partnerships.manage", "settings.manage", "media.manage",
 ] as const;
 export type Permission = (typeof PERMISSIONS)[number];
@@ -18,13 +18,13 @@ export type Role =
 
 const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
   super_admin: [...PERMISSIONS],
-  secretariat_admin: ["members.view","members.create","members.update","documents.view","documents.create","documents.edit","documents.publish","events.view","events.create","events.edit","events.publish","committees.manage","news.publish","partnerships.manage","settings.manage","media.manage"],
+  secretariat_admin: ["members.view","members.create","members.update","documents.view","documents.create","documents.edit","documents.publish","events.view","events.create","events.edit","events.publish","committees.manage","news.publish","partnerships.manage","settings.manage","media.manage","contact.manage"],
   membership_admin: ["members.view","members.create","members.update"],
   content_editor: ["documents.view","documents.create","documents.edit","news.publish","media.manage"],
   events_manager: ["events.view","events.create","events.edit","events.publish","media.manage"],
   knowledge_manager: ["documents.view","documents.create","documents.edit","documents.publish","documents.archive"],
   committee_manager: ["committees.manage","documents.view"],
-  communications_officer: ["news.publish","events.view","media.manage"],
+  communications_officer: ["news.publish","events.view","media.manage","contact.manage"],
   auditor: ["audit.view","members.view","documents.view","events.view"],
   member: ["members.view","documents.view","events.view"],
   associate: ["members.view","documents.view","events.view"],
@@ -43,18 +43,12 @@ export const STAFF_ROLES: Role[] = [
 
 export const PORTAL_ROLES: Role[] = [...STAFF_ROLES, "member", "associate"];
 
-/* Audit trail (§30) — production writes go to the append-only `audit_log`
- * table via lib/server-auth.ts `audit()`. The in-memory log below is the
- * preview fallback when no database is configured. */
-export interface AuditEntry {
-  id: string; actor: string; action: string; resource: string;
-  timestamp: string; ip: string; previousValue?: string; newValue?: string;
-}
-export const auditLog: AuditEntry[] = [
-  { id: "a1", actor: "Secretariat Admin", action: "members.status.change", resource: "Member: ngozi-eze", timestamp: "2026-09-28T09:42:00Z", ip: "197.210.x.x", previousValue: "Pending", newValue: "Associate" },
-  { id: "a2", actor: "Knowledge Manager", action: "documents.publish", resource: "Policy Brief No. 18", timestamp: "2026-06-02T10:00:00Z", ip: "197.210.x.x", newValue: "Published" },
-  { id: "a3", actor: "Events Manager", action: "events.update", resource: "Annual Conference 2026", timestamp: "2026-09-20T14:10:00Z", ip: "197.210.x.x", newValue: "Registration open" },
-];
-export function recordAudit(entry: Omit<AuditEntry, "id" | "timestamp">) {
-  auditLog.unshift({ ...entry, id: `a${Date.now()}`, timestamp: new Date().toISOString() });
-}
+/* Audit trail (§30) — writes go to the append-only `audit_log` table via
+ * lib/server-auth.ts `audit()`, which is the only supported path.
+ *
+ * This used to also export an in-memory `auditLog` array seeded with three
+ * fabricated entries and a `recordAudit()` writer. Nothing read it, and
+ * nothing called the writer, but the shape was dangerous: a second audit sink
+ * that silently records nothing is worse than no sink at all, because a future
+ * caller would reasonably assume a `recordAudit` call had been persisted.
+ * Nothing may write here — audit() in lib/server-auth.ts or nothing. */

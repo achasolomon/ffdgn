@@ -1,21 +1,28 @@
+import { websiteMetadata } from "@/lib/website-repo";
+import { managedWebsitePage } from "@/components/website-page";
 import Link from "next/link";
 import { ArrowRight, CalendarDays, MapPin, FileText, Users, Handshake, Landmark, ShieldCheck, BookOpen, Sprout } from "lucide-react";
-import { getSettings, listDocs, listEvents, listFocusAreas, listLeadership, listMedia, listMembers, listMetrics, listNews, listPartnerships, listTimeline } from "@/lib/repo";
+import { getSettings, listDocs, listEvents, listFocusAreas, listLeadership, listMedia, listMembers, listMetrics, listNews, listTimeline } from "@/lib/repo";
 import { formatDate } from "@/lib/search";
+import { asRoute } from "@/lib/routes";
 import { Reveal, SectionHeading, GoldRule, EmptyState } from "@/components/ui";
 import { Stagger, StaggerItem } from "@/components/motion";
 import { AssetImage } from "@/components/media";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { Hero } from "@/components/hero";
+import { EditorialImage } from "@/components/editorial-image";
 import { MetricsStrip } from "@/components/metrics-strip";
 
 const FOCUS_ICONS = [Landmark, FileText, ShieldCheck, Sprout, BookOpen, Handshake];
 
 export default async function HomePage() {
-  const [settings, metrics, news, events, focus, timeline, leadership, documents, partnerships, members, gallery] = await Promise.all([
+  const managed = await managedWebsitePage("/");
+  if (managed) return managed;
+
+  const [settings, metrics, news, events, focus, timeline, leadership, documents, members, gallery] = await Promise.all([
     getSettings(), listMetrics(), listNews(), listEvents(), listFocusAreas(),
-    listTimeline(), listLeadership(), listDocs(), listPartnerships(), listMembers(),
-    listMedia({ kind: "IMAGE" }),
+    listTimeline(), listLeadership(), listDocs(), listMembers(),
+    listMedia({ kind: "IMAGE", galleryOnly: true }),
   ]);
   const isPhoto = (u: string) => /\.(jpe?g|png|webp)$/i.test(u);
   const galleryPreview = gallery
@@ -30,12 +37,31 @@ export default async function HomePage() {
   const photoBySlug = new Map(members.map((m) => [m.slug, m.photo]));
 
   return (
-    <>
+    <div className="home-editorial">
       <Hero settings={settings} />
+      <section className="about-editorial" aria-labelledby="home-about">
+        <div className="mx-auto grid max-w-shell gap-10 px-5 py-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20 lg:py-24">
+          <Reveal className="relative">
+            <EditorialImage src={settings["home.about_image"]} alt={settings["home.about_image_alt"]} className="min-h-[320px] h-full lg:min-h-[430px]" />
+            <div className="about-seal" aria-hidden><AssetImage src="/assets/brand/logo-whitebg.jpg" alt="" width={120} height={120} className="h-20 w-20 rounded-full object-cover" sizes="80px" /></div>
+          </Reveal>
+          <Reveal className="flex flex-col justify-center" delay={0.12}>
+            <p className="eyebrow-light">{settings["home.about_eyebrow"]}</p>
+            <h2 id="home-about" className="font-display mt-5 max-w-xl text-4xl leading-[1.08] text-white md:text-5xl">{settings["home.about_title"]}</h2>
+            <GoldRule className="my-6" />
+            <div className="max-w-xl space-y-3 text-[15px] leading-[1.85] text-white/75">
+              {settings["home.about_body"].split(/\n\s*\n/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+            </div>
+            <Link href="/about" className="editorial-cta mt-7 inline-flex items-center gap-5 self-start border-b border-gold/60 pb-3 text-sm font-semibold text-gold">
+              {settings["home.about_cta"]} <ArrowRight size={18} aria-hidden />
+            </Link>
+          </Reveal>
+        </div>
+      </section>
       {metrics.length > 0 && <MetricsStrip metrics={metrics} />}
 
       {/* ——— LATEST ACTIVITY ——— */}
-      <section className="mx-auto max-w-shell px-5 py-14" aria-labelledby="latest">
+      <section className="activity-editorial mx-auto max-w-shell px-5 py-16 md:py-24" aria-labelledby="latest">
         <Reveal>
           <div className="flex items-end justify-between">
             <SectionHeading eyebrow="Latest from the Forum" title={<span id="latest">Institutional activity, as it happens</span>} />
@@ -45,8 +71,8 @@ export default async function HomePage() {
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
           <Reveal>
             {featured ? (
-            <article className="grid h-full border hairline bg-white shadow-card sm:grid-cols-[240px_1fr]">
-              <div className="img-zoom relative min-h-[200px] overflow-hidden bg-forest-900">
+            <article className="news-feature grid h-full overflow-hidden bg-white shadow-card">
+              <div className="img-zoom relative min-h-[320px] overflow-hidden bg-forest-900">
                 {featured.image ? (
                   <AssetImage src={featured.image} alt={featured.title} width={480} height={400} className="absolute inset-0 h-full w-full object-cover" sizes="(max-width: 768px) 100vw, 240px" />
                 ) : (
@@ -76,10 +102,10 @@ export default async function HomePage() {
           </Reveal>
           <Reveal>
             {upcoming ? (
-            <article className="relative grid h-full overflow-hidden bg-forest-950 text-white sm:grid-cols-[1fr_1fr]">
-              <div className="relative min-h-[240px]">
+            <article className="relative grid h-full overflow-hidden bg-forest-950 text-white">
+              <div className="relative flex min-h-[180px] items-center justify-center bg-forest-900">
                 {upcoming.coverUrl ? (
-                  <AssetImage src={upcoming.coverUrl} alt={`${upcoming.title} — official flyer`} width={640} height={640} className="absolute inset-0 h-full w-full object-cover object-top" sizes="(max-width: 768px) 100vw, 500px" />
+                  <AssetImage src={upcoming.coverUrl} alt={`${upcoming.title} — official flyer`} width={640} height={640} className="block max-h-[400px] h-auto w-full object-contain" sizes="(max-width: 1024px) 100vw, 50vw" />
                 ) : (
                   <span className="absolute inset-y-0 right-0 w-full bg-gradient-to-l from-gold/25 to-transparent" aria-hidden />
                 )}
@@ -110,10 +136,10 @@ export default async function HomePage() {
       </section>
 
       {/* ——— OUR ROLE (editorial numbered system) ——— */}
-      <section className="border-y hairline bg-white" aria-labelledby="role">
+      <section className="role-editorial brand-section" aria-labelledby="role">
         <div className="mx-auto max-w-shell px-5 py-14">
-          <Reveal><SectionHeading eyebrow="Our role" title={<span id="role">What the Forum does</span>} lede="Six standing areas of engagement. Each connects to live publications, members, events and committees — not a brochure list." /></Reveal>
-          <Stagger className="mt-8 grid border-t hairline md:grid-cols-2 lg:grid-cols-3">
+          <Reveal><SectionHeading eyebrow="Our role" title={<span id="role">What the Forum does</span>} lede="Sharing knowledge. Strengthening institutions. Contributing to a nation that works for everyone." tone="light" /></Reveal>
+          <Stagger className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {focus.length === 0 ? (
               <p className="col-span-full border-b hairline px-5 py-8 text-center text-sm text-ink/55" role="status">
                 The Forum&rsquo;s areas of engagement are being updated by the Secretariat.
@@ -122,10 +148,10 @@ export default async function HomePage() {
               const Icon = FOCUS_ICONS[i % FOCUS_ICONS.length];
               return (
                 <StaggerItem key={r.slug}>
-                  <Link href={r.href} className="role-row group flex gap-4 border-b hairline px-5 py-6">
+                  <Link href={asRoute(r.href)} className="role-row group relative flex flex-col gap-5 px-6 py-8">
                     {r.image ? (
-                      <span className="hidden h-16 w-20 shrink-0 overflow-hidden border hairline sm:block" aria-hidden>
-                        <AssetImage src={r.image} alt="" width={160} height={128} className="h-full w-full object-cover" sizes="80px" />
+                      <span className="h-32 w-full shrink-0 overflow-hidden" aria-hidden>
+                        <AssetImage src={r.image} alt="" width={640} height={320} className="h-full w-full object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
                       </span>
                     ) : (
                       <span className="font-display text-lg text-gold-deep">{String(i + 1).padStart(2, "0")}</span>
@@ -144,10 +170,10 @@ export default async function HomePage() {
       </section>
 
       {/* ——— INSTITUTIONAL MEMORY ——— */}
-      <section className="mx-auto max-w-shell px-5 py-14" aria-labelledby="memory">
+      <section className="memory-editorial mx-auto max-w-shell px-5 py-16 md:py-24" aria-labelledby="memory">
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-4">
-            <SectionHeading eyebrow="Institutional memory" title={<span id="memory">The Forum through the years</span>} lede="History as structured data: every era connects to events, people, documents and decisions." />
+            <SectionHeading eyebrow="Institutional memory" title={<span id="memory">The Forum through the years</span>} lede="The milestones, people and decisions that continue to shape our shared purpose." />
             <Link href="/about/history" className="border border-primary/30 px-5 py-2.5 text-sm font-semibold text-primary hover:bg-primary hover:text-white">Explore the Archive →</Link>
           </div>
         </Reveal>
@@ -177,7 +203,7 @@ export default async function HomePage() {
       </section>
 
       {/* ——— LEADERSHIP HIERARCHY ——— */}
-      <section className="border-y hairline bg-white" aria-labelledby="leadership">
+      <section className="leadership-editorial" aria-labelledby="leadership">
         <div className="mx-auto max-w-shell px-5 py-14">
           <Reveal>
             <div className="flex flex-wrap items-end justify-between gap-4">
@@ -185,64 +211,16 @@ export default async function HomePage() {
               <Link href="/leadership" className="text-sm font-semibold text-primary link-underline">View Full Leadership →</Link>
             </div>
           </Reveal>
-          <div className="mt-10">
-            {leadership.length === 0 ? (
-              <EmptyState
-                eyebrow="Awaiting CMS data"
-                title="Leadership directory not yet published"
-                description="The Forum's leadership records are managed in the Secretariat console and will appear here once published."
-                href="/leadership"
-                actionLabel="Open leadership page"
-              />
-            ) : (
-            <>
-            <Reveal>
-              <div className="mx-auto max-w-xl border border-gold/60 bg-paper px-6 py-6 text-center">
-                {photoBySlug.get(leadership[0].member?.slug ?? "") && (
-                  <AssetImage src={photoBySlug.get(leadership[0].member?.slug ?? "")!} alt={`Portrait of ${leadership[0].member?.name}`} width={224} height={224} className="mx-auto h-28 w-28 rounded-full object-cover ring-2 ring-gold/60" sizes="112px" />
-                )}
-                <p className="eyebrow-gold mt-3">{leadership[0].role}</p>
-                <p className="font-display mt-1 text-2xl text-forest-950">{leadership[0].member?.name ?? "Position vacant"}</p>
-                <GoldRule className="mx-auto mt-3" />
-              </div>
-              {leadership[1] && (
-                <>
-                <div className="mx-auto h-6 w-px bg-primary/30" aria-hidden />
-                <div className="mx-auto max-w-xl border hairline bg-white px-6 py-6 text-center shadow-card">
-                  {photoBySlug.get(leadership[1].member?.slug ?? "") && (
-                    <AssetImage src={photoBySlug.get(leadership[1].member?.slug ?? "")!} alt={`Portrait of ${leadership[1].member?.name}`} width={224} height={224} className="mx-auto h-28 w-28 rounded-full object-cover ring-2 ring-gold/60" sizes="112px" />
-                  )}
-                  <p className="eyebrow mt-3">{leadership[1].role}</p>
-                  <p className="font-display mt-1 text-2xl text-forest-950">{leadership[1].member?.name ?? "Position vacant"}</p>
-                  <p className="mt-1 text-[13px] text-ink/60">{leadership[1].member?.title ?? ""}</p>
-                </div>
-                </>
-              )}
-            </Reveal>
-            {leadership.length > 2 && (
-            <Stagger className="mx-auto mt-6 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {leadership.slice(2, 6).map((l) => {
-                const m = l.member;
-                const photo = m ? photoBySlug.get(m.slug) : undefined;
-                return (
-                  <StaggerItem key={l.role}>
-                    <Link href="/leadership" className="block border hairline bg-paper px-5 py-5 text-center hover:bg-white hover:shadow-card">
-                      {photo ? (
-                        <AssetImage src={photo} alt={m?.name ?? l.role} width={160} height={160} className="mx-auto h-20 w-20 rounded-full object-cover ring-2 ring-gold/60" sizes="80px" />
-                      ) : (
-                        <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-forest-950 font-display text-lg text-gold" aria-hidden>{m?.name.split(" ").slice(-1)[0]?.[0] ?? "F"}</span>
-                      )}
-                      <span className="mt-3 block text-[11px] font-bold uppercase leading-relaxed tracking-[0.14em] text-primary text-balance">{l.role}</span>
-                      <span className="mt-1 block font-display text-lg leading-tight text-forest-950">{m?.name}</span>
-                    </Link>
-                  </StaggerItem>
-                );
-              })}
-            </Stagger>
-            )}
-            </>
-            )}
-          </div>
+          <Stagger className="leadership-grid mt-10">
+            {leadership.length === 0 ? <EmptyState title="Leadership directory not yet published" description="Leadership profiles will appear once published by the Secretariat." href="/leadership" actionLabel="View leadership" /> : leadership.slice(0, 6).map((seat) => {
+              const member = seat.member;
+              const photo = member ? photoBySlug.get(member.slug) : undefined;
+              return <StaggerItem key={member?.slug ?? seat.role} className="leader-card">
+                {photo ? <AssetImage src={photo} alt={member?.name ?? seat.role} width={220} height={270} sizes="110px" /> : <span className="grid h-24 w-24 shrink-0 place-items-center rounded-full bg-gold/15 font-display text-3xl text-gold">{member?.name.slice(0, 1) ?? "F"}</span>}
+                <div><p className="eyebrow">{seat.role}</p><h3 className="font-display mt-3">{member?.name ?? "Position vacant"}</h3>{member?.title && <p className="mt-2 text-xs leading-relaxed">{member.title}</p>}<Link href="/leadership" className="mt-4 inline-flex items-center gap-2 text-xs font-semibold">View leadership <ArrowRight size={14} /></Link></div>
+              </StaggerItem>;
+            })}
+          </Stagger>
         </div>
       </section>
 
@@ -300,8 +278,8 @@ export default async function HomePage() {
         </Reveal>
       </section>
 
-      {/* ——— NEWS + PARTNERSHIPS ——— */}
-      <section className="border-t hairline bg-white" aria-label="News and partnerships">
+      {/* ——— NEWS + PROGRAMS ——— */}
+      <section className="news-programs-editorial" aria-label="News and programs">
         <div className="mx-auto grid max-w-shell gap-10 px-5 py-14 lg:grid-cols-[1.2fr_1fr]">
           <div>
             <div className="flex items-center justify-between">
@@ -334,40 +312,28 @@ export default async function HomePage() {
           </div>
           <div>
             <div className="flex items-center justify-between">
-              <h2 className="font-display text-2xl text-forest-950">Partnerships</h2>
-              <Link href="/partnerships" className="text-sm font-semibold text-primary link-underline">View all →</Link>
+              <h2 className="font-display text-2xl text-forest-950">Programs</h2>
+              <Link href="/programs" className="text-sm font-semibold text-primary link-underline">Explore programs <ArrowRight className="inline" size={14} /></Link>
             </div>
-            <p className="mt-2 text-sm text-ink/60">Collaborating for good governance and national development.</p>
-            <ul className="mt-5 grid grid-cols-1 gap-3">
-              {partnerships.length === 0 ? (
-                <li className="border hairline bg-paper px-4 py-3 text-sm text-ink/55" role="status">Partnership agreements are still being formalised and will be listed here once countersigned.</li>
-              ) : partnerships.slice(0, 4).map((p) => (
-                <li key={p.slug} className="flex items-center gap-3 border hairline bg-paper px-4 py-3">
-                  {p.logo ? (
-                    <span className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-full border hairline bg-white" role="img" aria-label={`Logo of ${p.name}`}>
-                      <AssetImage src={p.logo} alt="" width={72} height={72} className="h-full w-full object-cover" sizes="36px" />
-                    </span>
-                  ) : (
-                    <span className="grid h-9 w-9 place-items-center rounded-full bg-forest-950 text-[13px] font-bold text-gold" aria-hidden>{p.name[0]}</span>
-                  )}
-                  <span><span className="block text-sm font-semibold text-forest-950">{p.name}</span><span className="block text-[12px] text-ink/55">{p.type} · since {p.since}</span></span>
-                </li>
-              ))}
-            </ul>
+            <p className="mt-2 text-sm text-ink/60">Turning experience into economic opportunity and constructive policy dialogue.</p>
+            <div className="mt-5 space-y-3">
+              <Link href="/polish-nigeria" className="program-feature program-polish"><span className="eyebrow">01 · Trade &amp; investment</span><h3 className="mt-2 font-display text-xl">Polish Nigeria</h3><p className="mt-2 text-sm">Business connections, investment facilitation and cultural exchange between Poland and Nigeria.</p><span className="mt-3 inline-flex items-center gap-2 text-sm font-semibold">Explore program <ArrowRight size={16} /></span></Link>
+              <Link href="/renewed-hope" className="program-feature program-hope"><span className="eyebrow">02 · Policy &amp; peer review</span><h3 className="mt-2 font-display text-xl">Renewed Hope</h3><p className="mt-2 text-sm">Constructive assessment and recommendations to support the Renewed Hope Agenda.</p><span className="mt-3 inline-flex items-center gap-2 text-sm font-semibold">Explore program <ArrowRight size={16} /></span></Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ——— GALLERY STRIP ——— */}
-      <section className="border-t hairline bg-white" aria-labelledby="gallery-strip">
+      <section className="gallery-editorial brand-section" aria-labelledby="gallery-strip">
         <div className="mx-auto max-w-shell px-5 py-14">
           <Reveal>
             <div className="flex flex-wrap items-end justify-between gap-4">
-              <SectionHeading eyebrow="In pictures" title={<span id="gallery-strip">The Forum in focus</span>} lede="Conference floors, portraits and press moments — the full archive lives in the photo gallery." />
+              <SectionHeading eyebrow="In pictures" title={<span id="gallery-strip">The Forum in focus</span>} lede="People, conversations and moments that move the Forum forward." tone="light" />
               <Link href="/media/photos" className="text-sm font-semibold text-primary link-underline">Open photo gallery →</Link>
             </div>
           </Reveal>
-          <Stagger className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+          <Stagger className="gallery-grid mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
             {galleryPreview.map((g) => (
               <StaggerItem key={g.id}>
                 <Link href="/media/photos" className="group block overflow-hidden border hairline" aria-label={`View in gallery: ${g.title}`}>
@@ -385,7 +351,7 @@ export default async function HomePage() {
       </section>
 
       {/* ——— NEWSLETTER / TRUST ——— */}
-      <section className="bg-paper" aria-label="Stay informed">
+      <section className="newsletter-editorial" aria-label="Stay informed">
         <div className="mx-auto flex max-w-shell flex-col items-start justify-between gap-5 px-5 py-10 md:flex-row md:items-center">
           <div className="flex items-start gap-3">
             <Users size={26} className="mt-0.5 text-primary" />
@@ -399,7 +365,7 @@ export default async function HomePage() {
       </section>
 
       {/* Members preview strip (quiet, avoids card-noise) */}
-      <section className="mx-auto max-w-shell px-5 pb-16" aria-label="Members preview">
+      <section className="mx-auto max-w-shell px-5 py-10" aria-label="Members preview">
         <div className="flex items-end justify-between">
           <p className="eyebrow">
           The membership · {members.length === 0
@@ -409,8 +375,10 @@ export default async function HomePage() {
           <Link href="/members" className="text-sm font-semibold text-primary link-underline">Open directory →</Link>
         </div>
       </section>
-    </>
+    </div>
   );
 }
 
 export const revalidate = 300; // CMS-driven: refresh from MySQL every 5 minutes
+
+export async function generateMetadata() {return await websiteMetadata("/") ?? {}; }

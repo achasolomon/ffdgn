@@ -1,5 +1,6 @@
 "use client";
-import { animate, motion, useInView, useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
+import { animate, motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { EASE_OUT, DUR, SPRING_CALM, staggerParent, staggerChild } from "@/lib/motion";
 

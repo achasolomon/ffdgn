@@ -1,8 +1,8 @@
 import { db, dbReady, fail, failFrom, ok } from "../../_lib";
-import { requirePermission, requireAuth, audit } from "@/lib/server-auth";
+import { requirePermission, requireAuth, getAuth, audit } from "@/lib/server-auth";
 import { allowedTransition, prettyStatus, type DocStatusKey } from "@/lib/workflow";
 import { hasPermission } from "@/lib/auth";
-import { clientIp } from "@/lib/rate-limit";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 import { revalidatePublicSite } from "@/lib/revalidate";
 
 const VISIBILITIES = ["PUBLIC", "MEMBERS_ONLY", "COMMITTEE_ONLY", "SECRETARIAT_ONLY", "PRIVATE"] as const;
@@ -63,6 +63,15 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ slug: 
     // lets an anonymous caller distinguish a real slug (workflow error) from a
     // fake one (404), which enumerates unpublished and restricted documents.
     await requireAuth();
+
+    // Throttled per authenticated account, not per IP: a workflow queue is
+    // driven by one or two officers and they must not be blocked by a shared
+    // office NAT.
+    const auth0 = await getAuth();
+    if (auth0) {
+      const gate = await rateLimit(`doc.workflow:${auth0.user.id}`, 120, 10 * 60 * 1000);
+      if (!gate.ok) return fail("RATE_LIMITED", "Too many workflow actions. Try again shortly.", 429);
+    }
 
     const body = (await req.json().catch(() => null)) as { to?: string; visibility?: string } | null;
     const to = (body?.to ?? "").replace(/ /g, "_") as DocStatusKey;

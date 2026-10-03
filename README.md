@@ -61,6 +61,16 @@ Seeded accounts (LOCAL ONLY — rotate before any deployment):
 - Secretariat console (`/admin/media`, `media.manage`): validated uploads
   (images ≤10 MB, video ≤200 MB, MIME allow-list, stored under `public/uploads` — swap to S3/CDN
   in production) + YouTube/Vimeo cataloguing. Every ingest is audit-logged.
+- News, events, committees, partnerships, homepage structure, member profiles, and site navigation
+  have audited admin workflows. `/admin/content/pages` edits About, Governance, Privacy and
+  Accessibility copy; public page rendering remains escaped plain text.
+- The Knowledge editor accepts PDF uploads up to 25 MB. PDFs are signature-checked and stored
+  outside `public/` at `.data/documents`; `/api/v1/documents/:slug/download` enforces publication,
+  visibility and `documents.view` before streaming. Mount `.data/documents` on durable shared
+  storage in production or replace the filesystem adapter before deploying multiple instances.
+- Member portal workspaces support event registration, committee-scoped discussions and replies,
+  notifications, committee meetings/minutes, and recommendation drafts/submission/review. These
+  records are private to signed-in accounts and committee membership is checked server-side.
 - `scripts/smoke-media.ps1` — 13-assertion media verification incl. upload RBAC (all passing).
 - `/login` sign-in page; header shows session state (sign in → name/role → sign out).
 - `/portal` greets the signed-in user; `/admin` shows live MySQL counts + audit excerpt.

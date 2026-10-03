@@ -2,7 +2,7 @@ import type { Committee, ForumEvent, KnowledgeDoc, LeadershipSeat, Member, NewsI
 
 /* ————————————————— Institutional metrics (CMS-driven, §7.04) ————————————————— */
 export const metrics = [
-  { value: "18+", label: "Years of Institutional Experience", href: "/about/history" },
+  { value: "12+", label: "Years of Institutional Experience", href: "/about/history" },
   { value: "36", label: "States Represented", href: "/members" },
   { value: "248+", label: "Former Deputy Governors", href: "/members" },
   { value: "186", label: "Institutional Publications", href: "/knowledge" },
@@ -16,6 +16,7 @@ export const leadership: LeadershipSeat[] = [
   { role: "Deputy National Chairman (South)", tier: 2, memberSlug: "hazeem-gbolarumi", remit: "Coordinates the Forum across the southern states." },
   { role: "National Treasurer", tier: 2, memberSlug: "pauline-tallen", remit: "Stewardship of Forum resources." },
   { role: "Chairman, Board of Trustees", tier: 2, memberSlug: "abdulmalik-mahood", remit: "Guardianship of mandate and governance." },
+  { role: "Director-General", tier: 2, memberSlug: "kenneth-ibe-kalu", remit: "Heads the Secretariat; operational arm of the Forum." },
   { role: "National Patron", tier: 0, memberSlug: "abdullahi-ganduje", remit: "Counsel and support to the Forum." },
   { role: "National Patron", tier: 0, memberSlug: "aliyu-wamakko", remit: "Counsel and support to the Forum." },
 ];
@@ -119,7 +120,7 @@ export const members: Member[] = [
     visibility: "PUBLIC", publications: [], events: [],
   },
   {
-    slug: "abdulmalik-mahood", name: "H.E. Abdulmalik Mahood", title: "Former Deputy Governor", state: "—",
+    slug: "abdulmalik-mahood", name: "H.E. Abdulmalik Mahmood", title: "Former Deputy Governor", state: "—",
     region: "North-Central", category: "Former", status: "Active",
     service: [], committees: [], leadershipRole: "Chairman, Board of Trustees",
     photo: "/assets/leadership/abdulmalik-mahood.jpeg",
@@ -127,8 +128,17 @@ export const members: Member[] = [
     visibility: "PUBLIC", publications: [], events: [],
   },
   {
+    slug: "kenneth-ibe-kalu", name: "Dr Kenneth Ibe-Kalu", title: "Director-General", state: "—",
+    region: "North-Central", category: "Secretariat", status: "Active",
+    service: [], committees: [], leadershipRole: "Director-General",
+    photo: "/assets/leadership/kenneth-ibe-kalu.jpg",
+    bio: "Director-General of the Forum, heading the Secretariat.",
+    visibility: "PUBLIC", publications: [], events: [],
+  },
+  {
     slug: "goodluck-jonathan", name: "H.E. Dr Goodluck Ebele Jonathan, GCFR", title: "Former President, Federal Republic of Nigeria", state: "Bayelsa",
     region: "South-South", category: "Former", status: "Honorary",
+    photo: "/assets/leadership/goodluck-jonathan.jpg",
     service: [], committees: [],
     bio: "Former President of Nigeria and Grand Patron of the Forum.",
     visibility: "PUBLIC", publications: [], events: [],
@@ -136,6 +146,7 @@ export const members: Member[] = [
   {
     slug: "aliyu-wamakko", name: "H.E. Sen. Aliyu M. Wamakko, CON", title: "Former Governor", state: "Sokoto",
     region: "North-West", category: "Former", status: "Honorary",
+    photo: "/assets/leadership/aliyu-wamakko.png",
     service: [], committees: [],
     bio: "Former Governor of Sokoto State and National Patron of the Forum.",
     visibility: "PUBLIC", publications: [], events: [],
@@ -143,6 +154,7 @@ export const members: Member[] = [
   {
     slug: "abdullahi-ganduje", name: "H.E. Dr Abdullahi Umar Ganduje, CON", title: "Former Governor", state: "Kano",
     region: "North-West", category: "Former", status: "Honorary",
+    photo: "/assets/leadership/abdullahi-ganduje.jpg",
     service: [], committees: [],
     bio: "Former Governor of Kano State and National Patron of the Forum.",
     visibility: "PUBLIC", publications: [], events: [],
@@ -327,10 +339,12 @@ export const partnerships: Partnership[] = [
 
 /* ————————————————— Institutional memory timeline (§10/57) ————————————————— */
 export const timeline: TimelineEntry[] = [
-  { year: 2008, title: "Inaugural Meeting & Forum Establishment", summary: "Founding convening of former Deputy Governors; mandate adopted.", links: [{ label: "About the Forum", href: "/about" }] },
+  { year: 2010, title: "Rockview Founding Meeting", summary: "Former deputy governors unanimously agree at Rockview Hotel, Abuja to form the Forum; Abdulmalik Mahmood adopted as Pioneer National Chairman.", links: [{ label: "About the Forum", href: "/about" }] },
   { year: 2012, title: "National Dialogue on State Governance", summary: "First structured policy dialogue; early communiqués archived.", links: [{ label: "Knowledge Centre", href: "/knowledge" }] },
+  { year: 2014, title: "Incorporation", summary: "The Forum is incorporated on 25 April 2014.", links: [{ label: "The Inspiration", href: "/about" }] },
   { year: 2016, title: "Institutional Strengthening Initiative", summary: "Committees formalised; peer-review mechanism piloted.", links: [{ label: "Committees", href: "/committees" }] },
   { year: 2020, title: "Policy Dialogue Series & Publications", summary: "Standing research output begins; reports and briefs published.", links: [{ label: "Publications", href: "/knowledge" }] },
+  { year: 2022, title: "National Conference, Akwa Ibom", summary: "AGM/Congress and national conference on Nation Building in Challenging Times.", links: [{ label: "2022 Conference", href: "/events/national-conference-2022" }] },
   { year: 2024, title: "Strategic Plan: Leadership, Legacy", summary: "Legacy framework and conference intelligence cycle adopted.", links: [{ label: "2024 Conference", href: "/events/national-conference-2024" }] },
   { year: 2026, title: "Digital Institution Launched", summary: "Public website, member portal and secretariat console unified.", links: [{ label: "5th National Conference 2026", href: "/events/fifth-national-conference-2026" }] },
 ];

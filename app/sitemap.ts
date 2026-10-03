@@ -1,32 +1,55 @@
 import type { MetadataRoute } from "next";
 import { listDocs, listEvents, listNews, listMembers } from "@/lib/repo";
+import { STATIC_ROUTES, type StaticRoute } from "@/lib/routes";
+import { listPublishedWebsitePages } from "@/lib/website-repo";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ffdgn.org.ng";
 
 type Entry = { path: string; lastModified?: Date; changeFrequency?: "daily" | "weekly" | "monthly" | "yearly"; priority: number };
 
+/**
+ * Per-route weight and cadence.
+ *
+ * Keyed off lib/routes.ts so the sitemap cannot drift from the set of real
+ * pages: adding a route without an entry here fails typecheck, and deleting a
+ * page leaves a key that no longer matches STATIC_ROUTES.
+ */
+const STATIC_META: Record<StaticRoute, Omit<Entry, "path">> = {
+  "/": { priority: 1, changeFrequency: "weekly" },
+  "/about": { priority: 0.7 },
+  "/about/history": { priority: 0.6 },
+  "/about/governance": { priority: 0.6 },
+  "/leadership": { priority: 0.7 },
+  "/members": { priority: 0.7 },
+  "/events": { priority: 0.7 },
+  "/knowledge": { priority: 0.8 },
+  "/news": { priority: 0.8 },
+  "/committees": { priority: 0.6 },
+  "/peer-review": { priority: 0.6 },
+  "/mentorship": { priority: 0.6 },
+  "/partnerships": { priority: 0.6 },
+  "/programs": { priority: 0.7 },
+  "/polish-nigeria": { priority: 0.7 },
+  "/renewed-hope": { priority: 0.7 },
+  "/media/photos": { priority: 0.5 },
+  "/media/videos": { priority: 0.5 },
+  "/contact": { priority: 0.6 },
+  "/accessibility": { priority: 0.2, changeFrequency: "yearly" },
+  "/privacy": { priority: 0.2, changeFrequency: "yearly" },
+  "/search": { priority: 0.1, changeFrequency: "monthly" },
+  // The human-readable index of this very sitemap: useful for crawlers that do
+  // not consume sitemap.xml, harmless otherwise.
+  "/sitemap": { priority: 0.1, changeFrequency: "monthly" },
+};
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  const staticRoutes: Entry[] = [
-    { path: "/", priority: 1, changeFrequency: "weekly" },
-    { path: "/about", priority: 0.7 },
-    { path: "/about/history", priority: 0.6 },
-    { path: "/about/governance", priority: 0.6 },
-    { path: "/leadership", priority: 0.7 },
-    { path: "/members", priority: 0.7 },
-    { path: "/events", priority: 0.7 },
-    { path: "/knowledge", priority: 0.8 },
-    { path: "/news", priority: 0.8 },
-    { path: "/committees", priority: 0.6 },
-    { path: "/partnerships", priority: 0.6 },
-    { path: "/media/photos", priority: 0.5 },
-    { path: "/media/videos", priority: 0.5 },
-    { path: "/contact", priority: 0.6 },
-    { path: "/accessibility", priority: 0.2, changeFrequency: "yearly" },
-    { path: "/privacy", priority: 0.2, changeFrequency: "yearly" },
-    { path: "/search", priority: 0.1, changeFrequency: "monthly" },
-  ];
+  const staticRoutes: Entry[] = STATIC_ROUTES.filter(path => path !== "/partnerships").map((path) => ({ path, ...STATIC_META[path] }));
+  const authored = await listPublishedWebsitePages();
+  for (const draft of authored) {
+    if (!staticRoutes.some(entry => entry.path === draft.page.path)) staticRoutes.push({path:draft.page.path,priority:0.6,lastModified:new Date(draft.savedAt)});
+  }
 
   const dynamicRoutes: Entry[] = [];
 
@@ -76,7 +99,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
-  return [...staticRoutes, ...dynamicRoutes].map((e) => ({
+  return [...new Map([...staticRoutes, ...dynamicRoutes].map(entry=>[entry.path,entry])).values()].map((e) => ({
     url: `${BASE}${e.path}`,
     lastModified: e.lastModified ?? now,
     changeFrequency: e.changeFrequency ?? ("weekly" as const),

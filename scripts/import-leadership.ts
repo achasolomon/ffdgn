@@ -29,7 +29,7 @@ async function main() {
       bio: "Former Deputy Governor of Plateau State and former Minister of Women Affairs. National Treasurer of the Forum of Former Deputy Governors of Nigeria.",
     },
     {
-      slug: "abdulmalik-mahood", fullName: "H.E. Abdulmalik Mahood", title: "Former Deputy Governor",
+      slug: "abdulmalik-mahood", fullName: "H.E. Abdulmalik Mahmood", title: "Former Deputy Governor",
       state: "—", region: "North-Central", leadershipRole: "Chairman, Board of Trustees",
       bio: "Former Deputy Governor and Chairman of the Board of Trustees of the Forum of Former Deputy Governors of Nigeria.",
     },
@@ -155,6 +155,25 @@ async function main() {
     data: { imageUrl: "/assets/news/birthday.jpg" },
   });
   console.log("news image: birthday.jpg");
+
+  // ——— Conference speakers (CMS-managed; bios compiled by Secretariat) ———
+  const speakers: { slug: string; name: string; role: string; keynote: boolean; bio: string | null; position: number }[] = [
+    { slug: "jerry-gana", name: "Prof. Jerry Gana", role: "Keynote Speaker", keynote: true, position: 0, bio: "Former Minister of Information and respected statesman, delivering the keynote address at the 5th National Conference." },
+    { slug: "mkpa-agu-mkpa", name: "Prof. Mkpa Agu Mkpa", role: "Conference Speaker", keynote: false, position: 1, bio: null },
+    { slug: "taye-obateru", name: "Prof. Taye Obateru", role: "Conference Speaker", keynote: false, position: 2, bio: null },
+    { slug: "victor-dugga", name: "Prof. Victor Dugga", role: "Conference Speaker", keynote: false, position: 3, bio: null },
+    { slug: "ayobami-hammed", name: "Prof. Ayobami Hammed", role: "Conference Speaker", keynote: false, position: 4, bio: null },
+    { slug: "iniobong-uko", name: "Prof. Iniobong Uko", role: "Conference Speaker", keynote: false, position: 5, bio: null },
+    { slug: "umaru-pate", name: "Prof. Umaru A. Pate", role: "Conference Speaker", keynote: false, position: 6, bio: null },
+  ];
+  for (const s of speakers) {
+    await db.speaker.upsert({
+      where: { slug: s.slug },
+      update: { name: s.name, role: s.role, keynote: s.keynote, bio: s.bio, eventId: conf.id, position: s.position, visibility: "PUBLIC" },
+      create: { slug: s.slug, name: s.name, role: s.role, keynote: s.keynote, bio: s.bio, eventId: conf.id, position: s.position, visibility: "PUBLIC" },
+    });
+  }
+  console.log("speakers:", speakers.length);
 
   const counts = {
     members: await db.member.count(), events: await db.forumEvent.count(),

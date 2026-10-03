@@ -5,9 +5,10 @@ export async function GET(req: Request) {
   try {
     const { page, perPage, q } = paging(req);
     if (await dbReady()) {
-      const where = q
-        ? { OR: [{ title: { contains: q } }, { theme: { contains: q } }, { city: { contains: q } }] }
-        : {};
+      const where = {
+        published: true,
+        ...(q ? { OR: [{ title: { contains: q } }, { theme: { contains: q } }, { city: { contains: q } }] } : {}),
+      };
       const [total, rows] = await Promise.all([
         db.forumEvent.count({ where }),
         db.forumEvent.findMany({ where, include: { programme: { orderBy: { position: "asc" } } }, orderBy: { startDate: "desc" }, skip: (page - 1) * perPage, take: perPage }),

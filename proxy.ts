@@ -40,7 +40,7 @@ function buildCsp(nonce: string) {
 }
 
 function routeAuthorized(path: string, role: string | undefined) {
-  if (path.startsWith("/admin")) return (STAFF_ROLES as string[]).includes(role ?? "");
+  if (path.startsWith("/admin") || path.startsWith("/site-preview")) return (STAFF_ROLES as string[]).includes(role ?? "");
   if (path.startsWith("/portal")) return (PORTAL_ROLES as string[]).includes(role ?? "");
   return true;
 }
@@ -56,7 +56,7 @@ function routeAuthorized(path: string, role: string | undefined) {
  */
 export default async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const privateSurface = pathname.startsWith("/portal") || pathname.startsWith("/admin");
+  const privateSurface = pathname.startsWith("/portal") || pathname.startsWith("/admin") || pathname.startsWith("/site-preview");
 
   // Read the token before minting the nonce so an unauthenticated request to a
   // private surface redirects without doing CSP work that will be discarded.

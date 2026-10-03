@@ -4,7 +4,13 @@ out
 .env
 .env*.local
 !.env.example
+.env.production
+deploy/.npm-cache/
+deploy/tools/
+deploy/populated-db.sql
+deploy/populated-db.sql.tmp
 public/uploads/*
+.data/
 *.tsbuildinfo
 
 # Oversized source videos live outside the repository; serve via object storage/CDN.

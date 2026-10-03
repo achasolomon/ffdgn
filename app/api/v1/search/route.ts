@@ -10,9 +10,9 @@ export async function GET(req: Request) {
     if (await dbReady()) {
       const [members, events, docs, news] = await Promise.all([
         db.member.findMany({ where: { visibility: "PUBLIC", OR: [{ fullName: { contains: q } }, { title: { contains: q } }] }, take: 10, select: { slug: true, fullName: true, title: true } }),
-        db.forumEvent.findMany({ where: { OR: [{ title: { contains: q } }, { theme: { contains: q } }] }, take: 10, select: { slug: true, title: true, theme: true, city: true } }),
+        db.forumEvent.findMany({ where: { published: true, OR: [{ title: { contains: q } }, { theme: { contains: q } }] }, take: 10, select: { slug: true, title: true, theme: true, city: true } }),
         db.knowledgeDoc.findMany({ where: { status: "Published", visibility: "PUBLIC", OR: [{ title: { contains: q } }, { topic: { contains: q } }] }, take: 10, select: { slug: true, title: true, type: true, year: true } }),
-        db.newsArticle.findMany({ where: { OR: [{ title: { contains: q } }, { excerpt: { contains: q } }] }, take: 10, select: { slug: true, title: true, category: true, date: true } }),
+        db.newsArticle.findMany({ where: { status: "Published", OR: [{ title: { contains: q } }, { excerpt: { contains: q } }] }, take: 10, select: { slug: true, title: true, category: true, date: true } }),
       ]);
       return ok({
         Members: members.map((m) => ({ kind: "Members", title: m.fullName, subtitle: m.title, href: `/members/${m.slug}` })),

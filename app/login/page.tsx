@@ -38,8 +38,8 @@ function LoginForm() {
   }
 
   return (
-    <div className="mx-auto grid max-w-shell gap-8 px-5 py-14 lg:grid-cols-[1.1fr_1fr]">
-      <div>
+    <div className="login-editorial mx-auto grid max-w-shell gap-8 px-5 py-14 lg:grid-cols-[1.1fr_1fr]">
+      <div className="login-intro">
         <p className="eyebrow">Institutional access</p>
         <h1 className="font-display mt-2 text-4xl text-forest-950">Sign in to the Forum</h1>
         <p className="mt-3 max-w-lg text-[15px] leading-relaxed text-ink/70">

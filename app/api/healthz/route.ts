@@ -1,4 +1,4 @@
-import { dbReady } from "@/lib/db";
+import { dbLive } from "@/lib/db";
 import { probeRateLimiter } from "@/lib/rate-limit";
 
 /**
@@ -11,8 +11,10 @@ import { probeRateLimiter } from "@/lib/rate-limit";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const ready = await dbReady().catch(() => false);
-  // Probed rather than read from a cached flag, so the answer reflects now.
+  // Both dependencies are probed live rather than read from the short-lived
+  // `dbReady()` cache, so the answer reflects now. A cache would let a load
+  // balancer act on a database state from up to fifteen seconds ago.
+  const ready = await dbLive().catch(() => false);
   const limiter = await probeRateLimiter();
   // In-memory rate limiting means every instance enforces its own quota, which
   // is not a working brute-force control on a multi-replica deploy. Treat it as

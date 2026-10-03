@@ -6,6 +6,16 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextIndex"]
+
+  // The client is generated on a developer machine (Windows/macOS) but runs on
+  // the Linux host. Without an explicit Linux target, `prisma generate` emits
+  // only the build platform's engine and the deployed app dies on first query
+  // with "Prisma could not find the Query Engine for runtime OS linux".
+  //
+  // "native" keeps local development on its own platform. rhel-openssl-3.0.x
+  // covers the CloudLinux/CentOS/AlmaLinux that cPanel shared hosting runs on;
+  // debian-openssl-3.0.x covers Debian/Ubuntu hosts and container images.
+  binaryTargets   = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -54,6 +64,32 @@ enum EventStatus {
   Past
 }
 
+enum NewsStatus {
+  Draft
+  Published
+  Archived
+}
+
+enum RegistrationStatus {
+  Registered
+  Cancelled
+}
+
+enum DiscussionStatus {
+  Open
+  Locked
+  Archived
+}
+
+enum RecommendationStatus {
+  Draft
+  Submitted
+  Under_Review
+  Approved
+  Rejected
+  Archived
+}
+
 enum DocStatus {
   Draft
   Editorial_Review
@@ -78,6 +114,12 @@ model User {
   updatedAt    DateTime @updatedAt @map("updated_at")
   member       Member?
   auditActions AuditLog[] @relation("AuditActor")
+  eventRegistrations EventRegistration[]
+  discussionThreads DiscussionThread[]
+  discussionReplies DiscussionReply[]
+  notifications Notification[]
+  organizedMeetings CommitteeMeeting[]
+  recommendations CommitteeRecommendation[]
 
   @@index([role])
   @@map("users")
@@ -136,17 +178,24 @@ model ForumEvent {
   venue     String      @db.VarChar(255)
   city      String      @db.VarChar(128)
   status    EventStatus
+  published Boolean     @default(true)
   summary   String      @db.Text
+  /// Long-form write-up of what actually happened: attendance, resolutions,
+  /// outcomes. Rendered as its own section on past events only — `summary` is
+  /// the short standfirst that every event type shares.
+  highlights String?    @map("highlights") @db.LongText
   guestList String?     @map("guest_list") @db.Text
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
   programme EventProgramme[]
   documents KnowledgeDoc[] @relation("EventDocuments")
   speakers  EventSpeaker[]
+  guestSpeakers Speaker[] @relation("EventSpeakers")
   engagedMembers MemberEvent[]
   partnerLinks   PartnershipEvent[]
   newsLinks      NewsArticle[] @relation("NewsEvent")
   media     MediaAsset[] @relation("EventMedia")
+  registrations EventRegistration[]
   coverUrl  String?     @map("cover_url") @db.VarChar(512)
 
   @@index([status, startDate])
@@ -185,6 +234,7 @@ model KnowledgeDoc {
   visibility Visibility @default(SECRETARIAT_ONLY)
   version    Int        @default(1)
   fileUrl    String?    @map("file_url") @db.VarChar(512)
+  storageKey String?    @map("storage_key") @db.VarChar(255)
   downloads  Int        @default(0)
   createdAt  DateTime   @default(now()) @map("created_at")
   updatedAt  DateTime   @updatedAt @map("updated_at")
@@ -207,6 +257,7 @@ model NewsArticle {
   excerpt   String   @db.Text
   body      String   @db.LongText
   official  Boolean  @default(true)
+  status    NewsStatus @default(Published)
   imageUrl  String?  @map("image_url") @db.VarChar(512)
   eventId   String?  @map("event_id")
   event     ForumEvent? @relation("NewsEvent", fields: [eventId], references: [id], onDelete: SetNull)
@@ -238,9 +289,18 @@ model Committee {
   chairSlug String   @map("chair_slug") @db.VarChar(128)
   meetings  Int      @default(0)
   status    String   @db.VarChar(32)
+  /// Card image for the committee. The public page falls back to the chair's
+  /// portrait when this is null, so existing records render unchanged.
+  imageUrl  String?  @map("image_url") @db.VarChar(500)
+  /// Alt text for imageUrl. Must be non-empty whenever imageUrl is set.
+  imageAlt  String?  @map("image_alt") @db.VarChar(300)
+  published Boolean  @default(true)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   seats     CommitteeSeat[]
+  meetingRecords CommitteeMeeting[]
+  recommendations CommitteeRecommendation[]
+  discussions DiscussionThread[]
 
   @@map("committees")
 }
@@ -264,6 +324,7 @@ model Partnership {
   type      String   @db.VarChar(64)
   since     Int
   purpose   String   @db.Text
+  published Boolean @default(true)
   logoUrl   String?  @map("logo_url") @db.VarChar(512)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -296,6 +357,29 @@ model PartnershipEvent {
   @@map("partnership_events")
 }
 
+// ——— Conference speakers (CMS-managed, own detail pages) ———
+
+model Speaker {
+  id         String     @id @default(uuid())
+  slug       String     @unique @db.VarChar(128)
+  name       String     @db.VarChar(192)
+  honorific  String?    @db.VarChar(64)
+  role       String     @db.VarChar(128)
+  keynote    Boolean    @default(false)
+  org        String?    @db.VarChar(192)
+  bio        String?    @db.Text
+  photoUrl   String?    @map("photo_url") @db.VarChar(512)
+  eventId    String?    @map("event_id")
+  event      ForumEvent? @relation("EventSpeakers", fields: [eventId], references: [id], onDelete: SetNull)
+  visibility Visibility @default(PUBLIC)
+  position   Int        @default(0)
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+
+  @@index([eventId, position])
+  @@map("speakers")
+}
+
 // ——— CMS-managed institutional content (no hardcoded copy) ———
 
 model SiteSetting {
@@ -304,6 +388,68 @@ model SiteSetting {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("site_settings")
+}
+
+model InstitutionalPage {
+  id        String                 @id @default(uuid())
+  slug      String                 @unique @db.VarChar(64)
+  title     String                 @db.VarChar(255)
+  eyebrow   String                 @db.VarChar(128)
+  lede      String                 @db.Text
+  body      String                 @db.LongText
+  published Boolean                @default(true)
+  updatedAt DateTime               @updatedAt @map("updated_at")
+  sections  InstitutionalSection[]
+
+  @@index([published, slug])
+  @@map("institutional_pages")
+}
+
+/// Structured, optionally illustrated blocks within an institutional page.
+/// Sections are the content model that carries imagery; `InstitutionalPage.body`
+/// is only the closing prose note.
+model InstitutionalSection {
+  id        String            @id @default(uuid())
+  pageId    String            @map("page_id")
+  page      InstitutionalPage @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  title     String            @db.VarChar(200)
+  body      String            @db.Text
+  /// MediaAsset.url or an existing /public path, validated on write like
+  /// homepage focus/timeline images. Null when the section is text only.
+  imageUrl  String?           @map("image_url") @db.VarChar(500)
+  /// Alt text for imageUrl. Must be non-empty whenever imageUrl is set.
+  imageAlt  String?           @map("image_alt") @db.VarChar(300)
+  position  Int               @default(0)
+  published Boolean           @default(true)
+
+  @@index([pageId, position])
+  @@map("institutional_sections")
+}
+
+/// Membership roster of the Renewed Hope Agenda Peer Review Group (RHPRG).
+///
+/// Deliberately its own table rather than more institutional sections: the
+/// roster is tabular, with per-row zone, role and contact fields that the page
+/// renders as a real table (and that an admin can sort and edit row by row).
+/// Sections are the prose model and cannot carry those fields without turning
+/// each member into free-form text.
+model PeerReviewMember {
+  id        String   @id @default(uuid())
+  /// Display order; doubles as the S/N column on the public table.
+  position  Int
+  name      String   @db.VarChar(200)
+  /// Zonal representation: North Central, South South, FFDGN Rep, etc.
+  zone      String   @db.VarChar(100)
+  /// Chairman / Secretary / Member.
+  role      String   @db.VarChar(100)
+  phone     String?  @db.VarChar(50)
+  email     String?  @db.VarChar(255)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([position])
+  @@map("peer_review_members")
 }
 
 model SiteMetric {
@@ -325,6 +471,7 @@ model FocusArea {
   href     String @db.VarChar(255)
   imageUrl String? @map("image_url") @db.VarChar(512)
   position Int    @default(0)
+  published Boolean @default(true)
 
   @@map("focus_areas")
 }
@@ -336,6 +483,7 @@ model TimelineEntry {
   summary  String @db.Text
   imageUrl String? @map("image_url") @db.VarChar(512)
   position Int    @default(0)
+  published Boolean @default(true)
   links    TimelineLink[]
 
   @@map("timeline_entries")
@@ -359,6 +507,7 @@ model LeadershipSeat {
   memberSlug String  @map("member_slug") @db.VarChar(128)
   remit      String  @db.Text
   position   Int     @default(0)
+  published  Boolean @default(true)
 
   @@map("leadership_seats")
 }
@@ -429,6 +578,20 @@ model MediaAsset {
   altText      String?    @map("alt_text") @db.VarChar(255)
   eventId      String?    @map("event_id")
   event        ForumEvent? @relation("EventMedia", fields: [eventId], references: [id], onDelete: SetNull)
+  /// Whether this asset belongs in the public photo/video galleries.
+  ///
+  /// Uploads default to true because most are gallery material, but the library
+  /// also holds brand marks, partner logos and UI art that are published for the
+  /// media picker and must not pad the gallery. Gallery queries filter on this;
+  /// the picker and the admin list ignore it.
+  inGallery    Boolean    @default(true) @map("in_gallery")
+  /// Year the photograph was taken, when it is known.
+  ///
+  /// Null means "infer": the gallery falls back to the linked event's year and
+  /// then to the upload year. Kept separate from `createdAt` because historical
+  /// archive scans are uploaded long after they were shot — without this the
+  /// whole archive would read as one year.
+  year         Int?       @map("capture_year")
   visibility   Visibility @default(PUBLIC)
   createdAt    DateTime   @default(now()) @map("created_at")
   updatedAt    DateTime   @updatedAt @map("updated_at")
@@ -470,4 +633,99 @@ model ContactMessage {
 
   @@index([handled, createdAt])
   @@map("contact_messages")
+}
+
+model EventRegistration {
+  id        String             @id @default(uuid())
+  userId    String             @map("user_id")
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId   String             @map("event_id")
+  event     ForumEvent         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  status    RegistrationStatus @default(Registered)
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+
+  @@unique([userId, eventId])
+  @@index([eventId, status])
+  @@map("event_registrations")
+}
+
+model DiscussionThread {
+  id          String           @id @default(uuid())
+  title       String           @db.VarChar(255)
+  body        String           @db.Text
+  status      DiscussionStatus @default(Open)
+  committeeId String?          @map("committee_id")
+  committee   Committee?       @relation(fields: [committeeId], references: [id], onDelete: SetNull)
+  authorId    String           @map("author_id")
+  author      User             @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  replies     DiscussionReply[]
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+
+  @@index([status, updatedAt])
+  @@index([committeeId, createdAt])
+  @@map("discussion_threads")
+}
+
+model DiscussionReply {
+  id        String          @id @default(uuid())
+  threadId  String          @map("thread_id")
+  thread    DiscussionThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  authorId  String          @map("author_id")
+  author    User            @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  body      String          @db.Text
+  createdAt DateTime        @default(now()) @map("created_at")
+
+  @@index([threadId, createdAt])
+  @@map("discussion_replies")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String   @db.VarChar(192)
+  body      String   @db.VarChar(512)
+  href      String?  @db.VarChar(255)
+  readAt    DateTime? @map("read_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([userId, readAt, createdAt])
+  @@map("notifications")
+}
+
+model CommitteeMeeting {
+  id          String    @id @default(uuid())
+  committeeId String    @map("committee_id")
+  committee   Committee @relation(fields: [committeeId], references: [id], onDelete: Cascade)
+  organizerId String    @map("organizer_id")
+  organizer   User      @relation(fields: [organizerId], references: [id], onDelete: Restrict)
+  title       String    @db.VarChar(255)
+  startsAt    DateTime  @map("starts_at")
+  location    String    @db.VarChar(255)
+  agenda      String    @db.Text
+  minutes     String?   @db.Text
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@index([committeeId, startsAt])
+  @@map("committee_meetings")
+}
+
+model CommitteeRecommendation {
+  id          String               @id @default(uuid())
+  committeeId String               @map("committee_id")
+  committee   Committee           @relation(fields: [committeeId], references: [id], onDelete: Cascade)
+  authorId    String               @map("author_id")
+  author      User                 @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  title       String               @db.VarChar(255)
+  rationale   String               @db.Text
+  recommendation String            @db.LongText
+  status      RecommendationStatus @default(Draft)
+  createdAt   DateTime             @default(now()) @map("created_at")
+  updatedAt   DateTime             @updatedAt @map("updated_at")
+
+  @@index([committeeId, status, updatedAt])
+  @@map("committee_recommendations")
 }
