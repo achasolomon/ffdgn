@@ -1,3 +1,5 @@
+import { getTemplateCopy } from "@/lib/template-repo";
+import { asRoute as templateRoute } from "@/lib/routes";
 import { websiteMetadata } from "@/lib/website-repo";
 import { managedWebsitePage } from "@/components/website-page";
 import Link from "next/link";
@@ -7,16 +9,18 @@ import { VideoPlayer, MediaCredit } from "@/components/media";
 import { listVideos } from "@/lib/repo";
 
 export default async function VideosPage() {
+  const copy = await getTemplateCopy("page-media-videos");
+
   const managed = await managedWebsitePage("/media/videos");
   if (managed) return managed;
 
   const videos = await listVideos();
   return (
     <div className="mx-auto max-w-shell px-5 py-12">
-      <Breadcrumbs items={[{ label: "News & Media", href: "/news" }, { label: "Video Archive" }]} />
+      <Breadcrumbs items={[{ label: copy("field-001"), href: templateRoute(copy("field-002")) }, { label: copy("field-003") }]} />
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <SectionHeading as="h1" eyebrow="Media" title="Video archive" lede="Conference recordings, statements and documentaries — embedded from the Forum's official channels." />
-        <Link href="/media/photos" className="text-sm font-semibold text-primary link-underline">Photo gallery →</Link>
+        <SectionHeading as="h1" eyebrow={copy("field-004")} title={copy("field-005")} lede={copy("field-006")} />
+        <Link href={templateRoute(copy("field-007"))} className="text-sm font-semibold text-primary link-underline">{copy("field-008")}</Link>
       </div>
       {videos.length ? (
         <div className="mt-8 grid gap-6 md:grid-cols-2">
@@ -35,9 +39,9 @@ export default async function VideosPage() {
       ) : (
         <div className="mt-8">
           <EmptyState
-            title="Video publishing is ready — no videos catalogued yet"
+            title={copy("field-009")}
             body="The video archive supports YouTube, Vimeo and direct uploads with privacy-hardened embeds. The Secretariat catalogues recordings here after each convening."
-            action={<Link href="/contact" className="border border-primary/40 px-5 py-2.5 text-sm font-semibold text-primary">Contact the Secretariat</Link>}
+            action={<Link href={templateRoute(copy("field-010"))} className="border border-primary/40 px-5 py-2.5 text-sm font-semibold text-primary">{copy("field-011")}</Link>}
           />
         </div>
       )}

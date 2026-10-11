@@ -1,3 +1,5 @@
+import { asRoute as templateRoute } from "@/lib/routes";
+import { getTemplateCopy } from "@/lib/template-repo";
 import { websiteMetadata } from "@/lib/website-repo";
 import { managedWebsitePage } from "@/components/website-page";
 import type { Metadata } from "next";
@@ -13,8 +15,10 @@ import { asRoute } from "@/lib/routes";
 import type { InstitutionalSectionContent } from "@/lib/institutional-pages";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const copy = await getTemplateCopy("page-about");
+
  const authored = await websiteMetadata("/about");
- return authored ?? { title: "About the Forum" };
+ return authored ?? { title: copy("field-001") };
 }
 
 function SectionCopy({ section }: { section: InstitutionalSectionContent }) {
@@ -25,6 +29,8 @@ function SectionCopy({ section }: { section: InstitutionalSectionContent }) {
 }
 
 export default async function AboutPage() {
+  const copy = await getTemplateCopy("page-about");
+
   const managed = await managedWebsitePage("/about");
   if (managed) return managed;
 
@@ -40,29 +46,29 @@ export default async function AboutPage() {
   const intro = chapters[0];
   const remaining = chapters.slice(1);
   const moments = slides.length ? slides : [
-    { src: "/assets/hero/fdg.jpg", alt: "Forum members gathered at a national engagement", caption: "Experience shared. A common purpose." },
-    { src: "/assets/news/visit_ganduje2.jpeg", alt: "Forum representatives during an official visit", caption: "Dialogue that strengthens our institutions" },
-    { src: "/assets/news/polish-nigeria-partnership.jpg", alt: "Forum representatives at a business engagement", caption: "Building connections for national development" },
+    { src: copy("field-002"), alt: copy("field-003"), caption: copy("field-004") },
+    { src: copy("field-005"), alt: copy("field-006"), caption: copy("field-007") },
+    { src: copy("field-008"), alt: copy("field-009"), caption: copy("field-010") },
   ];
   return <div className="about-page mx-auto max-w-shell px-5 py-12">
-    <Breadcrumbs items={[{ label: "About the Forum" }]} />
+    <Breadcrumbs items={[{ label: copy("field-001") }]} />
     <SectionHeading as="h1" eyebrow={page.eyebrow} title={page.title} lede={page.lede} />
     <ForumMoments slides={moments} />
     {intro && <Reveal><section className="about-introduction" aria-labelledby="about-introduction">
-      <div><p className="eyebrow">Our identity</p><h2 id="about-introduction" className="font-display">{intro.title}</h2></div><SectionCopy section={intro} />
+      <div><p className="eyebrow">{copy("field-011")}</p><h2 id="about-introduction" className="font-display">{intro.title}</h2></div><SectionCopy section={intro} />
     </section></Reveal>}
     {purpose.length > 0 && <div className="about-purpose">{purpose.map((section, index) => <Reveal key={section.id ?? section.title} delay={index * 0.1}><section>
-      <p className="eyebrow-light">Our purpose / {String(index + 1).padStart(2, "0")}</p><h2 className="font-display">{section.title}</h2><SectionCopy section={section} />
+      <p className="eyebrow-light">{copy("field-012")}{String(index + 1).padStart(2, "0")}</p><h2 className="font-display">{section.title}</h2><SectionCopy section={section} />
     </section></Reveal>)}</div>}
     {remaining.length > 0 && <div className="about-story">
-      <nav className="about-contents" aria-label="About page sections"><p className="eyebrow">Explore the Forum</p>{remaining.map((section, index) => <a key={section.id ?? section.title} href={`#about-chapter-${index}`}><span>{String(index + 1).padStart(2, "0")}</span>{section.title}</a>)}</nav>
+      <nav className="about-contents" aria-label={copy("field-013")}><p className="eyebrow">{copy("field-014")}</p>{remaining.map((section, index) => <a key={section.id ?? section.title} href={`#about-chapter-${index}`}><span>{String(index + 1).padStart(2, "0")}</span>{section.title}</a>)}</nav>
       <div>{remaining.map((section, index) => <Reveal key={section.id ?? section.title}><section id={`about-chapter-${index}`} className="about-chapter" aria-labelledby={`about-heading-${index}`}>
-        <p className="eyebrow">The Forum / {String(index + 1).padStart(2, "0")}</p><h2 id={`about-heading-${index}`} className="font-display">{section.title}</h2><SectionCopy section={section} />
+        <p className="eyebrow">{copy("field-015")}{String(index + 1).padStart(2, "0")}</p><h2 id={`about-heading-${index}`} className="font-display">{section.title}</h2><SectionCopy section={section} />
       </section></Reveal>)}</div>
     </div>}
-    {page.body.trim() && <section className="about-closing" aria-label="More about the Forum"><div className="about-copy">{page.body.split(/\n\s*\n/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div></section>}
-    <section className="about-discover" aria-labelledby="about-discover"><div><p className="eyebrow-light">Continue exploring</p><h2 id="about-discover" className="font-display">Meet the people.<br />Discover the journey.</h2></div><div className="grid gap-3">{[
-      { href: "/about/history", label: "Our history" }, { href: "/about/governance", label: "Governance" }, { href: "/leadership", label: "Leadership" }, { href: "/members#join", label: "Membership" },
+    {page.body.trim() && <section className="about-closing" aria-label={copy("field-016")}><div className="about-copy">{page.body.split(/\n\s*\n/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div></section>}
+    <section className="about-discover" aria-labelledby="about-discover"><div><p className="eyebrow-light">{copy("field-017")}</p><h2 id="about-discover" className="font-display">{copy("field-018")}<br />{copy("field-019")}</h2></div><div className="grid gap-3">{[
+      { href: templateRoute(copy("field-020")), label: copy("field-021") }, { href: templateRoute(copy("field-022")), label: copy("field-023") }, { href: templateRoute(copy("field-024")), label: copy("field-025") }, { href: templateRoute(copy("field-026")), label: copy("field-027") },
     ].map((link) => <Link key={link.href} href={asRoute(link.href)}><span>{link.label}</span><ArrowRight size={18} /></Link>)}</div></section>
   </div>;
 }

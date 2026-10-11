@@ -1,0 +1,10 @@
+import Link from "next/link";
+import { requirePermission } from "@/lib/server-auth";
+import { cmsStatus } from "@/lib/cms-status";
+import { asRoute } from "@/lib/routes";
+export default async function ContentStatusPage() {
+  await requirePermission("settings.manage");
+  const status = await cmsStatus();
+  return <div className="website-builder"><header className="builder-workspace-heading"><div><p>Website / Content status</p><h1>What still needs content?</h1><span>Live checks of content population. Missing information requires authoritative material from the Secretariat.</span></div><Link href="/admin/website/designs">Edit current designs →</Link></header>{status ? <><div className="builder-status"><span>{status.populatedDesigns}/{status.designs} current designs populated · {status.fields} configurable fields</span><strong>{status.assets} public media assets</strong></div><p className="builder-help">Counts below show missing values, not verified factual accuracy. A record can appear in more than one group. These checks do not validate production hosting, email delivery, backups or accessibility with real users.</p><div className="grid gap-4 md:grid-cols-2">{status.issues.map(issue => <section key={issue.label} className="border border-[#dce2dc] bg-white p-5"><p className="text-xs font-semibold uppercase tracking-wider text-[#56755f]">{issue.items.length ? "Needs editorial content" : "Populated"}</p><h2 className="mt-2 text-lg font-semibold">{issue.label}: {issue.items.length}</h2>{issue.items.length > 0 && <details className="mt-3 text-sm"><summary>Show records</summary><ul className="mt-3 list-disc space-y-1 pl-5">{issue.items.map((item, index) => <li key={index}>{item}</li>)}</ul></details>}<Link className="mt-4 inline-block text-sm font-semibold text-[#177344]" href={asRoute(issue.href)}>Open editor →</Link></section>)}</div></> : <p role="alert">The database is unavailable. Content completeness cannot be checked.</p>}</div>;
+}
+export const dynamic = "force-dynamic";

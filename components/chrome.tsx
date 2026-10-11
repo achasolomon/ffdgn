@@ -1,4 +1,7 @@
 "use client";
+import { useTemplateCopy } from "@/components/template-content-provider";
+import { asRoute as templateRoute } from "@/lib/routes";
+
 import Link from "next/link";
 import type { Route } from "next";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
@@ -28,9 +31,11 @@ type SiteSettings = Record<string, string>;
  * header or the footer looking wrong.
  */
 function Seal({ compact = false, size = "lg", settings = {} }: { compact?: boolean; size?: "lg" | "sm"; settings?: SiteSettings }) {
+  const copy = useTemplateCopy("shared-chrome");
+
   const large = size === "lg";
   return (
-    <Link href="/" className="flex items-center gap-3" aria-label="FFDGN home">
+    <Link href="/" className="flex items-center gap-3" aria-label={copy("field-001")}>
       <AssetImage
         src={settings["site.logo"] || "/assets/brand/logo-whitebg.jpg"}
         alt={settings["site.logo_alt"] || "FFDGN seal"}
@@ -74,6 +79,7 @@ function Seal({ compact = false, size = "lg", settings = {} }: { compact?: boole
  * drops out of the row instead of leaving an empty box beside the logo.
  */
 function AdBanner({ settings }: { settings: SiteSettings }) {
+  const copy = useTemplateCopy("shared-chrome");
   const title = settings["header.ad_title"]?.trim();
   const eyebrow = settings["header.ad_eyebrow"]?.trim();
   const detail = settings["header.ad_detail"]?.trim();
@@ -97,7 +103,7 @@ function AdBanner({ settings }: { settings: SiteSettings }) {
       >
         <AssetImage
           src={image}
-          alt={title ?? "Featured event banner"}
+          alt={title ?? copy("field-024")}
           width={4201}
           height={901}
           className="block h-auto w-full"
@@ -136,6 +142,8 @@ function AdBanner({ settings }: { settings: SiteSettings }) {
 }
 
 export function UtilityBar({ settings = {} }: { settings?: SiteSettings }) {
+  const copy = useTemplateCopy("shared-chrome");
+
   const pathname = usePathname();
   if (pathname?.startsWith("/admin")) return null;
   const phone = settings["site.phone"] ?? "+234 9 4612 3456";
@@ -151,12 +159,12 @@ export function UtilityBar({ settings = {} }: { settings?: SiteSettings }) {
           <span className="inline-flex items-center gap-1.5"><MapPin size={12} /> {address}</span>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/accessibility" className="hidden sm:inline hover:text-white">Accessibility</Link>
-          <Link href="/search" className="inline-flex items-center gap-1 hover:text-white" aria-label="Search">
-            <Search size={13} /> <span className="hidden sm:inline">Search</span>
+          <Link href={templateRoute(copy("field-002"))} className="hidden sm:inline hover:text-white">{copy("field-003")}</Link>
+          <Link href={templateRoute(copy("field-004"))} className="inline-flex items-center gap-1 hover:text-white" aria-label={copy("field-005")}>
+            <Search size={13} /> <span className="hidden sm:inline">{copy("field-005")}</span>
           </Link>
-          <span className="text-white/25" aria-hidden>|</span>
-          <Link href={PORTAL_ROOT} className="rounded-sm bg-gold px-2.5 py-1 font-semibold text-forest-950 hover:bg-gold-soft">Member Portal</Link>
+          <span className="text-white/25" aria-hidden>{copy("field-006")}</span>
+          <Link href={PORTAL_ROOT} className="rounded-sm bg-gold px-2.5 py-1 font-semibold text-forest-950 hover:bg-gold-soft">{copy("field-007")}</Link>
         </div>
       </div>
     </div>
@@ -164,6 +172,8 @@ export function UtilityBar({ settings = {} }: { settings?: SiteSettings }) {
 }
 
 export function Header({ settings = {}, navigation = NAV }: { settings?: SiteSettings; navigation?: NavItem[] }) {
+  const copy = useTemplateCopy("shared-chrome");
+
   const pathname = usePathname();
   const conferenceTitle = settings["event.conference_title"] ?? CONFERENCE_TITLE;
   const conferenceHref = asRoute(settings["event.conference_href"] ?? CONFERENCE_HREF);
@@ -241,15 +251,14 @@ export function Header({ settings = {}, navigation = NAV }: { settings?: SiteSet
               className="overflow-hidden border-b border-gold/40 bg-forest-950 text-white"
             >
               <div className="mx-auto flex max-w-shell items-center gap-3 px-5 py-1.5">
-                <img src="/assets/events/conference.png" alt="" aria-hidden className="hidden h-9 w-14 shrink-0 rounded-[2px] object-cover object-top sm:block" />
+                <img src={copy("field-008")} alt="" aria-hidden className="hidden h-9 w-14 shrink-0 rounded-[2px] object-cover object-top sm:block" />
                 <p className="min-w-0 flex-1 truncate text-[12.5px]">
                   <span className="font-bold uppercase tracking-[0.14em] text-gold">{conferenceTitle}</span>
-                  <span className="text-white/70"> · {conferenceDetail}</span>
+                  <span className="text-white/70"> {copy("field-009")}{conferenceDetail}</span>
                 </p>
                 <Link href={conferenceHref} className="shrink-0 bg-gold px-3 py-1 text-[12px] font-bold text-forest-950 hover:bg-gold-soft">
-                  View flyer & register →
-                </Link>
-                <button onClick={() => setBanner(false)} aria-label="Dismiss announcement" className="shrink-0 p-1 text-white/60 hover:text-white">
+                  {copy("field-010")}</Link>
+                <button onClick={() => setBanner(false)} aria-label={copy("field-011")} className="shrink-0 p-1 text-white/60 hover:text-white">
                   <X size={14} />
                 </button>
               </div>
@@ -278,7 +287,7 @@ export function Header({ settings = {}, navigation = NAV }: { settings?: SiteSet
       */}
       <div className={`sticky top-0 z-50 border-b hairline bg-white/95 backdrop-blur no-print transition-shadow ${scrolled ? "shadow-card" : ""}`}>
         <div className="mx-auto flex max-w-shell items-stretch gap-0 border-t border-gold/50 bg-forest-950 px-0">
-          <nav aria-label="Primary" className="hidden min-w-0 flex-1 items-stretch lg:flex">
+          <nav aria-label={copy("field-012")} className="hidden min-w-0 flex-1 items-stretch lg:flex">
             {navigation.map((item) => (
               <div
                 key={item.label}
@@ -348,14 +357,14 @@ export function Header({ settings = {}, navigation = NAV }: { settings?: SiteSet
           <div className="hidden shrink-0 items-center gap-2 bg-white px-3 lg:flex">
             <AuthButton />
           </div>
-          <button className="lg:hidden p-4 text-white" onClick={() => setMobile(!mobile)} aria-expanded={mobile} aria-label="Toggle menu">
+          <button className="lg:hidden p-4 text-white" onClick={() => setMobile(!mobile)} aria-expanded={mobile} aria-label={copy("field-013")}>
             {mobile ? <X /> : <Menu />}
           </button>
         </div>
         <AnimatePresence>
           {mobile && (
             <motion.nav
-              aria-label="Mobile"
+              aria-label={copy("field-014")}
               initial={{ opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
@@ -373,14 +382,14 @@ export function Header({ settings = {}, navigation = NAV }: { settings?: SiteSet
                   <Link href={item.href} onClick={() => setMobile(false)} className="font-display text-lg text-forest-950">{item.label}</Link>
                   <div className="mt-1 grid gap-1 pb-2">
                     {item.children.map((c) => (
-                      <Link key={c.label} href={c.href} onClick={() => setMobile(false)} className="text-sm text-ink/70">— {c.label}</Link>
+                      <Link key={c.label} href={c.href} onClick={() => setMobile(false)} className="text-sm text-ink/70">{copy("field-015")}{c.label}</Link>
                     ))}
                   </div>
                 </motion.div>
               ))}
               <div className="flex gap-2 pt-4">
-                <Link href="/contact" onClick={() => setMobile(false)} className="flex-1 border border-forest-900/25 px-4 py-2.5 text-center text-sm font-semibold">Contact</Link>
-                <Link href="/login" onClick={() => setMobile(false)} className="flex-1 bg-primary px-4 py-2.5 text-center text-sm font-semibold text-white">Sign in</Link>
+                <Link href={templateRoute(copy("field-016"))} onClick={() => setMobile(false)} className="flex-1 border border-forest-900/25 px-4 py-2.5 text-center text-sm font-semibold">{copy("field-017")}</Link>
+                <Link href={templateRoute(copy("field-018"))} onClick={() => setMobile(false)} className="flex-1 bg-primary px-4 py-2.5 text-center text-sm font-semibold text-white">{copy("field-019")}</Link>
               </div>
             </motion.nav>
           )}
@@ -391,6 +400,8 @@ export function Header({ settings = {}, navigation = NAV }: { settings?: SiteSet
 }
 
 export function Footer({ settings = {}, columns = FOOTER_COLUMNS }: { settings?: SiteSettings; columns?: typeof FOOTER_COLUMNS }) {
+  const copy = useTemplateCopy("shared-chrome");
+
   const pathname = usePathname();
   if (pathname?.startsWith("/admin")) return null;
   const email = settings["site.email"] ?? "info@ffdgn.org.ng";
@@ -407,7 +418,7 @@ export function Footer({ settings = {}, columns = FOOTER_COLUMNS }: { settings?:
             <p className="eyebrow-light">{settings["footer.cta_label"] || "The Secretariat"}</p>
             <p className="font-display mt-1 text-xl">{settings["footer.cta_title"] || "Questions about the Forum? Contact the Secretariat."}</p>
           </div>
-          <Link href={asRoute(settings["footer.cta_href"] || "/contact")} className="border border-gold/70 px-5 py-2.5 text-sm font-semibold text-gold hover:bg-gold hover:text-forest-950">{settings["footer.cta_button"] || "Contact the Secretariat"} →</Link>
+          <Link href={asRoute(settings["footer.cta_href"] || "/contact")} className="border border-gold/70 px-5 py-2.5 text-sm font-semibold text-gold hover:bg-gold hover:text-forest-950">{settings["footer.cta_button"] || "Contact the Secretariat"} {copy("field-020")}</Link>
         </div>
       </div>
       <div className="mx-auto grid max-w-shell gap-10 px-5 py-12 md:grid-cols-[1.3fr_repeat(4,1fr)]">
@@ -430,7 +441,7 @@ export function Footer({ settings = {}, columns = FOOTER_COLUMNS }: { settings?:
       <div className="border-t hairline-light">
         <div className="mx-auto flex max-w-shell flex-col gap-2 px-5 py-4 text-[12px] text-white/50 md:flex-row md:items-center md:justify-between">
           <p>{settings["footer.copyright"] || "© FFDGN. All rights reserved."}</p>
-          <p>{address} · {email} · {hours}</p>
+          <p>{address} {copy("field-009")}{email} {copy("field-009")}{hours}</p>
         </div>
       </div>
     </footer>
@@ -438,13 +449,15 @@ export function Footer({ settings = {}, columns = FOOTER_COLUMNS }: { settings?:
 }
 
 export function Breadcrumbs({ items }: { items: { label: string; href?: Route }[] }) {
+  const copy = useTemplateCopy("shared-chrome");
+
   return (
-    <nav aria-label="Breadcrumb" className="text-[12.5px] text-ink/55">
+    <nav aria-label={copy("field-021")} className="text-[12.5px] text-ink/55">
       <ol className="flex flex-wrap items-center gap-2">
-        <li><Link href="/" className="hover:text-primary">Home</Link></li>
+        <li><Link href="/" className="hover:text-primary">{copy("field-022")}</Link></li>
         {items.map((it, i) => (
           <li key={i} className="flex items-center gap-2">
-            <span aria-hidden className="text-gold-deep">/</span>
+            <span aria-hidden className="text-gold-deep">{copy("field-023")}</span>
             {it.href ? <Link href={it.href} className="hover:text-primary">{it.label}</Link> : <span aria-current="page" className="text-ink/85 font-medium">{it.label}</span>}
           </li>
         ))}

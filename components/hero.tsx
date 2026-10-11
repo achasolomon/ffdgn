@@ -1,4 +1,6 @@
 "use client";
+import { useTemplateCopy } from "@/components/template-content-provider";
+
 import { asRoute } from "@/lib/routes";
 
 import { useReducedMotion } from "@/lib/use-reduced-motion";
@@ -33,6 +35,8 @@ function useMediaQuery(query: string): boolean {
 }
 
 export function Hero({ settings }: { settings: Record<string, string> }) {
+  const copy = useTemplateCopy("shared-hero");
+
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   // Below md the carousel is the full-bleed backdrop. Translating it would drag
@@ -50,7 +54,7 @@ export function Hero({ settings }: { settings: Record<string, string> }) {
     : item(delay);
 
   return (
-    <section ref={ref} className="hero-editorial relative overflow-hidden bg-forest-950 text-white" aria-label="Introduction">
+    <section ref={ref} className="hero-editorial relative overflow-hidden bg-forest-950 text-white" aria-label={copy("field-003")}>
       <div className="absolute inset-0" aria-hidden>
         <div className="absolute inset-0 bg-forest-950" />
       </div>
@@ -84,9 +88,9 @@ export function Hero({ settings }: { settings: Record<string, string> }) {
           </Magnetic>
         </motion.div>
         <motion.dl className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-[12px] uppercase tracking-[0.18em] text-white/50" {...entrance(0.64)}>
-          <div className="flex gap-2"><dt className="text-gold">Est.</dt><dd>{settings["site.established"]}</dd></div>
-          <div className="flex gap-2"><dt className="text-gold">Seat</dt><dd>{settings["site.seat"]}</dd></div>
-          <div className="flex gap-2"><dt className="text-gold">Character</dt><dd>{settings["site.character"]}</dd></div>
+          <div className="flex gap-2"><dt className="text-gold">{copy("field-004")}</dt><dd>{settings["site.established"]}</dd></div>
+          <div className="flex gap-2"><dt className="text-gold">{copy("field-005")}</dt><dd>{settings["site.seat"]}</dd></div>
+          <div className="flex gap-2"><dt className="text-gold">{copy("field-006")}</dt><dd>{settings["site.character"]}</dd></div>
         </motion.dl>
       </motion.div>
     </section>

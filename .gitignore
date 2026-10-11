@@ -15,3 +15,14 @@ public/uploads/*
 
 # Oversized source videos live outside the repository; serve via object storage/CDN.
 public/assets/videos/
+
+# Private production media transfer archive.
+deploy/production-uploads.zip
+
+# Local deployment artifacts and tooling.
+/deploy/
+
+# Archives and root-level Markdown, except README.
+*.[zZ][iI][pP]
+/*.[mM][dD]
+!/[rR][eE][aA][dD][mM][eE].[mM][dD]

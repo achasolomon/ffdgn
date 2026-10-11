@@ -1,4 +1,6 @@
 "use client";
+import { useTemplateCopy } from "@/components/template-content-provider";
+
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
@@ -18,6 +20,8 @@ const INTERVAL = 6000;
  * that advances in a background tab spends battery on nobody's screen.
  */
 export function HeroCarousel({ slides = DEFAULT_HERO_SLIDES }: { slides?: HeroSlide[] }) {
+  const copy = useTemplateCopy("shared-hero-carousel");
+
   const reduce = useReducedMotion();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -76,15 +80,15 @@ export function HeroCarousel({ slides = DEFAULT_HERO_SLIDES }: { slides?: HeroSl
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-forest-950/70 to-transparent" aria-hidden />
 
       {!reduce && slides.length > 1 && (
-        <div className="absolute bottom-4 right-4 flex items-center gap-2 md:bottom-5 md:right-8" role="group" aria-label="Hero slides">
-          <button onClick={() => go(-1)} aria-label="Previous slide" className="grid h-8 w-8 place-items-center rounded-full border border-white/40 text-white/80 hover:border-gold hover:text-gold">
+        <div className="absolute bottom-4 right-4 flex items-center gap-2 md:bottom-5 md:right-8" role="group" aria-label={copy("field-001")}>
+          <button onClick={() => go(-1)} aria-label={copy("field-002")} className="grid h-8 w-8 place-items-center rounded-full border border-white/40 text-white/80 hover:border-gold hover:text-gold">
             <ChevronLeft size={15} />
           </button>
           {slides.map((s, i) => (
             <button
               key={s.src}
               onClick={() => setIndex(i)}
-              aria-label={`Go to slide ${i + 1} of ${slides.length}`}
+              aria-label={copy("field-006", {value1: i + 1, value2: slides.length})}
               aria-current={i === shown}
               className="group grid h-8 w-8 place-items-center"
             >
@@ -95,12 +99,12 @@ export function HeroCarousel({ slides = DEFAULT_HERO_SLIDES }: { slides?: HeroSl
               />
             </button>
           ))}
-          <button onClick={() => go(1)} aria-label="Next slide" className="grid h-8 w-8 place-items-center rounded-full border border-white/40 text-white/80 hover:border-gold hover:text-gold">
+          <button onClick={() => go(1)} aria-label={copy("field-003")} className="grid h-8 w-8 place-items-center rounded-full border border-white/40 text-white/80 hover:border-gold hover:text-gold">
             <ChevronRight size={15} />
           </button>
           <button
             onClick={() => setPaused((p) => !p)}
-            aria-label={paused ? "Resume slideshow" : "Pause slideshow"}
+            aria-label={paused ? copy("field-004") : copy("field-005")}
             aria-pressed={paused}
             className="ml-1 grid h-8 w-8 place-items-center rounded-full border border-white/40 text-white/80 hover:border-gold hover:text-gold"
           >

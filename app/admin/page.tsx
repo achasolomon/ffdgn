@@ -18,7 +18,7 @@ import { asRoute } from "@/lib/routes";
  * than a bare string means a typo here is a compile error instead of a link that
  * 404s in front of staff.
  */
-type ConsoleRoute = "/admin/media" | "/admin/content" | "/admin/content/structure" | "/admin/content/navigation" | "/admin/content/pages" | "/admin/content/peer-review" | "/admin/knowledge" | "/admin/membership" | "/admin/events" | "/admin/news" | "/admin/committees" | "/admin/partnerships" | "/admin/communications";
+type ConsoleRoute = "/admin/media" | "/admin/content" | "/admin/content/structure" | "/admin/content/navigation" | "/admin/content/pages" | "/admin/programs" | "/admin/knowledge" | "/admin/membership" | "/admin/events" | "/admin/news" | "/admin/committees" | "/admin/partnerships" | "/admin/communications";
 type Module = { title: string; items: string[]; href: ConsoleRoute | null; live: string | null };
 const MODULES: Module[] = [
   { title: "Media Library", items: ["Photos", "Videos", "Uploads", "Embeds"], href: "/admin/media", live: "Upload, edit, delete and audit media assets." },
@@ -26,7 +26,7 @@ const MODULES: Module[] = [
   { title: "Homepage structure", items: ["Focus areas", "Institutional timeline", "Leadership seats"], href: "/admin/content/structure", live: "Edit and order published homepage records." },
   { title: "Navigation & footer", items: ["Menu groups", "Child links", "Footer columns"], href: "/admin/content/navigation", live: "Manage site navigation and footer links." },
   { title: "Institutional pages", items: ["About", "Governance", "Privacy", "Accessibility"], href: "/admin/content/pages", live: "Edit public institutional copy without code changes." },
-  { title: "Renewed Hope group", items: ["Concept note", "Objectives", "Roster", "Zonal seats"], href: "/admin/content/peer-review", live: "Edit the RHPRG concept note, objectives and member composition." },
+  { title: "Programmes", items: ["Polish Nigeria", "Renewed Hope", "Content & images", "Group members"], href: "/admin/programs", live: "Edit programme introductions, chapters, images and Renewed Hope group membership." },
   { title: "Knowledge", items: ["Documents", "Categories", "Approvals"], href: "/admin/knowledge", live: "Run a document through the full approval chain, with visibility per record." },
   { title: "Membership", items: ["Members", "Accounts", "Roles", "Verification"], href: "/admin/membership", live: "Roster, account roles, activation and member status." },
   { title: "Events", items: ["Events", "Conferences", "Programmes", "Speakers"], href: "/admin/events", live: "Manage event records, schedules, speakers, linked documents, and publication." },
@@ -85,7 +85,7 @@ export default async function AdminConsole() {
       </p>
       </div>
 
-      {auth && hasPermission(auth.user.role, "settings.manage") && <div className="mt-6 border border-[#dce2dc] bg-white p-6"><h2 className="text-lg font-semibold text-[#1c3526]">What would you like to update?</h2><p className="mt-2 text-sm text-[#69776d]">Edit an existing page, create a new page, choose images or update your menus.</p><div className="mt-4 flex flex-wrap gap-4"><Link href={asRoute("/admin/website")} className="bg-primary px-5 py-3 text-sm font-semibold text-white">Manage website pages</Link><Link href="/admin/media" className="px-5 py-3 text-sm font-semibold text-primary">Organise media</Link><Link href="/admin/content/navigation" className="px-5 py-3 text-sm font-semibold text-primary">Update menus &amp; footer</Link></div></div>}
+      {auth && hasPermission(auth.user.role, "settings.manage") && <div className="mt-6 border border-[#dce2dc] bg-white p-6"><h2 className="text-lg font-semibold text-[#1c3526]">What would you like to update?</h2><p className="mt-2 text-sm text-[#69776d]">Edit an existing page, create a new page, choose images or update your menus.</p><div className="mt-4 flex flex-wrap gap-4"><Link href={asRoute("/admin/website/designs")} className="bg-primary px-5 py-3 text-sm font-semibold text-white">Edit current website copy</Link><Link href={asRoute("/admin/website")} className="px-5 py-3 text-sm font-semibold text-primary">Add sections or pages</Link><Link href={asRoute("/admin/website/status")} className="px-5 py-3 text-sm font-semibold text-primary">See content gaps</Link><Link href="/admin/media" className="px-5 py-3 text-sm font-semibold text-primary">Organise media</Link><Link href="/admin/content/navigation" className="px-5 py-3 text-sm font-semibold text-primary">Update menus &amp; footer</Link></div></div>}
       {!live && (
         <div className="mt-6 border border-gold-deep/40 bg-paper px-5 py-4" role="alert">
           <p className="font-semibold text-forest-950">Database not connected</p>

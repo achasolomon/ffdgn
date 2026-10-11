@@ -6,6 +6,10 @@ import { Header, Footer, UtilityBar } from "@/components/chrome";
 import { Providers } from "@/components/providers";
 import { SiteFrame } from "@/components/site-frame";
 import { getSettings, getSiteFooter, getSiteNavigation } from "@/lib/repo";
+import { getPublicTemplateValues } from "@/lib/template-repo";
+import { TemplateContentProvider } from "@/components/template-content-provider";
+import { getWebsitePage } from "@/lib/website-repo";
+import { WebsiteExtraSections } from "@/components/website-page";
 
 const display = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-display" });
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -29,8 +33,11 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Minted per request by proxy.ts. Handing it to the JSON-LD script lets the
   // page carry structured data without re-opening `'unsafe-inline'`.
-  const nonce = (await headers()).get("x-nonce") ?? undefined;
-  const [settings, navigation, footer] = await Promise.all([getSettings(), getSiteNavigation(), getSiteFooter()]);
+  const requestHeaders = await headers();
+  const nonce = requestHeaders.get("x-nonce") ?? undefined;
+  const currentPath = requestHeaders.get("x-site-path") ?? "/";
+  const authored = /^\/(admin|portal|api|site-preview|login)(\/|$)/.test(currentPath) ? null : await getWebsitePage(currentPath);
+  const [settings, navigation, footer, copyValues] = await Promise.all([getSettings(), getSiteNavigation(), getSiteFooter(), getPublicTemplateValues()]);
   const orgSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -44,16 +51,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en">
       <body className={`${display.variable} ${sans.variable}`}>
         <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:bg-gold focus:px-4 focus:py-2 focus:text-ink">
-          Skip to main content
+          {settings["site.skip_link"]}
         </a>
         <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
         <Providers>
+        <TemplateContentProvider values={copyValues}>
         <SiteFrame>
         <UtilityBar settings={settings} />
         <Header settings={settings} navigation={navigation} />
-        <main id="main" className="min-h-[60vh]">{children}</main>
+        <main id="main" className="min-h-[60vh]">{children}{authored?.layout === "extend" && <WebsiteExtraSections page={authored} />}</main>
         <Footer settings={settings} columns={footer} />
         </SiteFrame>
+        </TemplateContentProvider>
         </Providers>
       </body>
     </html>

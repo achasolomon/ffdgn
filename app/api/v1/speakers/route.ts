@@ -1,3 +1,5 @@
+import { speakerInput } from "@/lib/speaker-input";
+import { revalidatePublicSite } from "@/lib/revalidate";
 import { db, dbReady, fail, failFrom, ok } from "../_lib";
 import { requirePermission, audit } from "@/lib/server-auth";
 import { clientIp } from "@/lib/rate-limit";
@@ -32,43 +34,23 @@ export async function GET(req: Request) {
 }
 
 /**
- * POST /api/v1/speakers — catalogue a speaker. Requires `events.manage`.
+ * POST /api/v1/speakers — catalogue a speaker. Requires `events.edit`.
  * Body: { slug, name, role, eventSlug?, keynote?, honorific?, org?, bio?, photoUrl? }.
  */
 export async function POST(req: Request) {
   try {
     if (!(await dbReady())) return fail("UNAVAILABLE", "Speakers require the MySQL database.", 503);
     const auth = await requirePermission("events.edit");
-    const body = (await req.json().catch(() => null)) as {
-      slug?: string; name?: string; role?: string; eventSlug?: string;
-      keynote?: boolean; honorific?: string; org?: string; bio?: string; photoUrl?: string;
-    } | null;
-    if (!body) return fail("VALIDATION", "Request body is required.", 422);
-    const slug = (body.slug ?? "").trim().toLowerCase().replace(/[^a-z0-9-]+/g, "-");
-    const name = (body.name ?? "").trim();
-    const role = (body.role ?? "").trim();
-    if (!slug || !name || !role) return fail("VALIDATION", "`slug`, `name` and `role` are required.", 422);
-    if (await db.speaker.findUnique({ where: { slug } })) {
-      return fail("CONFLICT", "A speaker with this slug already exists.", 409);
-    }
-    let eventId: string | null = null;
-    if (body.eventSlug) {
-      const event = await db.forumEvent.findUnique({ where: { slug: body.eventSlug }, select: { id: true } });
-      if (!event) return fail("VALIDATION", "Unknown eventSlug.", 422);
-      eventId = event.id;
-    }
-    const position = await db.speaker.count({ where: { eventId } });
-    const created = await db.speaker.create({
-      data: {
-        slug, name, role, eventId, keynote: !!body.keynote,
-        honorific: body.honorific?.slice(0, 64) ?? null,
-        org: body.org?.slice(0, 192) ?? null,
-        bio: body.bio?.slice(0, 4000) ?? null,
-        photoUrl: body.photoUrl?.slice(0, 512) ?? null,
-        position,
-      },
-      select: { slug: true, name: true, role: true },
-    });
+    let input;
+    try { input = await speakerInput(await req.json().catch(() => null), true); }
+    catch (error) { return fail("VALIDATION", error instanceof Error ? error.message : "Invalid speaker.", 422); }
+    const { body, data } = input;
+    const slug = typeof body.slug === "string" ? body.slug.trim() : "";
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length > 128) return fail("VALIDATION", "Use lowercase letters, numbers and hyphens for the URL (up to 128 characters).", 422);
+    if (await db.speaker.findUnique({ where: { slug } })) return fail("CONFLICT", "A speaker with this URL already exists.", 409);
+    const created = await db.speaker.create({ data: { ...data, slug } as never, select: { slug: true, name: true, role: true } });
+    const { name, role } = created;
+    revalidatePublicSite("speaker " + slug);
     await audit("speakers.create", `speaker:${slug}`, {
       newValue: `${name} — ${role}`, ip: clientIp(req.headers), actorOverride: auth,
     });

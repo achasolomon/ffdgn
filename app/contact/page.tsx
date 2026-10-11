@@ -1,3 +1,4 @@
+import { getTemplateCopy } from "@/lib/template-repo";
 import { websiteMetadata } from "@/lib/website-repo";
 import { managedWebsitePage } from "@/components/website-page";
 import { Breadcrumbs } from "@/components/chrome";
@@ -7,6 +8,8 @@ import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { getSettings } from "@/lib/repo";
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<{ subject?: string }> }) {
+  const copy = await getTemplateCopy("page-contact");
+
   const managed = await managedWebsitePage("/contact");
   if (managed) return managed;
 
@@ -14,11 +17,11 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
   const subject = params.subject ?? "";
   return (
     <div className="contact-page mx-auto max-w-shell px-5 py-12">
-      <Breadcrumbs items={[{ label: "Contact the Secretariat" }]} />
-      <SectionHeading as="h1" eyebrow="Secretariat" title="Contact the Secretariat" lede="The Secretariat provides administrative, research and coordination support to the Forum and its activities." />
+      <Breadcrumbs items={[{ label: copy("field-001") }]} />
+      <SectionHeading as="h1" eyebrow={copy("field-002")} title={copy("field-001")} lede={copy("field-003")} />
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_1.2fr]">
         <aside className="h-fit bg-forest-950 p-7 text-white">
-          <p className="eyebrow-light">Secretariat address</p>
+          <p className="eyebrow-light">{copy("field-004")}</p>
           <ul className="mt-4 space-y-4 text-sm text-white/80">
             <li className="flex gap-2.5"><MapPin size={16} className="mt-0.5 text-gold" /> {settings["contact.address"]}</li>
             <li className="flex gap-2.5"><Phone size={16} className="mt-0.5 text-gold" /> {settings["site.phone"]}</li>

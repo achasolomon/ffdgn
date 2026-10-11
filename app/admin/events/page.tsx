@@ -32,6 +32,7 @@ export default async function AdminEventsPage() {
   // Titles for the slugs attached to each event, so the editor's downloads
   // panel can read "Communiqué 2025" instead of the raw URL slug.
   const documents = live ? await db.knowledgeDoc.findMany({ select: { slug: true, title: true } }) : [];
+  const members = live ? await db.member.findMany({ select: { slug: true, fullName: true }, orderBy: { fullName: "asc" } }) : [];
   const docTitles = Object.fromEntries(documents.map((document) => [document.slug, document.title]));
 
   const events = rows.map((event) => ({
@@ -65,9 +66,11 @@ export default async function AdminEventsPage() {
         <p className="border border-[#dce2dc] bg-white px-3 py-2 text-[11px] font-medium text-[#68756b]">{rows.filter((event) => event.published).length} live · {rows.filter((event) => !event.published).length} drafts</p>
       </div>
       {!live && <p role="alert" className="mb-5 border border-[#e4d3a8] bg-[#fffaf0] px-4 py-3 text-[13px] text-[#755b23]">MySQL is unavailable. Connect the database to manage events.</p>}
+      <Link href="/admin/events/speakers" className="mb-5 inline-block border bg-white px-4 py-3 text-sm font-semibold">Manage conference speakers, biographies & photos</Link>
       <AdminEventManager
         events={events}
         docTitles={docTitles}
+        members={members}
         canCreate={hasPermission(auth.user.role, "events.create")}
         canEdit={hasPermission(auth.user.role, "events.edit")}
       />

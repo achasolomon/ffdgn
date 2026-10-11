@@ -1,3 +1,5 @@
+import { getTemplateCopy } from "@/lib/template-repo";
+import { asRoute as templateRoute } from "@/lib/routes";
 import { websiteMetadata } from "@/lib/website-repo";
 import { managedWebsitePage } from "@/components/website-page";
 import type { Metadata } from "next";
@@ -9,10 +11,14 @@ import { AssetImage } from "@/components/media";
 import { listCommittees, listMembers } from "@/lib/repo";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const copy = await getTemplateCopy("page-committees");
+
  const authored = await websiteMetadata("/committees");
- return authored ?? { title: "Committees" };
+ return authored ?? { title: copy("field-001") };
 }
 export default async function CommitteesPage() {
+  const copy = await getTemplateCopy("page-committees");
+
   const managed = await managedWebsitePage("/committees");
   if (managed) return managed;
 
@@ -21,9 +27,9 @@ export default async function CommitteesPage() {
   const bySlug = new Map(members.map((m) => [m.slug, m]));
   return (
     <div className="committees-page mx-auto max-w-shell px-5 py-12">
-      <Breadcrumbs items={[{ label: "Engagement" }, { label: "Committees" }]} />
-      <SectionHeading as="h1" eyebrow="Engagement" title="Experience put to work." lede="The working arms of the Forum — chaired by members, producing recommendations, reports and policy." />
-      <div className="engagement-paths"><Link href="/peer-review">Peer review <ArrowRight size={18} /></Link><Link href="/mentorship">Mentorship <ArrowRight size={18} /></Link></div>
+      <Breadcrumbs items={[{ label: copy("field-002") }, { label: copy("field-001") }]} />
+      <SectionHeading as="h1" eyebrow={copy("field-002")} title={copy("field-003")} lede={copy("field-004")} />
+      <div className="engagement-paths"><Link href={templateRoute(copy("field-005"))}>{copy("field-006")}<ArrowRight size={18} /></Link><Link href={templateRoute(copy("field-007"))}>{copy("field-008")}<ArrowRight size={18} /></Link></div>
       <div className="mt-8 grid gap-5 md:grid-cols-2">
         {committees.map((c, i) => {
           const chair = bySlug.get(c.chair);
@@ -37,7 +43,7 @@ export default async function CommitteesPage() {
                 {c.imageUrl ? (
                   <AssetImage src={c.imageUrl} alt={c.imageAlt ?? ""} width={160} height={160} className="h-20 w-20 shrink-0 rounded-full object-cover ring-2 ring-gold/60" sizes="80px" />
                 ) : chair?.photo ? (
-                  <AssetImage src={chair.photo} alt={`Portrait of ${chair.name}`} width={160} height={160} className="h-20 w-20 shrink-0 rounded-full object-cover ring-2 ring-gold/60" sizes="80px" />
+                  <AssetImage src={chair.photo} alt={copy("field-015", {value1: chair.name})} width={160} height={160} className="h-20 w-20 shrink-0 rounded-full object-cover ring-2 ring-gold/60" sizes="80px" />
                 ) : (
                   <span className="grid h-20 w-20 shrink-0 place-items-center rounded-full bg-forest-950 font-display text-2xl text-gold" aria-hidden>{String(i + 1).padStart(2, "0")}</span>
                 )}
@@ -46,22 +52,21 @@ export default async function CommitteesPage() {
                   <h2 className="font-display mt-1 text-2xl leading-tight text-forest-950">{c.name}</h2>
                   <p className="mt-1.5 text-sm leading-relaxed text-ink/65">{c.mandate}</p>
                   <p className="mt-3 text-[13px] text-ink/60">
-                    Chair: {chair ? <Link href={`/members/${chair.slug}`} className="font-semibold text-primary">{chair.name}</Link> : c.chair} · {c.meetings} meetings
-                  </p>
+                    {copy("field-009")}{chair ? <Link href={`/members/${chair.slug}`} className="font-semibold text-primary">{chair.name}</Link> : c.chair} {copy("field-010")}{c.meetings} {copy("field-011")}</p>
                   <div className="mt-3 flex items-center justify-between gap-3">
                     {avatars.length > 0 ? (
-                      <span className="flex -space-x-2" aria-label={`${c.members.length} members`}>
+                      <span className="flex -space-x-2" aria-label={copy("field-016", {value1: c.members.length})}>
                         {avatars.map((m) => (
                           <AssetImage key={m!.slug} src={m!.photo!} alt={m!.name} width={56} height={56} className="h-7 w-7 rounded-full border-2 border-white object-cover" sizes="28px" />
                         ))}
                         {c.members.length > avatars.length && (
-                          <span className="grid h-7 w-7 place-items-center rounded-full border-2 border-white bg-paper text-[10px] font-bold text-ink/60">+{c.members.length - avatars.length}</span>
+                          <span className="grid h-7 w-7 place-items-center rounded-full border-2 border-white bg-paper text-[10px] font-bold text-ink/60">{copy("field-012")}{c.members.length - avatars.length}</span>
                         )}
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1.5 text-[12.5px] text-ink/55"><Users size={14} /> {c.members.length} members</span>
+                      <span className="inline-flex items-center gap-1.5 text-[12.5px] text-ink/55"><Users size={14} /> {c.members.length} {copy("field-013")}</span>
                     )}
-                    <Link href={`/contact?subject=${encodeURIComponent(c.name)}`} className="inline-flex items-center gap-1 text-[13px] font-semibold text-primary">Enquire <ArrowRight size={14} /></Link>
+                    <Link href={`/contact?subject=${encodeURIComponent(c.name)}`} className="inline-flex items-center gap-1 text-[13px] font-semibold text-primary">{copy("field-014")}<ArrowRight size={14} /></Link>
                   </div>
                 </div>
               </article>

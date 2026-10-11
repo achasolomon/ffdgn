@@ -1,4 +1,5 @@
 "use client";
+import { useTemplateCopy } from "@/components/template-content-provider";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 import Link from "next/link";
 import type { Route } from "next";
@@ -49,7 +50,7 @@ export function EmptyState({
   description,
   body,
   action,
-  eyebrow = "No records",
+  eyebrow,
   href,
   actionLabel,
 }: {
@@ -63,6 +64,7 @@ export function EmptyState({
   href?: Route;
   actionLabel?: string;
 }) {
+  const copy = useTemplateCopy("shared-ui");
   const link = action ?? (href && actionLabel ? (
     <Link href={href} className="inline-block border border-primary/30 px-5 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white">
       {actionLabel}
@@ -70,7 +72,7 @@ export function EmptyState({
   ) : undefined);
   return (
     <div className="flex h-full flex-col items-center justify-center border hairline bg-white px-8 py-14 text-center" role="status">
-      <p className="eyebrow">{eyebrow}</p>
+      <p className="eyebrow">{eyebrow ?? copy("field-001")}</p>
       <h3 className="font-display mt-2 text-2xl text-forest-950">{title}</h3>
       <p className="mx-auto mt-2 max-w-md text-sm text-ink/65">{description ?? body}</p>
       {link && <div className="mt-6">{link}</div>}

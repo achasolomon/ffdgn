@@ -18,8 +18,8 @@ const ALT_MAX = 300;
  * image is attached, because a section image illustrates that specific section
  * and there is no other source for it.
  */
-async function readSection(input: unknown): Promise<{ ok: true; value: { title: string; body: string; imageUrl: string | null; imageAlt: string | null; published: boolean } } | { ok: false; error: string }> {
-  const raw = (input ?? {}) as { title?: unknown; body?: unknown; imageUrl?: unknown; imageAlt?: unknown; published?: unknown };
+async function readSection(input: unknown): Promise<{ ok: true; value: { title: string; body: string; imageUrl: string | null; imageAlt: string | null; published: boolean; position?: number } } | { ok: false; error: string }> {
+  const raw = (input ?? {}) as { title?: unknown; body?: unknown; imageUrl?: unknown; imageAlt?: unknown; published?: unknown; position?: unknown };
   const title = formText(raw.title);
   const body = formText(raw.body);
   if (!title || title.length > TITLE_MAX) return { ok: false, error: `Section title is required and must be at most ${TITLE_MAX} characters.` };
@@ -30,6 +30,11 @@ async function readSection(input: unknown): Promise<{ ok: true; value: { title: 
     return { ok: false, error: "Section image must be a media library item or an existing file under /public." };
   }
 
+  if (imagePath) {
+    const media = await db.mediaAsset.findFirst({ where: { url: imagePath }, select: { kind: true, visibility: true } });
+    if (media && (media.kind !== "IMAGE" || media.visibility !== "PUBLIC")) return { ok: false, error: "Section images must be public images." };
+  }
+  if (raw.position !== undefined && (!Number.isInteger(raw.position) || Number(raw.position) < 0 || Number(raw.position) > 100000)) return { ok: false, error: "Display order must be a whole number from 0 to 100000." };
   const imageAlt = formText(raw.imageAlt);
   if (imagePath && !imageAlt) return { ok: false, error: "Alt text is required when an image is attached to a section." };
   if (imageAlt.length > ALT_MAX) return { ok: false, error: `Section alt text must be at most ${ALT_MAX} characters.` };
@@ -39,6 +44,7 @@ async function readSection(input: unknown): Promise<{ ok: true; value: { title: 
     value: {
       title,
       body,
+      ...(raw.position !== undefined ? { position: Number(raw.position) } : {}),
       imageUrl: imagePath || null,
       imageAlt: imagePath ? imageAlt : null,
       published: raw.published === false ? false : true,
@@ -70,14 +76,14 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
 
     const last = await db.institutionalSection.findFirst({ where: { pageId: page.id }, orderBy: { position: "desc" } });
     const section = await db.institutionalSection.create({
-      data: { ...parsed.value, pageId: page.id, position: (last?.position ?? -1) + 1 },
+      data: { ...parsed.value, pageId: page.id, position: parsed.value.position ?? (last?.position ?? -1) + 1 },
     });
     await audit("cms.section.create", `page:${slug}:section:${section.id}`, {
       previousValue: "(none)", newValue: section.title,
       ip: clientIp(req.headers), actorOverride: auth,
     });
     revalidatePublicSite(`institutional page ${slug}`);
-    return ok({ id: section.id, title: section.title }, { status: 201, revalidated: true });
+    return ok({ id: section.id, title: section.title, position: section.position }, { status: 201, revalidated: true });
   } catch (error) { return failFrom(error); }
 }
 

@@ -76,6 +76,7 @@ export default async function proxy(req: NextRequest) {
   // framework scripts it injects, so the header must travel forward.
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set("x-nonce", nonce);
+  requestHeaders.set("x-site-path", pathname);
 
   const res = NextResponse.next({ request: { headers: requestHeaders } });
   res.headers.set("Content-Security-Policy", buildCsp(nonce));
@@ -99,10 +100,6 @@ export const config = {
   matcher: [
     {
       source: "/((?!_next/static|_next/image|_next/webpack-hmr|favicon.ico|assets|images|uploads|.*\\.(?:svg|png|jpg|jpeg|gif|webp|avif|ico|woff|woff2|ttf|mp4|webm|pdf|txt|xml|webmanifest)$).*)",
-      missing: [
-        { type: "header", key: "next-router-prefetch" },
-        { type: "header", key: "purpose", value: "prefetch" },
-      ],
     },
   ],
 };

@@ -344,15 +344,15 @@ function toSections(rows: { id: string; title: string; body: string; imageUrl: s
   }));
 }
 
-export async function listInstitutionalPages(): Promise<InstitutionalPageContent[]> {
+export async function listInstitutionalPages(options: { includeUnpublished?: boolean } = {}): Promise<InstitutionalPageContent[]> {
   if (!(await dbReady())) {
     return INSTITUTIONAL_PAGES;
   }
   const rows = await db.institutionalPage.findMany({
     orderBy: { slug: "asc" },
-    include: { sections: { where: { published: true }, orderBy: { position: "asc" } } },
+    include: { sections: { where: options.includeUnpublished ? {} : { published: true }, orderBy: { position: "asc" } } },
   });
-  const saved = new Map(rows.filter((row) => row.published).map((row) => [row.slug, row]));
+  const saved = new Map(rows.filter((row) => options.includeUnpublished || row.published).map((row) => [row.slug, row]));
   return INSTITUTIONAL_PAGES.map((fallback) => {
     const row = saved.get(fallback.slug);
     if (!row) return fallback;

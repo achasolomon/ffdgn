@@ -1,4 +1,6 @@
 "use client";
+import { useTemplateCopy } from "@/components/template-content-provider";
+
 import Link from "next/link";
 import type { Route } from "next";
 import { CountUp } from "./motion";
@@ -17,8 +19,10 @@ function split(value: string): { num: number; suffix: string } {
  * arbitrary URL reach this link.
  */
 export function MetricsStrip({ metrics }: { metrics: { value: string; label: string; href: string }[] }) {
+  const copy = useTemplateCopy("shared-metrics-strip");
+
   return (
-    <section aria-label="Institutional figures" className="institutional-metrics border-b hairline bg-white">
+    <section aria-label={copy("field-001")} className="institutional-metrics border-b hairline bg-white">
       <div className="mx-auto grid max-w-shell grid-cols-2 divide-x divide-ink/10 px-5 md:grid-cols-4">
         {metrics.map((m) => {
           const { num, suffix } = split(m.value);

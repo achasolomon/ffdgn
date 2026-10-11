@@ -1,3 +1,5 @@
+import { getTemplateCopy } from "@/lib/template-repo";
+import { asRoute as templateRoute } from "@/lib/routes";
 import { websiteMetadata } from "@/lib/website-repo";
 import { managedWebsitePage } from "@/components/website-page";
 import type { Metadata } from "next";
@@ -20,6 +22,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return { title: event?.title ?? "Event" };
 }
 export default async function EventDetail({ params }: { params: Promise<{ slug: string }> }) {
+  const copy = await getTemplateCopy("page-events-slug");
+
   const managed = await managedWebsitePage(`/events/${(await params).slug}`);
   if (managed) return managed;
 
@@ -32,7 +36,7 @@ export default async function EventDetail({ params }: { params: Promise<{ slug: 
   const publicDocs = docs.filter(d => d.status === "Published" && d.visibility === "PUBLIC");
   const speakerName = (s: string) => members.find((m) => m.slug === s)?.name ?? s;
   const keynote = speakers.find((s) => s.keynote);
-  const rest = speakers.filter((s) => !s.keynote);
+  const rest = speakers.filter(s => s.slug !== keynote?.slug);
   const initials = (name: string) =>
     name.replace(/^(Prof\.|Dr|H\.E\.)\s+/, "").split(" ").map((w) => w[0]).slice(0, 2).join("");
   const past = e.status === "Past";
@@ -42,8 +46,8 @@ export default async function EventDetail({ params }: { params: Promise<{ slug: 
   // programme leads and photographs (sparse, if present at all) follow.
   const programme = (
     e.programme.length > 0 && (
-      <section id="programme" aria-label="Programme" className="event-detail-programme">
-        <h2 className="border-b hairline bg-paper px-6 py-4 font-display text-xl text-forest-950">{past ? "Programme from the gathering" : "Programme"}</h2>
+      <section id="programme" aria-label={copy("field-001")} className="event-detail-programme">
+        <h2 className="border-b hairline bg-paper px-6 py-4 font-display text-xl text-forest-950">{past ? copy("field-002") : copy("field-001")}</h2>
         <ol className="divide-y divide-ink/10">
           {e.programme.map((p, i) => (
             <li key={i} className="grid gap-1 px-6 py-4 sm:grid-cols-[130px_1fr]">
@@ -60,13 +64,13 @@ export default async function EventDetail({ params }: { params: Promise<{ slug: 
   );
 
   const photographs = (
-    <section id="photographs" aria-label="Photographs" className="scroll-mt-24">
+    <section id="photographs" aria-label={copy("field-003")} className="scroll-mt-24">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="eyebrow">{past ? "What happened" : "From the day"}</p>
-          <h2 className="font-display mt-1 text-3xl text-forest-950">Photographs</h2>
+          <p className="eyebrow">{past ? copy("field-004") : copy("field-005")}</p>
+          <h2 className="font-display mt-1 text-3xl text-forest-950">{copy("field-003")}</h2>
         </div>
-        <Link href="/media/photos" className="text-sm font-semibold text-primary link-underline">Full gallery →</Link>
+        <Link href={templateRoute(copy("field-006"))} className="text-sm font-semibold text-primary link-underline">{copy("field-007")}</Link>
       </div>
       <div className="mt-4"><Gallery items={gallery} /></div>
     </section>
@@ -82,13 +86,13 @@ export default async function EventDetail({ params }: { params: Promise<{ slug: 
    * as a broken site rather than as a permission check.
    */
   const downloads = publicDocs.length > 0 ? (
-    <section className="event-detail-downloads mt-10" id="downloads" aria-label="Documents and communiqué" >
+    <section className="event-detail-downloads mt-10" id="downloads" aria-label={copy("field-008")} >
       <div className="flex flex-wrap items-baseline justify-between gap-2 border-b hairline bg-paper px-6 py-4">
         <div>
-          <p className="eyebrow">For download</p>
-          <h2 className="font-display mt-1 text-2xl text-forest-950">Documents &amp; communiqué</h2>
+          <p className="eyebrow">{copy("field-009")}</p>
+          <h2 className="font-display mt-1 text-2xl text-forest-950">{copy("field-010")}</h2>
         </div>
-        <p className="text-[12.5px] text-ink/55">{publicDocs.length} document{publicDocs.length === 1 ? "" : "s"}</p>
+        <p className="text-[12.5px] text-ink/55">{publicDocs.length} {copy("field-011")}{publicDocs.length === 1 ? "" : copy("field-012")}</p>
       </div>
       <ul className="divide-y divide-ink/10">
         {publicDocs.map((d) => {
@@ -105,11 +109,11 @@ export default async function EventDetail({ params }: { params: Promise<{ slug: 
               </span>
               {file && downloadable ? (
                 <a href={file} className="inline-flex shrink-0 items-center gap-2 bg-primary px-4 py-2.5 text-[13px] font-bold text-white hover:bg-forest-700">
-                  Download PDF <Download size={14} />
+                  {copy("field-013")}<Download size={14} />
                 </a>
               ) : (
                 <Link href={`/knowledge/${d.slug}`} className="inline-flex shrink-0 items-center gap-2 border border-forest-900/30 px-4 py-2.5 text-[13px] font-semibold text-forest-950 hover:bg-paper">
-                  {file ? "Sign in to download" : "View record"} <ArrowUpRight size={14} />
+                  {file ? copy("field-014") : copy("field-015")} <ArrowUpRight size={14} />
                 </Link>
               )}
             </li>
@@ -120,8 +124,8 @@ export default async function EventDetail({ params }: { params: Promise<{ slug: 
   ) : null;
 
   const highlights = past && e.highlights ? (
-    <section id="highlights" aria-label="Highlights" className="event-detail-highlights">
-      <h2 className="border-b hairline bg-paper px-6 py-4 font-display text-xl text-forest-950">Highlights &amp; reflections</h2>
+    <section id="highlights" aria-label={copy("field-016")} className="event-detail-highlights">
+      <h2 className="border-b hairline bg-paper px-6 py-4 font-display text-xl text-forest-950">{copy("field-017")}</h2>
       <div className="px-6 py-6">
         <p className="max-w-3xl whitespace-pre-line text-[14.5px] leading-relaxed text-ink/75">{e.highlights}</p>
       </div>
@@ -133,8 +137,8 @@ export default async function EventDetail({ params }: { params: Promise<{ slug: 
   const infoCards: ReactNode[] = [];
   if (e.speakers.length > 0) {
     infoCards.push(
-      <section key="members" aria-label="Members attending" className="border hairline bg-white p-6">
-        <h2 className="eyebrow">Forum members</h2>
+      <section key="members" aria-label={copy("field-018")} className="border hairline bg-white p-6">
+        <h2 className="eyebrow">{copy("field-019")}</h2>
         <ul className="mt-3 space-y-2 text-sm">
           {e.speakers.map((s) => (
             <li key={s}><Link href={`/members/${s}`} className="font-semibold text-primary">{speakerName(s)}</Link></li>
@@ -145,13 +149,13 @@ export default async function EventDetail({ params }: { params: Promise<{ slug: 
   }
   if (e.guests && e.guests.length > 0) {
     infoCards.push(
-      <section key="guests" aria-label="Patrons and chairmen" className="border hairline bg-white p-6">
-        <h2 className="eyebrow">Patrons &amp; chairmen</h2>
+      <section key="guests" aria-label={copy("field-020")} className="border hairline bg-white p-6">
+        <h2 className="eyebrow">{copy("field-021")}</h2>
         <ul className="mt-3 space-y-2 text-sm">
           {e.guests.slice(0, 5).map((g) => <li key={g} className="border-l-2 border-gold pl-3 text-ink/75">{g}</li>)}
         </ul>
         {e.guests.length > 5 && (
-          <p className="mt-2 text-[12.5px] text-ink/50">+ {e.guests.length - 5} more on the faculty above</p>
+          <p className="mt-2 text-[12.5px] text-ink/50">{copy("field-022")}{e.guests.length - 5} {copy("field-023")}</p>
         )}
       </section>,
     );
@@ -162,14 +166,14 @@ export default async function EventDetail({ params }: { params: Promise<{ slug: 
   // attached — there the placeholder is still the honest answer.
   if (publicDocs.length === 0) {
     infoCards.push(
-      <section key="docs" aria-label="Documents" className="border hairline bg-white p-6">
-        <h2 className="eyebrow">Documents &amp; communiqué</h2>
+      <section key="docs" aria-label={copy("field-024")} className="border hairline bg-white p-6">
+        <h2 className="eyebrow">{copy("field-010")}</h2>
         <ul className="mt-3 space-y-2 text-sm">
           {publicDocs.length
             ? publicDocs.map((d) => (
                 <li key={d.slug}><Link href={`/knowledge/${d.slug}`} className="font-semibold text-primary">{d.title}</Link></li>
               ))
-            : <li className="text-ink/50">Documents will be published after institutional review.</li>}
+            : <li className="text-ink/50">{copy("field-025")}</li>}
         </ul>
       </section>,
     );
@@ -178,28 +182,28 @@ export default async function EventDetail({ params }: { params: Promise<{ slug: 
 
   return (
     <div className={`event-detail-page ${past ? "event-past-page" : ""} mx-auto max-w-shell px-5 py-12`}>
-      <Breadcrumbs items={[{ label: "Events", href: "/events" }, { label: e.title }]} />
+      <Breadcrumbs items={[{ label: copy("field-026"), href: templateRoute(copy("field-027")) }, { label: e.title }]} />
 
       <header className="event-detail-header">
         <div className="event-header-photo" aria-hidden><AssetImage src={e.coverUrl ?? "/assets/hero/national.jpg"} alt="" width={1600} height={900} className="h-full w-full object-cover" sizes="100vw" priority /></div>
-        <p className="eyebrow-light">{past ? "From the archive" : e.kind} / {past ? e.startDate.slice(0,4) : e.status}</p>
+        <p className="eyebrow-light">{past ? copy("field-028") : e.kind} {copy("field-029")}{past ? e.startDate.slice(0,4) : e.status}</p>
         <h1 className="font-display">{e.title}</h1>
         {e.theme && <p className="event-detail-theme">{e.theme}</p>}
-        <div className="event-detail-facts"><p><CalendarDays size={18} /><span>{formatDate(e.startDate)}{e.startDate !== e.endDate && ` – ${formatDate(e.endDate)}`}</span></p><p><MapPin size={18} /><span>{e.venue}, {e.city}</span></p></div>
-        {e.status === "Upcoming" && <Link href="/contact?subject=Conference%20registration" className="event-action">Register for this conference <ArrowRight size={17} /></Link>}
+        <div className="event-detail-facts"><p><CalendarDays size={18} /><span>{formatDate(e.startDate)}{e.startDate !== e.endDate && copy("field-063", {value1: formatDate(e.endDate)})}</span></p><p><MapPin size={18} /><span>{e.venue}{copy("field-030")}{e.city}</span></p></div>
+        {e.status === "Upcoming" && <Link href={templateRoute(copy("field-031"))} className="event-action">{copy("field-032")}<ArrowRight size={17} /></Link>}
       </header>
-      {past && <div className="event-archive-note"><p>This gathering has concluded. Explore its record, moments and published outcomes.</p><Link href="/events#upcoming">See upcoming events <ArrowRight size={16} /></Link></div>}
-      <nav className="event-detail-nav" aria-label="Event sections">
-        <a href="#event-overview">Overview</a>
-        {past && e.highlights && <a href="#highlights">Highlights</a>}
-        {e.programme.length > 0 && <a href="#programme">Programme</a>}
-        {rest.length > 0 && <a href="#speakers">Speakers</a>}
-        {gallery.length > 0 && <a href="#photographs">Photographs</a>}
-        {publicDocs.length > 0 && <a href="#downloads">Documents</a>}
+      {past && <div className="event-archive-note"><p>{copy("field-033")}</p><Link href={templateRoute(copy("field-034"))}>{copy("field-035")}<ArrowRight size={16} /></Link></div>}
+      <nav className="event-detail-nav" aria-label={copy("field-036")}>
+        <a href={templateRoute(copy("field-037"))}>{copy("field-038")}</a>
+        {past && e.highlights && <a href={templateRoute(copy("field-039"))}>{copy("field-016")}</a>}
+        {e.programme.length > 0 && <a href={templateRoute(copy("field-040"))}>{copy("field-001")}</a>}
+        {rest.length > 0 && <a href={templateRoute(copy("field-041"))}>{copy("field-042")}</a>}
+        {gallery.length > 0 && <a href={templateRoute(copy("field-043"))}>{copy("field-003")}</a>}
+        {publicDocs.length > 0 && <a href={templateRoute(copy("field-044"))}>{copy("field-024")}</a>}
       </nav>
       <section id="event-overview" className={`event-detail-overview ${!e.coverUrl ? "event-detail-overview-text" : ""}`} aria-labelledby="overview-title">
-        <div><p className="eyebrow">{past ? "The gathering" : "About the event"}</p><h2 id="overview-title" className="font-display">{past ? "Ideas shared. Experience exchanged." : "A forum for meaningful dialogue."}</h2><p>{e.summary}</p>{past && gallery.length > 0 && <a href="#photographs" className="portrait-link">See moments from the day <ArrowRight size={17} /></a>}</div>
-        {e.coverUrl && <figure className="event-detail-flyer"><a href={e.coverUrl} target="_blank" rel="noreferrer" aria-label={`Open full-size flyer for ${e.title}`}><AssetImage src={e.coverUrl} alt={`Official flyer for ${e.title}`} width={1600} height={1000} sizes="(max-width: 767px) 100vw, 50vw" className="w-full object-contain" priority /></a><figcaption>Event flyer · Select to view full size</figcaption></figure>}
+        <div><p className="eyebrow">{past ? copy("field-045") : copy("field-046")}</p><h2 id="overview-title" className="font-display">{past ? copy("field-047") : copy("field-048")}</h2><p>{e.summary}</p>{past && gallery.length > 0 && <a href={templateRoute(copy("field-043"))} className="portrait-link">{copy("field-049")}<ArrowRight size={17} /></a>}</div>
+        {e.coverUrl && <figure className="event-detail-flyer"><a href={e.coverUrl} target="_blank" rel="noreferrer" aria-label={copy("field-064", {value1: e.title})}><AssetImage src={e.coverUrl} alt={copy("field-065", {value1: e.title})} width={1600} height={1000} sizes="(max-width: 767px) 100vw, 50vw" className="w-full object-contain" priority /></a><figcaption>{copy("field-050")}</figcaption></figure>}
       </section>
       {/* Top of a past event: what can be downloaded, then what happened. */}
       {past && downloads}
@@ -209,19 +213,19 @@ export default async function EventDetail({ params }: { params: Promise<{ slug: 
       {/* Keynote spotlight */}
       {keynote && (
         <Reveal>
-          <section aria-label="Keynote speaker" className="event-detail-keynote mt-12 grid gap-6 bg-forest-950 p-6 text-white md:grid-cols-[160px_1fr_auto] md:items-center md:p-8">
+          <section aria-label={copy("field-051")} className="event-detail-keynote mt-12 grid gap-6 bg-forest-950 p-6 text-white md:grid-cols-[160px_1fr_auto] md:items-center md:p-8">
             {keynote.photo ? (
-              <AssetImage src={keynote.photo} alt={`Portrait of ${keynote.name}`} width={320} height={320} className="h-32 w-32 rounded-full object-cover ring-2 ring-gold/60" sizes="128px" />
+              <AssetImage src={keynote.photo} alt={copy("field-066", {value1: keynote.name})} width={320} height={320} className="h-32 w-32 rounded-full object-cover ring-2 ring-gold/60" sizes="128px" />
             ) : (
               <span className="grid h-32 w-32 place-items-center rounded-full bg-forest-900 font-display text-4xl text-gold ring-2 ring-gold/60" aria-hidden>{initials(keynote.name)}</span>
             )}
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold">Keynote speaker</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold">{copy("field-051")}</p>
               <h2 className="font-display mt-1 text-3xl">{keynote.name}</h2>
               {keynote.bio && <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/70">{keynote.bio}</p>}
             </div>
             <Link href={asRoute(`/speakers/${keynote.slug}`)} className="inline-flex shrink-0 items-center gap-2 border border-gold/70 px-5 py-2.5 text-sm font-semibold text-gold hover:bg-gold hover:text-forest-950">
-              Speaker profile <ArrowRight size={15} />
+              {copy("field-052")}<ArrowRight size={15} />
             </Link>
           </section>
         </Reveal>
@@ -229,26 +233,26 @@ export default async function EventDetail({ params }: { params: Promise<{ slug: 
 
       {/* Speaker faculty grid */}
       {rest.length > 0 && (
-        <section id="speakers" aria-label="Conference speakers" className="mt-12 scroll-mt-24">
+        <section id="speakers" aria-label={copy("field-053")} className="mt-12 scroll-mt-24">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="eyebrow">Faculty</p>
-              <h2 className="font-display mt-1 text-3xl text-forest-950">Conference speakers</h2>
+              <p className="eyebrow">{copy("field-054")}</p>
+              <h2 className="font-display mt-1 text-3xl text-forest-950">{copy("field-053")}</h2>
             </div>
-            <p className="text-sm text-ink/55">{speakers.length} speaker{speakers.length === 1 ? "" : "s"} · tap a card for the full profile</p>
+            <p className="text-sm text-ink/55">{speakers.length} {copy("field-055")}{speakers.length === 1 ? "" : copy("field-012")} {copy("field-056")}</p>
           </div>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {rest.map((s) => (
               <Link key={s.slug} href={asRoute(`/speakers/${s.slug}`)} className="event-detail-speaker group flex items-center gap-4 p-5">
                 {s.photo ? (
-                  <AssetImage src={s.photo} alt={`Portrait of ${s.name}`} width={128} height={128} className="h-16 w-16 shrink-0 rounded-full object-cover ring-1 ring-gold/60" sizes="64px" />
+                  <AssetImage src={s.photo} alt={copy("field-066", {value1: s.name})} width={128} height={128} className="h-16 w-16 shrink-0 rounded-full object-cover ring-1 ring-gold/60" sizes="64px" />
                 ) : (
                   <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-forest-950 font-display text-xl text-gold" aria-hidden>{initials(s.name)}</span>
                 )}
                 <span className="min-w-0">
                   <span className="block text-[11px] font-bold uppercase tracking-[0.16em] text-primary">{s.role}</span>
                   <span className="mt-0.5 block font-display text-xl text-forest-950 group-hover:text-primary">{s.name}</span>
-                  <span className="mt-0.5 block text-[12.5px] text-ink/55">{s.bio ? `${s.bio.slice(0, 80)}…` : "Profile →"}</span>
+                  <span className="mt-0.5 block text-[12.5px] text-ink/55">{s.bio ? copy("field-067", {value1: s.bio.slice(0, 80)}) : copy("field-057")}</span>
                 </span>
               </Link>
             ))}
@@ -264,10 +268,10 @@ export default async function EventDetail({ params }: { params: Promise<{ slug: 
 
       {!past && downloads}
       {/* Members / patrons / documents: a card row rather than a cramped sidebar */}
-      <section aria-label="Attendees and documents" className={`event-detail-info mt-12 grid gap-6 ${infoColumns}`}>
+      <section aria-label={copy("field-058")} className={`event-detail-info mt-12 grid gap-6 ${infoColumns}`}>
         {infoCards}
       </section>
-      {past && <div className="past-event-footer"><div><p className="eyebrow-light">Institutional memory</p><h2 className="font-display">Continue exploring the work of the Forum.</h2></div><Link href="/events#archive" className="portrait-link">Return to the event archive <ArrowRight size={18} /></Link></div>}
+      {past && <div className="past-event-footer"><div><p className="eyebrow-light">{copy("field-059")}</p><h2 className="font-display">{copy("field-060")}</h2></div><Link href={templateRoute(copy("field-061"))} className="portrait-link">{copy("field-062")}<ArrowRight size={18} /></Link></div>}
     </div>
   );
 }

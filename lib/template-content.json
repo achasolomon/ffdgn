@@ -1,0 +1,5142 @@
+[
+  {
+    "id": "page-about-governance-board-of-trustees",
+    "title": "Board of Trustees",
+    "path": "/about/governance/board-of-trustees",
+    "source": "app/about/governance/board-of-trustees/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "About",
+        "value": "About",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "/about",
+        "value": "/about",
+        "kind": "link"
+      },
+      {
+        "key": "field-003",
+        "label": "Governance",
+        "value": "Governance",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "/about/governance",
+        "value": "/about/governance",
+        "kind": "link"
+      },
+      {
+        "key": "field-005",
+        "label": "Board of Trustees",
+        "value": "Board of Trustees",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Guardianship of the mandate, values and long-term direction of the Forum.",
+        "value": "Guardianship of the mandate, values and long-term direction of the Forum.",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Chairman, Board of Trustees",
+        "value": "Chairman, Board of Trustees",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Full profile →",
+        "value": "Full profile →",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Mandate",
+        "value": "Mandate",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "Custody of the Forum's constitution, values and strategic direction across administrations",
+        "value": "Custody of the Forum's constitution, values and strategic direction across administrations.",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Oversight",
+        "value": "Oversight",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "The Board reviews major institutional decisions and safeguards the Forum's non-partisan ch",
+        "value": "The Board reviews major institutional decisions and safeguards the Forum's non-partisan character.",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "Continuity",
+        "value": "Continuity",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "Trustees ensure institutional memory and leadership succession beyond any single tenure.",
+        "value": "Trustees ensure institutional memory and leadership succession beyond any single tenure.",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "Full trustee composition is maintained by the Secretariat. ",
+        "value": "Full trustee composition is maintained by the Secretariat. ",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "/contact",
+        "value": "/contact",
+        "kind": "link"
+      },
+      {
+        "key": "field-017",
+        "label": "Contact the Secretariat",
+        "value": "Contact the Secretariat",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": " for the current roll.",
+        "value": " for the current roll.",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "Portrait of {value1}",
+        "value": "Portrait of {value1}",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-about-governance",
+    "title": "Governance",
+    "path": "/about/governance",
+    "source": "app/about/governance/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Governance",
+        "value": "Governance",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "/about/governance/board-of-trustees",
+        "value": "/about/governance/board-of-trustees",
+        "kind": "link"
+      },
+      {
+        "key": "field-003",
+        "label": "Board of Trustees",
+        "value": "Board of Trustees",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Guardianship of the mandate, values and long-term direction of the Forum.",
+        "value": "Guardianship of the mandate, values and long-term direction of the Forum.",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "/about/governance/secretariat",
+        "value": "/about/governance/secretariat",
+        "kind": "link"
+      },
+      {
+        "key": "field-006",
+        "label": "The Secretariat",
+        "value": "The Secretariat",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Administrative, research and coordination support to the Forum and its activities.",
+        "value": "Administrative, research and coordination support to the Forum and its activities.",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "/leadership",
+        "value": "/leadership",
+        "kind": "link"
+      },
+      {
+        "key": "field-009",
+        "label": "National Executive",
+        "value": "National Executive",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "The Chairman, deputies, treasurer and officers leading day-to-day work.",
+        "value": "The Chairman, deputies, treasurer and officers leading day-to-day work.",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "/committees",
+        "value": "/committees",
+        "kind": "link"
+      },
+      {
+        "key": "field-012",
+        "label": "Committees",
+        "value": "Committees",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "Standing working arms: policy, peer review, mentorship, research, partnerships.",
+        "value": "Standing working arms: policy, peer review, mentorship, research, partnerships.",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "About",
+        "value": "About",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "/about",
+        "value": "/about",
+        "kind": "link"
+      },
+      {
+        "key": "field-016",
+        "label": "How the Forum governs itself",
+        "value": "How the Forum governs itself",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "Clear layers, documented approvals, auditable decisions — the same discipline the Forum re",
+        "value": "Clear layers, documented approvals, auditable decisions — the same discipline the Forum recommends to public institutions.",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "/assets/hero/fdg.jpg",
+        "value": "/assets/hero/fdg.jpg",
+        "kind": "image"
+      },
+      {
+        "key": "field-019",
+        "label": "Forum leaders gathered at an institutional engagement",
+        "value": "Forum leaders gathered at an institutional engagement",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": "Purpose and stewardship",
+        "value": "Purpose and stewardship",
+        "kind": "text"
+      },
+      {
+        "key": "field-021",
+        "label": "Clear responsibilities.",
+        "value": "Clear responsibilities.",
+        "kind": "text"
+      },
+      {
+        "key": "field-022",
+        "label": "A common purpose.",
+        "value": "A common purpose.",
+        "kind": "text"
+      },
+      {
+        "key": "field-023",
+        "label": "The Forum’s governance connects long-term stewardship with the practical work of leadershi",
+        "value": "The Forum’s governance connects long-term stewardship with the practical work of leadership, committees and the Secretariat. Explore the bodies entrusted with its direction and delivery.",
+        "kind": "text"
+      },
+      {
+        "key": "field-024",
+        "label": "Open ",
+        "value": "Open ",
+        "kind": "text"
+      },
+      {
+        "key": "field-025",
+        "label": "Accountability",
+        "value": "Accountability",
+        "kind": "text"
+      },
+      {
+        "key": "field-026",
+        "label": "Responsibility at every level.",
+        "value": "Responsibility at every level.",
+        "kind": "text"
+      },
+      {
+        "key": "field-027",
+        "label": "Clear responsibilities and recorded decisions support continuity and accountability across",
+        "value": "Clear responsibilities and recorded decisions support continuity and accountability across the Forum’s work.",
+        "kind": "text"
+      },
+      {
+        "key": "field-028",
+        "label": "Explore the Board of Trustees ",
+        "value": "Explore the Board of Trustees ",
+        "kind": "text"
+      },
+      {
+        "key": "field-029",
+        "label": "Portrait of {value1}",
+        "value": "Portrait of {value1}",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-about-governance-secretariat",
+    "title": "Secretariat",
+    "path": "/about/governance/secretariat",
+    "source": "app/about/governance/secretariat/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Secretariat",
+        "value": "Secretariat",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Administration",
+        "value": "Administration",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "Membership records, meetings, logistics and day-to-day operations of the Forum.",
+        "value": "Membership records, meetings, logistics and day-to-day operations of the Forum.",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Research & knowledge",
+        "value": "Research & knowledge",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Policy support, publications pipeline and the Knowledge Centre.",
+        "value": "Policy support, publications pipeline and the Knowledge Centre.",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Communications",
+        "value": "Communications",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Official statements, press relations, website and media library.",
+        "value": "Official statements, press relations, website and media library.",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Conference delivery",
+        "value": "Conference delivery",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Planning and delivery of the national conference and dialogue programmes.",
+        "value": "Planning and delivery of the national conference and dialogue programmes.",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "About",
+        "value": "About",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "/about",
+        "value": "/about",
+        "kind": "link"
+      },
+      {
+        "key": "field-012",
+        "label": "Governance",
+        "value": "Governance",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "/about/governance",
+        "value": "/about/governance",
+        "kind": "link"
+      },
+      {
+        "key": "field-014",
+        "label": "The Secretariat",
+        "value": "The Secretariat",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "The operational arm of the Forum — administration, research, communications and conference",
+        "value": "The operational arm of the Forum — administration, research, communications and conference delivery.",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "Director-General",
+        "value": "Director-General",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "Full profile →",
+        "value": "Full profile →",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "What the Secretariat does",
+        "value": "What the Secretariat does",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "/contact",
+        "value": "/contact",
+        "kind": "link"
+      },
+      {
+        "key": "field-020",
+        "label": "Contact the Secretariat ",
+        "value": "Contact the Secretariat ",
+        "kind": "text"
+      },
+      {
+        "key": "field-021",
+        "label": "Portrait of {value1}",
+        "value": "Portrait of {value1}",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-about-history",
+    "title": "History",
+    "path": "/about/history",
+    "source": "app/about/history/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Our history",
+        "value": "Our history",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Explore the milestones, gatherings and shared experience that shaped the Forum of Former D",
+        "value": "Explore the milestones, gatherings and shared experience that shaped the Forum of Former Deputy Governors of Nigeria.",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "/assets/hero/fdg.jpg",
+        "value": "/assets/hero/fdg.jpg",
+        "kind": "image"
+      },
+      {
+        "key": "field-004",
+        "label": "Forum members at a national engagement",
+        "value": "Forum members at a national engagement",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Forum members, together in service",
+        "value": "Forum members, together in service",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "/assets/news/visit_ganduje2.jpeg",
+        "value": "/assets/news/visit_ganduje2.jpeg",
+        "kind": "image"
+      },
+      {
+        "key": "field-007",
+        "label": "Forum representatives during an official visit",
+        "value": "Forum representatives during an official visit",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Institutional dialogue and engagement",
+        "value": "Institutional dialogue and engagement",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "About",
+        "value": "About",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "/about",
+        "value": "/about",
+        "kind": "link"
+      },
+      {
+        "key": "field-011",
+        "label": "History",
+        "value": "History",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "Institutional memory",
+        "value": "Institutional memory",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "The Forum through the years",
+        "value": "The Forum through the years",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "A shared journey of leadership, dialogue and service. Discover the milestones and moments ",
+        "value": "A shared journey of leadership, dialogue and service. Discover the milestones and moments that shaped the Forum.",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "Our journey",
+        "value": "Our journey",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "Experience becomes",
+        "value": "Experience becomes",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "a lasting legacy.",
+        "value": "a lasting legacy.",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "Across generations of leadership, the Forum brings executive experience into national dial",
+        "value": "Across generations of leadership, the Forum brings executive experience into national dialogue. These records trace the gatherings, decisions and achievements that continue to shape its purpose.",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "About the Forum ",
+        "value": "About the Forum ",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": "Timeline milestones",
+        "value": "Timeline milestones",
+        "kind": "text"
+      },
+      {
+        "key": "field-021",
+        "label": "Explore the years",
+        "value": "Explore the years",
+        "kind": "text"
+      },
+      {
+        "key": "field-022",
+        "label": "Where it began",
+        "value": "Where it began",
+        "kind": "text"
+      },
+      {
+        "key": "field-023",
+        "label": "A milestone in our journey",
+        "value": "A milestone in our journey",
+        "kind": "text"
+      },
+      {
+        "key": "field-024",
+        "label": "The archive is being assembled",
+        "value": "The archive is being assembled",
+        "kind": "text"
+      },
+      {
+        "key": "field-025",
+        "label": "Historical milestones will appear here as the Secretariat publishes them.",
+        "value": "Historical milestones will appear here as the Secretariat publishes them.",
+        "kind": "text"
+      },
+      {
+        "key": "field-026",
+        "label": "A living archive",
+        "value": "A living archive",
+        "kind": "text"
+      },
+      {
+        "key": "field-027",
+        "label": "Our story continues.",
+        "value": "Our story continues.",
+        "kind": "text"
+      },
+      {
+        "key": "field-028",
+        "label": "Every gathering adds another chapter. Explore the Forum’s events, people and published rec",
+        "value": "Every gathering adds another chapter. Explore the Forum’s events, people and published records.",
+        "kind": "text"
+      },
+      {
+        "key": "field-029",
+        "label": "/events",
+        "value": "/events",
+        "kind": "link"
+      },
+      {
+        "key": "field-030",
+        "label": "Events and conferences",
+        "value": "Events and conferences",
+        "kind": "text"
+      },
+      {
+        "key": "field-031",
+        "label": "/media/photos",
+        "value": "/media/photos",
+        "kind": "link"
+      },
+      {
+        "key": "field-032",
+        "label": "Photo archive",
+        "value": "Photo archive",
+        "kind": "text"
+      },
+      {
+        "key": "field-033",
+        "label": "/knowledge",
+        "value": "/knowledge",
+        "kind": "link"
+      },
+      {
+        "key": "field-034",
+        "label": "Publications and records",
+        "value": "Publications and records",
+        "kind": "text"
+      },
+      {
+        "key": "field-035",
+        "label": "/leadership",
+        "value": "/leadership",
+        "kind": "link"
+      },
+      {
+        "key": "field-036",
+        "label": "Meet the leadership",
+        "value": "Meet the leadership",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-about",
+    "title": "About the Forum",
+    "path": "/about",
+    "source": "app/about/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "About the Forum",
+        "value": "About the Forum",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "/assets/hero/fdg.jpg",
+        "value": "/assets/hero/fdg.jpg",
+        "kind": "image"
+      },
+      {
+        "key": "field-003",
+        "label": "Forum members gathered at a national engagement",
+        "value": "Forum members gathered at a national engagement",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Experience shared. A common purpose.",
+        "value": "Experience shared. A common purpose.",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "/assets/news/visit_ganduje2.jpeg",
+        "value": "/assets/news/visit_ganduje2.jpeg",
+        "kind": "image"
+      },
+      {
+        "key": "field-006",
+        "label": "Forum representatives during an official visit",
+        "value": "Forum representatives during an official visit",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Dialogue that strengthens our institutions",
+        "value": "Dialogue that strengthens our institutions",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "/assets/news/polish-nigeria-partnership.jpg",
+        "value": "/assets/news/polish-nigeria-partnership.jpg",
+        "kind": "image"
+      },
+      {
+        "key": "field-009",
+        "label": "Forum representatives at a business engagement",
+        "value": "Forum representatives at a business engagement",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "Building connections for national development",
+        "value": "Building connections for national development",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Our identity",
+        "value": "Our identity",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "Our purpose / ",
+        "value": "Our purpose / ",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "About page sections",
+        "value": "About page sections",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "Explore the Forum",
+        "value": "Explore the Forum",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "The Forum / ",
+        "value": "The Forum / ",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "More about the Forum",
+        "value": "More about the Forum",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "Continue exploring",
+        "value": "Continue exploring",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "Meet the people.",
+        "value": "Meet the people.",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "Discover the journey.",
+        "value": "Discover the journey.",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": "/about/history",
+        "value": "/about/history",
+        "kind": "link"
+      },
+      {
+        "key": "field-021",
+        "label": "Our history",
+        "value": "Our history",
+        "kind": "text"
+      },
+      {
+        "key": "field-022",
+        "label": "/about/governance",
+        "value": "/about/governance",
+        "kind": "link"
+      },
+      {
+        "key": "field-023",
+        "label": "Governance",
+        "value": "Governance",
+        "kind": "text"
+      },
+      {
+        "key": "field-024",
+        "label": "/leadership",
+        "value": "/leadership",
+        "kind": "link"
+      },
+      {
+        "key": "field-025",
+        "label": "Leadership",
+        "value": "Leadership",
+        "kind": "text"
+      },
+      {
+        "key": "field-026",
+        "label": "/members#join",
+        "value": "/members#join",
+        "kind": "link"
+      },
+      {
+        "key": "field-027",
+        "label": "Membership",
+        "value": "Membership",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-committees",
+    "title": "/committees",
+    "path": "/committees",
+    "source": "app/committees/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Committees",
+        "value": "Committees",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Engagement",
+        "value": "Engagement",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "Experience put to work.",
+        "value": "Experience put to work.",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "The working arms of the Forum — chaired by members, producing recommendations, reports and",
+        "value": "The working arms of the Forum — chaired by members, producing recommendations, reports and policy.",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "/peer-review",
+        "value": "/peer-review",
+        "kind": "link"
+      },
+      {
+        "key": "field-006",
+        "label": "Peer review ",
+        "value": "Peer review ",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "/mentorship",
+        "value": "/mentorship",
+        "kind": "link"
+      },
+      {
+        "key": "field-008",
+        "label": "Mentorship ",
+        "value": "Mentorship ",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Chair: ",
+        "value": "Chair: ",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": " · ",
+        "value": " · ",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": " meetings",
+        "value": " meetings",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "+",
+        "value": "+",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": " members",
+        "value": " members",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "Enquire ",
+        "value": "Enquire ",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "Portrait of {value1}",
+        "value": "Portrait of {value1}",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "{value1} members",
+        "value": "{value1} members",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-contact",
+    "title": "Contact",
+    "path": "/contact",
+    "source": "app/contact/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Contact the Secretariat",
+        "value": "Contact the Secretariat",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Secretariat",
+        "value": "Secretariat",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "The Secretariat provides administrative, research and coordination support to the Forum an",
+        "value": "The Secretariat provides administrative, research and coordination support to the Forum and its activities.",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Secretariat address",
+        "value": "Secretariat address",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-events",
+    "title": "Events & conferences",
+    "path": "/events",
+    "source": "app/events/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Events & Conferences",
+        "value": "Events & Conferences",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Events & conferences",
+        "value": "Events & conferences",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "Where experience meets ideas.",
+        "value": "Where experience meets ideas.",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Conferences, dialogues and roundtables bringing the Forum together to exchange ideas and s",
+        "value": "Conferences, dialogues and roundtables bringing the Forum together to exchange ideas and shape the conversation on Nigeria’s development.",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "#upcoming",
+        "value": "#upcoming",
+        "kind": "link"
+      },
+      {
+        "key": "field-006",
+        "label": "Upcoming & ongoing ",
+        "value": "Upcoming & ongoing ",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "#archive",
+        "value": "#archive",
+        "kind": "link"
+      },
+      {
+        "key": "field-008",
+        "label": "Explore past events ",
+        "value": "Explore past events ",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "On the calendar",
+        "value": "On the calendar",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "Upcoming & ongoing",
+        "value": "Upcoming & ongoing",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": " event",
+        "value": " event",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "s",
+        "value": "s",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": " / ",
+        "value": " / ",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": ", ",
+        "value": ", ",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "Explore event ",
+        "value": "Explore event ",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "Our next gathering is being planned",
+        "value": "Our next gathering is being planned",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "Upcoming events will appear here when announced. Explore previous gatherings below.",
+        "value": "Upcoming events will appear here when announced. Explore previous gatherings below.",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "The Forum in conversation",
+        "value": "The Forum in conversation",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "Past gatherings, lasting ideas.",
+        "value": "Past gatherings, lasting ideas.",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": " archived event",
+        "value": " archived event",
+        "kind": "text"
+      },
+      {
+        "key": "field-021",
+        "label": "Search past events",
+        "value": "Search past events",
+        "kind": "text"
+      },
+      {
+        "key": "field-022",
+        "label": "Find an event",
+        "value": "Find an event",
+        "kind": "text"
+      },
+      {
+        "key": "field-023",
+        "label": "Title, theme or city",
+        "value": "Title, theme or city",
+        "kind": "text"
+      },
+      {
+        "key": "field-024",
+        "label": "Year",
+        "value": "Year",
+        "kind": "text"
+      },
+      {
+        "key": "field-025",
+        "label": "All years",
+        "value": "All years",
+        "kind": "text"
+      },
+      {
+        "key": "field-026",
+        "label": "Event type",
+        "value": "Event type",
+        "kind": "text"
+      },
+      {
+        "key": "field-027",
+        "label": "All event types",
+        "value": "All event types",
+        "kind": "text"
+      },
+      {
+        "key": "field-028",
+        "label": "Search archive",
+        "value": "Search archive",
+        "kind": "text"
+      },
+      {
+        "key": "field-029",
+        "label": "Showing ",
+        "value": "Showing ",
+        "kind": "text"
+      },
+      {
+        "key": "field-030",
+        "label": " of ",
+        "value": " of ",
+        "kind": "text"
+      },
+      {
+        "key": "field-031",
+        "label": " past events",
+        "value": " past events",
+        "kind": "text"
+      },
+      {
+        "key": "field-032",
+        "label": "/events#archive",
+        "value": "/events#archive",
+        "kind": "link"
+      },
+      {
+        "key": "field-033",
+        "label": "Clear filters",
+        "value": "Clear filters",
+        "kind": "text"
+      },
+      {
+        "key": "field-034",
+        "label": " · ",
+        "value": " · ",
+        "kind": "text"
+      },
+      {
+        "key": "field-035",
+        "label": "Explore event record ",
+        "value": "Explore event record ",
+        "kind": "text"
+      },
+      {
+        "key": "field-036",
+        "label": "No events match your search",
+        "value": "No events match your search",
+        "kind": "text"
+      },
+      {
+        "key": "field-037",
+        "label": "The archive is being prepared",
+        "value": "The archive is being prepared",
+        "kind": "text"
+      },
+      {
+        "key": "field-038",
+        "label": "Try another title, city, year or event type.",
+        "value": "Try another title, city, year or event type.",
+        "kind": "text"
+      },
+      {
+        "key": "field-039",
+        "label": "Past gatherings will appear here with their programmes and outcomes.",
+        "value": "Past gatherings will appear here with their programmes and outcomes.",
+        "kind": "text"
+      },
+      {
+        "key": "field-040",
+        "label": "Join the conversation",
+        "value": "Join the conversation",
+        "kind": "text"
+      },
+      {
+        "key": "field-041",
+        "label": "Connect with the Secretariat.",
+        "value": "Connect with the Secretariat.",
+        "kind": "text"
+      },
+      {
+        "key": "field-042",
+        "label": "For questions about Forum events, participation or conference arrangements, get in touch w",
+        "value": "For questions about Forum events, participation or conference arrangements, get in touch with our team.",
+        "kind": "text"
+      },
+      {
+        "key": "field-043",
+        "label": "/contact?subject=Event%20enquiry",
+        "value": "/contact?subject=Event%20enquiry",
+        "kind": "link"
+      },
+      {
+        "key": "field-044",
+        "label": "Event enquiries ",
+        "value": "Event enquiries ",
+        "kind": "text"
+      },
+      {
+        "key": "field-045",
+        "label": "View {value1}",
+        "value": "View {value1}",
+        "kind": "text"
+      },
+      {
+        "key": "field-046",
+        "label": "Flyer for {value1}",
+        "value": "Flyer for {value1}",
+        "kind": "text"
+      },
+      {
+        "key": "field-047",
+        "label": " – {value1}",
+        "value": " – {value1}",
+        "kind": "text"
+      },
+      {
+        "key": "field-048",
+        "label": "Explore {value1}",
+        "value": "Explore {value1}",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-events-slug",
+    "title": "Event detail pages",
+    "path": "/events/{slug}",
+    "source": "app/events/[slug]/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Programme",
+        "value": "Programme",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Programme from the gathering",
+        "value": "Programme from the gathering",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "Photographs",
+        "value": "Photographs",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "What happened",
+        "value": "What happened",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "From the day",
+        "value": "From the day",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "/media/photos",
+        "value": "/media/photos",
+        "kind": "link"
+      },
+      {
+        "key": "field-007",
+        "label": "Full gallery →",
+        "value": "Full gallery →",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Documents and communiqué",
+        "value": "Documents and communiqué",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "For download",
+        "value": "For download",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "Documents & communiqué",
+        "value": "Documents & communiqué",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": " document",
+        "value": " document",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "s",
+        "value": "s",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "Download PDF ",
+        "value": "Download PDF ",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "Sign in to download",
+        "value": "Sign in to download",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "View record",
+        "value": "View record",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "Highlights",
+        "value": "Highlights",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "Highlights & reflections",
+        "value": "Highlights & reflections",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "Members attending",
+        "value": "Members attending",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "Forum members",
+        "value": "Forum members",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": "Patrons and chairmen",
+        "value": "Patrons and chairmen",
+        "kind": "text"
+      },
+      {
+        "key": "field-021",
+        "label": "Patrons & chairmen",
+        "value": "Patrons & chairmen",
+        "kind": "text"
+      },
+      {
+        "key": "field-022",
+        "label": "+ ",
+        "value": "+ ",
+        "kind": "text"
+      },
+      {
+        "key": "field-023",
+        "label": " more on the faculty above",
+        "value": " more on the faculty above",
+        "kind": "text"
+      },
+      {
+        "key": "field-024",
+        "label": "Documents",
+        "value": "Documents",
+        "kind": "text"
+      },
+      {
+        "key": "field-025",
+        "label": "Documents will be published after institutional review.",
+        "value": "Documents will be published after institutional review.",
+        "kind": "text"
+      },
+      {
+        "key": "field-026",
+        "label": "Events",
+        "value": "Events",
+        "kind": "text"
+      },
+      {
+        "key": "field-027",
+        "label": "/events",
+        "value": "/events",
+        "kind": "link"
+      },
+      {
+        "key": "field-028",
+        "label": "From the archive",
+        "value": "From the archive",
+        "kind": "text"
+      },
+      {
+        "key": "field-029",
+        "label": " / ",
+        "value": " / ",
+        "kind": "text"
+      },
+      {
+        "key": "field-030",
+        "label": ", ",
+        "value": ", ",
+        "kind": "text"
+      },
+      {
+        "key": "field-031",
+        "label": "/contact?subject=Conference%20registration",
+        "value": "/contact?subject=Conference%20registration",
+        "kind": "link"
+      },
+      {
+        "key": "field-032",
+        "label": "Register for this conference ",
+        "value": "Register for this conference ",
+        "kind": "text"
+      },
+      {
+        "key": "field-033",
+        "label": "This gathering has concluded. Explore its record, moments and published outcomes.",
+        "value": "This gathering has concluded. Explore its record, moments and published outcomes.",
+        "kind": "text"
+      },
+      {
+        "key": "field-034",
+        "label": "/events#upcoming",
+        "value": "/events#upcoming",
+        "kind": "link"
+      },
+      {
+        "key": "field-035",
+        "label": "See upcoming events ",
+        "value": "See upcoming events ",
+        "kind": "text"
+      },
+      {
+        "key": "field-036",
+        "label": "Event sections",
+        "value": "Event sections",
+        "kind": "text"
+      },
+      {
+        "key": "field-037",
+        "label": "#event-overview",
+        "value": "#event-overview",
+        "kind": "link"
+      },
+      {
+        "key": "field-038",
+        "label": "Overview",
+        "value": "Overview",
+        "kind": "text"
+      },
+      {
+        "key": "field-039",
+        "label": "#highlights",
+        "value": "#highlights",
+        "kind": "link"
+      },
+      {
+        "key": "field-040",
+        "label": "#programme",
+        "value": "#programme",
+        "kind": "link"
+      },
+      {
+        "key": "field-041",
+        "label": "#speakers",
+        "value": "#speakers",
+        "kind": "link"
+      },
+      {
+        "key": "field-042",
+        "label": "Speakers",
+        "value": "Speakers",
+        "kind": "text"
+      },
+      {
+        "key": "field-043",
+        "label": "#photographs",
+        "value": "#photographs",
+        "kind": "link"
+      },
+      {
+        "key": "field-044",
+        "label": "#downloads",
+        "value": "#downloads",
+        "kind": "link"
+      },
+      {
+        "key": "field-045",
+        "label": "The gathering",
+        "value": "The gathering",
+        "kind": "text"
+      },
+      {
+        "key": "field-046",
+        "label": "About the event",
+        "value": "About the event",
+        "kind": "text"
+      },
+      {
+        "key": "field-047",
+        "label": "Ideas shared. Experience exchanged.",
+        "value": "Ideas shared. Experience exchanged.",
+        "kind": "text"
+      },
+      {
+        "key": "field-048",
+        "label": "A forum for meaningful dialogue.",
+        "value": "A forum for meaningful dialogue.",
+        "kind": "text"
+      },
+      {
+        "key": "field-049",
+        "label": "See moments from the day ",
+        "value": "See moments from the day ",
+        "kind": "text"
+      },
+      {
+        "key": "field-050",
+        "label": "Event flyer · Select to view full size",
+        "value": "Event flyer · Select to view full size",
+        "kind": "text"
+      },
+      {
+        "key": "field-051",
+        "label": "Keynote speaker",
+        "value": "Keynote speaker",
+        "kind": "text"
+      },
+      {
+        "key": "field-052",
+        "label": "Speaker profile ",
+        "value": "Speaker profile ",
+        "kind": "text"
+      },
+      {
+        "key": "field-053",
+        "label": "Conference speakers",
+        "value": "Conference speakers",
+        "kind": "text"
+      },
+      {
+        "key": "field-054",
+        "label": "Faculty",
+        "value": "Faculty",
+        "kind": "text"
+      },
+      {
+        "key": "field-055",
+        "label": " speaker",
+        "value": " speaker",
+        "kind": "text"
+      },
+      {
+        "key": "field-056",
+        "label": " · tap a card for the full profile",
+        "value": " · tap a card for the full profile",
+        "kind": "text"
+      },
+      {
+        "key": "field-057",
+        "label": "Profile →",
+        "value": "Profile →",
+        "kind": "text"
+      },
+      {
+        "key": "field-058",
+        "label": "Attendees and documents",
+        "value": "Attendees and documents",
+        "kind": "text"
+      },
+      {
+        "key": "field-059",
+        "label": "Institutional memory",
+        "value": "Institutional memory",
+        "kind": "text"
+      },
+      {
+        "key": "field-060",
+        "label": "Continue exploring the work of the Forum.",
+        "value": "Continue exploring the work of the Forum.",
+        "kind": "text"
+      },
+      {
+        "key": "field-061",
+        "label": "/events#archive",
+        "value": "/events#archive",
+        "kind": "link"
+      },
+      {
+        "key": "field-062",
+        "label": "Return to the event archive ",
+        "value": "Return to the event archive ",
+        "kind": "text"
+      },
+      {
+        "key": "field-063",
+        "label": " – {value1}",
+        "value": " – {value1}",
+        "kind": "text"
+      },
+      {
+        "key": "field-064",
+        "label": "Open full-size flyer for {value1}",
+        "value": "Open full-size flyer for {value1}",
+        "kind": "text"
+      },
+      {
+        "key": "field-065",
+        "label": "Official flyer for {value1}",
+        "value": "Official flyer for {value1}",
+        "kind": "text"
+      },
+      {
+        "key": "field-066",
+        "label": "Portrait of {value1}",
+        "value": "Portrait of {value1}",
+        "kind": "text"
+      },
+      {
+        "key": "field-067",
+        "label": "{value1}…",
+        "value": "{value1}…",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-knowledge",
+    "title": "Policy & knowledge",
+    "path": "/knowledge",
+    "source": "app/knowledge/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Policy & Knowledge",
+        "value": "Policy & Knowledge",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Policy & knowledge",
+        "value": "Policy & knowledge",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "Experience informing better governance.",
+        "value": "Experience informing better governance.",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Explore the Forum’s policy briefs, conference outcomes and research. A growing library of ",
+        "value": "Explore the Forum’s policy briefs, conference outcomes and research. A growing library of ideas and evidence for Nigeria’s public institutions.",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "#library",
+        "value": "#library",
+        "kind": "link"
+      },
+      {
+        "key": "field-006",
+        "label": "Explore the library ",
+        "value": "Explore the library ",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Publications",
+        "value": "Publications",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Collections",
+        "value": "Collections",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Topics",
+        "value": "Topics",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "FFDGN",
+        "value": "FFDGN",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Policy",
+        "value": "Policy",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "& Knowledge",
+        "value": "& Knowledge",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": " / ",
+        "value": " / ",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "Latest publication / ",
+        "value": "Latest publication / ",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": " · ",
+        "value": " · ",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "Read publication details ",
+        "value": "Read publication details ",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": " Download PDF",
+        "value": " Download PDF",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "Explore the collection",
+        "value": "Explore the collection",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "Ideas, outcomes and evidence.",
+        "value": "Ideas, outcomes and evidence.",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": " publication",
+        "value": " publication",
+        "kind": "text"
+      },
+      {
+        "key": "field-021",
+        "label": "s",
+        "value": "s",
+        "kind": "text"
+      },
+      {
+        "key": "field-022",
+        "label": "The Knowledge Centre",
+        "value": "The Knowledge Centre",
+        "kind": "text"
+      },
+      {
+        "key": "field-023",
+        "label": "Find a publication",
+        "value": "Find a publication",
+        "kind": "text"
+      },
+      {
+        "key": "field-024",
+        "label": "Search publications",
+        "value": "Search publications",
+        "kind": "text"
+      },
+      {
+        "key": "field-025",
+        "label": "Title, topic or author",
+        "value": "Title, topic or author",
+        "kind": "text"
+      },
+      {
+        "key": "field-026",
+        "label": "What are you looking for?",
+        "value": "What are you looking for?",
+        "kind": "text"
+      },
+      {
+        "key": "field-027",
+        "label": "Collection",
+        "value": "Collection",
+        "kind": "text"
+      },
+      {
+        "key": "field-028",
+        "label": "All collections",
+        "value": "All collections",
+        "kind": "text"
+      },
+      {
+        "key": "field-029",
+        "label": "Year",
+        "value": "Year",
+        "kind": "text"
+      },
+      {
+        "key": "field-030",
+        "label": "All years",
+        "value": "All years",
+        "kind": "text"
+      },
+      {
+        "key": "field-031",
+        "label": "Sort by",
+        "value": "Sort by",
+        "kind": "text"
+      },
+      {
+        "key": "field-032",
+        "label": "Newest first",
+        "value": "Newest first",
+        "kind": "text"
+      },
+      {
+        "key": "field-033",
+        "label": "Most downloaded",
+        "value": "Most downloaded",
+        "kind": "text"
+      },
+      {
+        "key": "field-034",
+        "label": " Search",
+        "value": " Search",
+        "kind": "text"
+      },
+      {
+        "key": "field-035",
+        "label": "Browse by topic",
+        "value": "Browse by topic",
+        "kind": "text"
+      },
+      {
+        "key": "field-036",
+        "label": "Showing ",
+        "value": "Showing ",
+        "kind": "text"
+      },
+      {
+        "key": "field-037",
+        "label": " of ",
+        "value": " of ",
+        "kind": "text"
+      },
+      {
+        "key": "field-038",
+        "label": " public publications",
+        "value": " public publications",
+        "kind": "text"
+      },
+      {
+        "key": "field-039",
+        "label": "/knowledge#library",
+        "value": "/knowledge#library",
+        "kind": "link"
+      },
+      {
+        "key": "field-040",
+        "label": "Clear filters",
+        "value": "Clear filters",
+        "kind": "text"
+      },
+      {
+        "key": "field-041",
+        "label": "View publication ",
+        "value": "View publication ",
+        "kind": "text"
+      },
+      {
+        "key": "field-042",
+        "label": "Publication details available; PDF coming soon",
+        "value": "Publication details available; PDF coming soon",
+        "kind": "text"
+      },
+      {
+        "key": "field-043",
+        "label": "No publications found",
+        "value": "No publications found",
+        "kind": "text"
+      },
+      {
+        "key": "field-044",
+        "label": "Try another title, topic, collection or year.",
+        "value": "Try another title, topic, collection or year.",
+        "kind": "text"
+      },
+      {
+        "key": "field-045",
+        "label": "/knowledge",
+        "value": "/knowledge",
+        "kind": "link"
+      },
+      {
+        "key": "field-046",
+        "label": "For members",
+        "value": "For members",
+        "kind": "text"
+      },
+      {
+        "key": "field-047",
+        "label": "Continue the conversation.",
+        "value": "Continue the conversation.",
+        "kind": "text"
+      },
+      {
+        "key": "field-048",
+        "label": "Access member resources and contribute to the Forum’s work through the member portal.",
+        "value": "Access member resources and contribute to the Forum’s work through the member portal.",
+        "kind": "text"
+      },
+      {
+        "key": "field-049",
+        "label": "/login",
+        "value": "/login",
+        "kind": "link"
+      },
+      {
+        "key": "field-050",
+        "label": "Member portal ",
+        "value": "Member portal ",
+        "kind": "text"
+      },
+      {
+        "key": "field-051",
+        "label": "PDF available · {value1} pages · {value2}",
+        "value": "PDF available · {value1} pages · {value2}",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-knowledge-slug",
+    "title": "Publication detail pages",
+    "path": "/knowledge/{slug}",
+    "source": "app/knowledge/[slug]/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Knowledge Centre",
+        "value": "Knowledge Centre",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "/knowledge",
+        "value": "/knowledge",
+        "kind": "link"
+      },
+      {
+        "key": "field-003",
+        "label": "Policy & Knowledge / ",
+        "value": "Policy & Knowledge / ",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "01 / Overview",
+        "value": "01 / Overview",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "About this publication",
+        "value": "About this publication",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "A summary of this publication has not yet been published.",
+        "value": "A summary of this publication has not yet been published.",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "02 / Publication context",
+        "value": "02 / Publication context",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "From the Forum’s work",
+        "value": "From the Forum’s work",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Issued by",
+        "value": "Issued by",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "Published",
+        "value": "Published",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Related event",
+        "value": "Related event",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "Originating committee",
+        "value": "Originating committee",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "/committees",
+        "value": "/committees",
+        "kind": "link"
+      },
+      {
+        "key": "field-014",
+        "label": "Reference this work",
+        "value": "Reference this work",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "Suggested citation",
+        "value": "Suggested citation",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "Publication access and information",
+        "value": "Publication access and information",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "The publication",
+        "value": "The publication",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "FFDGN / Knowledge Centre",
+        "value": "FFDGN / Knowledge Centre",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "Read the full publication",
+        "value": "Read the full publication",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": "Publication record",
+        "value": "Publication record",
+        "kind": "text"
+      },
+      {
+        "key": "field-021",
+        "label": "Download the full PDF to read, save or reference this publication.",
+        "value": "Download the full PDF to read, save or reference this publication.",
+        "kind": "text"
+      },
+      {
+        "key": "field-022",
+        "label": " Download PDF",
+        "value": " Download PDF",
+        "kind": "text"
+      },
+      {
+        "key": "field-023",
+        "label": "The publication details are available here. The full PDF has not yet been added to the lib",
+        "value": "The publication details are available here. The full PDF has not yet been added to the library.",
+        "kind": "text"
+      },
+      {
+        "key": "field-024",
+        "label": "Collection",
+        "value": "Collection",
+        "kind": "text"
+      },
+      {
+        "key": "field-025",
+        "label": "Year",
+        "value": "Year",
+        "kind": "text"
+      },
+      {
+        "key": "field-026",
+        "label": "Pages",
+        "value": "Pages",
+        "kind": "text"
+      },
+      {
+        "key": "field-027",
+        "label": "File size",
+        "value": "File size",
+        "kind": "text"
+      },
+      {
+        "key": "field-028",
+        "label": "Downloads",
+        "value": "Downloads",
+        "kind": "text"
+      },
+      {
+        "key": "field-029",
+        "label": "Explore this collection ",
+        "value": "Explore this collection ",
+        "kind": "text"
+      },
+      {
+        "key": "field-030",
+        "label": "Continue reading",
+        "value": "Continue reading",
+        "kind": "text"
+      },
+      {
+        "key": "field-031",
+        "label": "More from the Knowledge Centre",
+        "value": "More from the Knowledge Centre",
+        "kind": "text"
+      },
+      {
+        "key": "field-032",
+        "label": " / ",
+        "value": " / ",
+        "kind": "text"
+      },
+      {
+        "key": "field-033",
+        "label": "Explore publication ",
+        "value": "Explore publication ",
+        "kind": "text"
+      },
+      {
+        "key": "field-034",
+        "label": " Back to the Knowledge Centre",
+        "value": " Back to the Knowledge Centre",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-leadership",
+    "title": "Leadership",
+    "path": "/leadership",
+    "source": "app/leadership/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Leadership",
+        "value": "Leadership",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "About",
+        "value": "About",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "/about",
+        "value": "/about",
+        "kind": "link"
+      },
+      {
+        "key": "field-004",
+        "label": "Guided by experience, united by purpose",
+        "value": "Guided by experience, united by purpose",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Meet the people entrusted with the Forum's direction, stewardship and service to Nigeria.",
+        "value": "Meet the people entrusted with the Forum's direction, stewardship and service to Nigeria.",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Our people",
+        "value": "Our people",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Leadership brings together the experience of public service with a shared commitment to th",
+        "value": "Leadership brings together the experience of public service with a shared commitment to the Forum’s purpose. Explore each profile to discover the people behind its work.",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Leadership profiles are being prepared",
+        "value": "Leadership profiles are being prepared",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "The Secretariat will publish the current leadership here.",
+        "value": "The Secretariat will publish the current leadership here.",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "Stewardship / ",
+        "value": "Stewardship / ",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Leading the Forum",
+        "value": "Leading the Forum",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "Leadership and service",
+        "value": "Leadership and service",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "Explore profile ",
+        "value": "Explore profile ",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "Institutional continuity",
+        "value": "Institutional continuity",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "Discover the people and milestones that shaped the Forum in ",
+        "value": "Discover the people and milestones that shaped the Forum in ",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "/about/history",
+        "value": "/about/history",
+        "kind": "link"
+      },
+      {
+        "key": "field-017",
+        "label": "our history",
+        "value": "our history",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": ".",
+        "value": ".",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "Portrait of {value1}",
+        "value": "Portrait of {value1}",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": "F",
+        "value": "F",
+        "kind": "text"
+      },
+      {
+        "key": "field-021",
+        "label": "Position vacant",
+        "value": "Position vacant",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-media-photos",
+    "title": "Photo gallery",
+    "path": "/media/photos",
+    "source": "app/media/photos/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Photo Gallery",
+        "value": "Photo Gallery",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "News & Media",
+        "value": "News & Media",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "/news",
+        "value": "/news",
+        "kind": "link"
+      },
+      {
+        "key": "field-004",
+        "label": "Forum moments",
+        "value": "Forum moments",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Our gatherings, in photographs.",
+        "value": "Our gatherings, in photographs.",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Explore photographs from Forum events, organised into albums with captions and event conte",
+        "value": "Explore photographs from Forum events, organised into albums with captions and event context.",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Event album",
+        "value": "Event album",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "All event albums",
+        "value": "All event albums",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Year",
+        "value": "Year",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "All years",
+        "value": "All years",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "View photographs",
+        "value": "View photographs",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": " photograph",
+        "value": " photograph",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "s",
+        "value": "s",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "/media/photos",
+        "value": "/media/photos",
+        "kind": "link"
+      },
+      {
+        "key": "field-015",
+        "label": "Clear filters",
+        "value": "Clear filters",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": " / ",
+        "value": " / ",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "Explore event ",
+        "value": "Explore event ",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "No event photographs available",
+        "value": "No event photographs available",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "Event albums appear here when gallery photographs are published and linked to their event.",
+        "value": "Event albums appear here when gallery photographs are published and linked to their event.",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": "/media/videos",
+        "value": "/media/videos",
+        "kind": "link"
+      },
+      {
+        "key": "field-021",
+        "label": "Explore the video archive ",
+        "value": "Explore the video archive ",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-media-videos",
+    "title": "Video archive",
+    "path": "/media/videos",
+    "source": "app/media/videos/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "News & Media",
+        "value": "News & Media",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "/news",
+        "value": "/news",
+        "kind": "link"
+      },
+      {
+        "key": "field-003",
+        "label": "Video Archive",
+        "value": "Video Archive",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Media",
+        "value": "Media",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Video archive",
+        "value": "Video archive",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Conference recordings, statements and documentaries — embedded from the Forum's official c",
+        "value": "Conference recordings, statements and documentaries — embedded from the Forum's official channels.",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "/media/photos",
+        "value": "/media/photos",
+        "kind": "link"
+      },
+      {
+        "key": "field-008",
+        "label": "Photo gallery →",
+        "value": "Photo gallery →",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Video publishing is ready — no videos catalogued yet",
+        "value": "Video publishing is ready — no videos catalogued yet",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "/contact",
+        "value": "/contact",
+        "kind": "link"
+      },
+      {
+        "key": "field-011",
+        "label": "Contact the Secretariat",
+        "value": "Contact the Secretariat",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-members",
+    "title": "Membership directory",
+    "path": "/members",
+    "source": "app/members/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Membership",
+        "value": "Membership",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Experience shared. A nation served.",
+        "value": "Experience shared. A nation served.",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "A community of former and serving Deputy Governors, connected by public service and a comm",
+        "value": "A community of former and serving Deputy Governors, connected by public service and a commitment to Nigeria's development.",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "The Forum community",
+        "value": "The Forum community",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Meet our members",
+        "value": "Meet our members",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Discover the people, service histories and experience that make up the Forum. Membership i",
+        "value": "Discover the people, service histories and experience that make up the Forum. Membership information and Secretariat enquiries are available below.",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "#join",
+        "value": "#join",
+        "kind": "link"
+      },
+      {
+        "key": "field-008",
+        "label": "Membership information ",
+        "value": "Membership information ",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Member directory",
+        "value": "Member directory",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "Find a member",
+        "value": "Find a member",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Search by name, title or state",
+        "value": "Search by name, title or state",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "Membership category",
+        "value": "Membership category",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "Everyone",
+        "value": "Everyone",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "Former",
+        "value": "Former",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "Serving",
+        "value": "Serving",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "Secretariat",
+        "value": "Secretariat",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": " Search directory",
+        "value": " Search directory",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "Showing ",
+        "value": "Showing ",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": " of ",
+        "value": " of ",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": " public profiles",
+        "value": " public profiles",
+        "kind": "text"
+      },
+      {
+        "key": "field-021",
+        "label": "/members",
+        "value": "/members",
+        "kind": "link"
+      },
+      {
+        "key": "field-022",
+        "label": "Clear filters",
+        "value": "Clear filters",
+        "kind": "text"
+      },
+      {
+        "key": "field-023",
+        "label": "No members match these filters",
+        "value": "No members match these filters",
+        "kind": "text"
+      },
+      {
+        "key": "field-024",
+        "label": "Try another name, title, state or category.",
+        "value": "Try another name, title, state or category.",
+        "kind": "text"
+      },
+      {
+        "key": "field-025",
+        "label": "Explore profile ",
+        "value": "Explore profile ",
+        "kind": "text"
+      },
+      {
+        "key": "field-026",
+        "label": "A shared commitment",
+        "value": "A shared commitment",
+        "kind": "text"
+      },
+      {
+        "key": "field-027",
+        "label": "to public service.",
+        "value": "to public service.",
+        "kind": "text"
+      },
+      {
+        "key": "field-028",
+        "label": "Membership comprises former Deputy Governors as full members and serving Deputy Governors ",
+        "value": "Membership comprises former Deputy Governors as full members and serving Deputy Governors as associates. The Secretariat handles applications and verification.",
+        "kind": "text"
+      },
+      {
+        "key": "field-029",
+        "label": "/contact?subject=Membership%20enquiry",
+        "value": "/contact?subject=Membership%20enquiry",
+        "kind": "link"
+      },
+      {
+        "key": "field-030",
+        "label": "Enquire about membership ",
+        "value": "Enquire about membership ",
+        "kind": "text"
+      },
+      {
+        "key": "field-031",
+        "label": "Portrait of {value1}",
+        "value": "Portrait of {value1}",
+        "kind": "text"
+      },
+      {
+        "key": "field-032",
+        "label": "{value1} - {value2}",
+        "value": "{value1} - {value2}",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-members-slug",
+    "title": "Member profiles",
+    "path": "/members/{slug}",
+    "source": "app/members/[slug]/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Committees",
+        "value": "Committees",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "/committees",
+        "value": "/committees",
+        "kind": "link"
+      },
+      {
+        "key": "field-003",
+        "label": "Events",
+        "value": "Events",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Publications",
+        "value": "Publications",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Members",
+        "value": "Members",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "/members",
+        "value": "/members",
+        "kind": "link"
+      },
+      {
+        "key": "field-007",
+        "label": "The Forum / Member profile",
+        "value": "The Forum / Member profile",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Membership",
+        "value": "Membership",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Status",
+        "value": "Status",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "State",
+        "value": "State",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Region",
+        "value": "Region",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "#biography",
+        "value": "#biography",
+        "kind": "link"
+      },
+      {
+        "key": "field-013",
+        "label": "Discover the profile ",
+        "value": "Discover the profile ",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "Profile sections",
+        "value": "Profile sections",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "In this profile",
+        "value": "In this profile",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "Biography",
+        "value": "Biography",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "#public-service",
+        "value": "#public-service",
+        "kind": "link"
+      },
+      {
+        "key": "field-018",
+        "label": "Public service",
+        "value": "Public service",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "#forum-engagement",
+        "value": "#forum-engagement",
+        "kind": "link"
+      },
+      {
+        "key": "field-020",
+        "label": "Forum engagement",
+        "value": "Forum engagement",
+        "kind": "text"
+      },
+      {
+        "key": "field-021",
+        "label": " Member directory",
+        "value": " Member directory",
+        "kind": "text"
+      },
+      {
+        "key": "field-022",
+        "label": "01 / The person",
+        "value": "01 / The person",
+        "kind": "text"
+      },
+      {
+        "key": "field-023",
+        "label": "A biography has not yet been published for this member.",
+        "value": "A biography has not yet been published for this member.",
+        "kind": "text"
+      },
+      {
+        "key": "field-024",
+        "label": "02 / Experience",
+        "value": "02 / Experience",
+        "kind": "text"
+      },
+      {
+        "key": "field-025",
+        "label": "—",
+        "value": "—",
+        "kind": "text"
+      },
+      {
+        "key": "field-026",
+        "label": "Public service records have not yet been published.",
+        "value": "Public service records have not yet been published.",
+        "kind": "text"
+      },
+      {
+        "key": "field-027",
+        "label": "03 / Participation",
+        "value": "03 / Participation",
+        "kind": "text"
+      },
+      {
+        "key": "field-028",
+        "label": "No ",
+        "value": "No ",
+        "kind": "text"
+      },
+      {
+        "key": "field-029",
+        "label": " listed.",
+        "value": " listed.",
+        "kind": "text"
+      },
+      {
+        "key": "field-030",
+        "label": "The Forum community",
+        "value": "The Forum community",
+        "kind": "text"
+      },
+      {
+        "key": "field-031",
+        "label": "Explore more of our members.",
+        "value": "Explore more of our members.",
+        "kind": "text"
+      },
+      {
+        "key": "field-032",
+        "label": "Return to the directory ",
+        "value": "Return to the directory ",
+        "kind": "text"
+      },
+      {
+        "key": "field-033",
+        "label": "Portrait of {value1}",
+        "value": "Portrait of {value1}",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-mentorship",
+    "title": "Mentorship",
+    "path": "/mentorship",
+    "source": "app/mentorship/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Mentorship",
+        "value": "Mentorship",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Engagement",
+        "value": "Engagement",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "/committees",
+        "value": "/committees",
+        "kind": "link"
+      },
+      {
+        "key": "field-004",
+        "label": "Passing experience forward.",
+        "value": "Passing experience forward.",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Leadership and continuity",
+        "value": "Leadership and continuity",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Knowledge grows when it is shared.",
+        "value": "Knowledge grows when it is shared.",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Mentorship is part of the Forum’s commitment to putting public service experience to work.",
+        "value": "Mentorship is part of the Forum’s commitment to putting public service experience to work. It creates space for dialogue on leadership, institutional responsibility and the lessons of governance.",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "/members",
+        "value": "/members",
+        "kind": "link"
+      },
+      {
+        "key": "field-009",
+        "label": "Meet the Forum community ",
+        "value": "Meet the Forum community ",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "01 / Experience",
+        "value": "01 / Experience",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Learning from public service",
+        "value": "Learning from public service",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "Explore the service histories and perspectives of Forum members.",
+        "value": "Explore the service histories and perspectives of Forum members.",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "Member directory ",
+        "value": "Member directory ",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "02 / Dialogue",
+        "value": "02 / Dialogue",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "A continuing conversation",
+        "value": "A continuing conversation",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "Discover conferences and gatherings where leadership ideas are exchanged.",
+        "value": "Discover conferences and gatherings where leadership ideas are exchanged.",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "/events",
+        "value": "/events",
+        "kind": "link"
+      },
+      {
+        "key": "field-018",
+        "label": "Explore gatherings ",
+        "value": "Explore gatherings ",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "Mentorship enquiries",
+        "value": "Mentorship enquiries",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": "Ask the Secretariat about mentorship activities and opportunities to participate.",
+        "value": "Ask the Secretariat about mentorship activities and opportunities to participate.",
+        "kind": "text"
+      },
+      {
+        "key": "field-021",
+        "label": "/contact?subject=Mentorship%20enquiry",
+        "value": "/contact?subject=Mentorship%20enquiry",
+        "kind": "link"
+      },
+      {
+        "key": "field-022",
+        "label": "Contact the Secretariat ",
+        "value": "Contact the Secretariat ",
+        "kind": "text"
+      },
+      {
+        "key": "field-023",
+        "label": "Connecting the experience of public service with a commitment to the development of future",
+        "value": "Connecting the experience of public service with a commitment to the development of future leaders.",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-news",
+    "title": "News",
+    "path": "/news",
+    "source": "app/news/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "News & Media",
+        "value": "News & Media",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "News & media",
+        "value": "News & media",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "Official communications from the Forum",
+        "value": "Official communications from the Forum",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "News, press releases, statements and speeches — every item carries issuing body and date (",
+        "value": "News, press releases, statements and speeches — every item carries issuing body and date (institutional trust layer).",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "News",
+        "value": "News",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Press Release",
+        "value": "Press Release",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Statement",
+        "value": "Statement",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Speech",
+        "value": "Speech",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Media Coverage",
+        "value": "Media Coverage",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "/news",
+        "value": "/news",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Official ",
+        "value": "Official ",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": " · ",
+        "value": " · ",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "No items in this category yet",
+        "value": "No items in this category yet",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "Nothing has been filed under ",
+        "value": "Nothing has been filed under ",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": " so far.",
+        "value": " so far.",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "No news items have been published yet.",
+        "value": "No news items have been published yet.",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "/news",
+        "value": "/news",
+        "kind": "link"
+      },
+      {
+        "key": "field-018",
+        "label": "Clear filter",
+        "value": "Clear filter",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "Official news, press releases, statements and speeches from the Forum of Former Deputy Gov",
+        "value": "Official news, press releases, statements and speeches from the Forum of Former Deputy Governors of Nigeria, with issuing body and date on every item.",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-news-slug",
+    "title": "News articles",
+    "path": "/news/{slug}",
+    "source": "app/news/[slug]/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "News & Media",
+        "value": "News & Media",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "/news",
+        "value": "/news",
+        "kind": "link"
+      },
+      {
+        "key": "field-003",
+        "label": "Official ",
+        "value": "Official ",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": " — Issued by the Secretariat, ",
+        "value": " — Issued by the Secretariat, ",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": ".",
+        "value": ".",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": " All news & media",
+        "value": " All news & media",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "At a glance",
+        "value": "At a glance",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Event: ",
+        "value": "Event: ",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Document: ",
+        "value": "Document: ",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "More stories",
+        "value": "More stories",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": " · ",
+        "value": " · ",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-page",
+    "title": "Homepage",
+    "path": "/",
+    "source": "app/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "/assets/brand/logo-whitebg.jpg",
+        "value": "/assets/brand/logo-whitebg.jpg",
+        "kind": "image"
+      },
+      {
+        "key": "field-002",
+        "label": "/about",
+        "value": "/about",
+        "kind": "link"
+      },
+      {
+        "key": "field-003",
+        "label": "Latest from the Forum",
+        "value": "Latest from the Forum",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Institutional activity, as it happens",
+        "value": "Institutional activity, as it happens",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "/news",
+        "value": "/news",
+        "kind": "link"
+      },
+      {
+        "key": "field-006",
+        "label": "View all news ",
+        "value": "View all news ",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Featured story",
+        "value": "Featured story",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Featured News",
+        "value": "Featured News",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": " · ",
+        "value": " · ",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "Awaiting publication",
+        "value": "Awaiting publication",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "No news published yet",
+        "value": "No news published yet",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "Institutional announcements, press releases and statements will appear here once the Secre",
+        "value": "Institutional announcements, press releases and statements will appear here once the Secretariat publishes them.",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "/contact",
+        "value": "/contact",
+        "kind": "link"
+      },
+      {
+        "key": "field-014",
+        "label": "Upcoming event",
+        "value": "Upcoming event",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": " – ",
+        "value": " – ",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": ", ",
+        "value": ", ",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "Register Now ",
+        "value": "Register Now ",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "/events",
+        "value": "/events",
+        "kind": "link"
+      },
+      {
+        "key": "field-019",
+        "label": "View all events →",
+        "value": "View all events →",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": "No scheduled events",
+        "value": "No scheduled events",
+        "kind": "text"
+      },
+      {
+        "key": "field-021",
+        "label": "No upcoming events scheduled",
+        "value": "No upcoming events scheduled",
+        "kind": "text"
+      },
+      {
+        "key": "field-022",
+        "label": "Conference and programme announcements will be published here. The Secretariat can be cont",
+        "value": "Conference and programme announcements will be published here. The Secretariat can be contacted for engagement enquiries.",
+        "kind": "text"
+      },
+      {
+        "key": "field-023",
+        "label": "Our role",
+        "value": "Our role",
+        "kind": "text"
+      },
+      {
+        "key": "field-024",
+        "label": "What the Forum does",
+        "value": "What the Forum does",
+        "kind": "text"
+      },
+      {
+        "key": "field-025",
+        "label": "Sharing knowledge. Strengthening institutions. Contributing to a nation that works for eve",
+        "value": "Sharing knowledge. Strengthening institutions. Contributing to a nation that works for everyone.",
+        "kind": "text"
+      },
+      {
+        "key": "field-026",
+        "label": "The Forum’s areas of engagement are being updated by the Secretariat.",
+        "value": "The Forum’s areas of engagement are being updated by the Secretariat.",
+        "kind": "text"
+      },
+      {
+        "key": "field-027",
+        "label": "Explore →",
+        "value": "Explore →",
+        "kind": "text"
+      },
+      {
+        "key": "field-028",
+        "label": "Institutional memory",
+        "value": "Institutional memory",
+        "kind": "text"
+      },
+      {
+        "key": "field-029",
+        "label": "The Forum through the years",
+        "value": "The Forum through the years",
+        "kind": "text"
+      },
+      {
+        "key": "field-030",
+        "label": "The milestones, people and decisions that continue to shape our shared purpose.",
+        "value": "The milestones, people and decisions that continue to shape our shared purpose.",
+        "kind": "text"
+      },
+      {
+        "key": "field-031",
+        "label": "/about/history",
+        "value": "/about/history",
+        "kind": "link"
+      },
+      {
+        "key": "field-032",
+        "label": "Explore the Archive →",
+        "value": "Explore the Archive →",
+        "kind": "text"
+      },
+      {
+        "key": "field-033",
+        "label": "The institutional timeline is being assembled from Forum records.",
+        "value": "The institutional timeline is being assembled from Forum records.",
+        "kind": "text"
+      },
+      {
+        "key": "field-034",
+        "label": "Documents · Leaders · Photos · Communiqués",
+        "value": "Documents · Leaders · Photos · Communiqués",
+        "kind": "text"
+      },
+      {
+        "key": "field-035",
+        "label": "Leadership",
+        "value": "Leadership",
+        "kind": "text"
+      },
+      {
+        "key": "field-036",
+        "label": "Guided by experience, united by purpose",
+        "value": "Guided by experience, united by purpose",
+        "kind": "text"
+      },
+      {
+        "key": "field-037",
+        "label": "/leadership",
+        "value": "/leadership",
+        "kind": "link"
+      },
+      {
+        "key": "field-038",
+        "label": "View Full Leadership →",
+        "value": "View Full Leadership →",
+        "kind": "text"
+      },
+      {
+        "key": "field-039",
+        "label": "Leadership directory not yet published",
+        "value": "Leadership directory not yet published",
+        "kind": "text"
+      },
+      {
+        "key": "field-040",
+        "label": "Leadership profiles will appear once published by the Secretariat.",
+        "value": "Leadership profiles will appear once published by the Secretariat.",
+        "kind": "text"
+      },
+      {
+        "key": "field-041",
+        "label": "View leadership ",
+        "value": "View leadership ",
+        "kind": "text"
+      },
+      {
+        "key": "field-042",
+        "label": "Conference and knowledge",
+        "value": "Conference and knowledge",
+        "kind": "text"
+      },
+      {
+        "key": "field-043",
+        "label": "Featured conference",
+        "value": "Featured conference",
+        "kind": "text"
+      },
+      {
+        "key": "field-044",
+        "label": "Theme: “",
+        "value": "Theme: “",
+        "kind": "text"
+      },
+      {
+        "key": "field-045",
+        "label": "”",
+        "value": "”",
+        "kind": "text"
+      },
+      {
+        "key": "field-046",
+        "label": "Explore Conference ",
+        "value": "Explore Conference ",
+        "kind": "text"
+      },
+      {
+        "key": "field-047",
+        "label": "Conference archive",
+        "value": "Conference archive",
+        "kind": "text"
+      },
+      {
+        "key": "field-048",
+        "label": "No past conference archived yet",
+        "value": "No past conference archived yet",
+        "kind": "text"
+      },
+      {
+        "key": "field-049",
+        "label": "Records of past conferences and their communiqués will appear here once the Secretariat ar",
+        "value": "Records of past conferences and their communiqués will appear here once the Secretariat archives them.",
+        "kind": "text"
+      },
+      {
+        "key": "field-050",
+        "label": "Browse events",
+        "value": "Browse events",
+        "kind": "text"
+      },
+      {
+        "key": "field-051",
+        "label": "Knowledge Centre",
+        "value": "Knowledge Centre",
+        "kind": "text"
+      },
+      {
+        "key": "field-052",
+        "label": "Latest publications & communiqués",
+        "value": "Latest publications & communiqués",
+        "kind": "text"
+      },
+      {
+        "key": "field-053",
+        "label": "No public publications have been released yet. The Secretariat is preparing the latest rec",
+        "value": "No public publications have been released yet. The Secretariat is preparing the latest records and communiqués.",
+        "kind": "text"
+      },
+      {
+        "key": "field-054",
+        "label": " downloads",
+        "value": " downloads",
+        "kind": "text"
+      },
+      {
+        "key": "field-055",
+        "label": "/knowledge",
+        "value": "/knowledge",
+        "kind": "link"
+      },
+      {
+        "key": "field-056",
+        "label": "Browse Knowledge Centre →",
+        "value": "Browse Knowledge Centre →",
+        "kind": "text"
+      },
+      {
+        "key": "field-057",
+        "label": "News and programs",
+        "value": "News and programs",
+        "kind": "text"
+      },
+      {
+        "key": "field-058",
+        "label": "News & Media",
+        "value": "News & Media",
+        "kind": "text"
+      },
+      {
+        "key": "field-059",
+        "label": "View all →",
+        "value": "View all →",
+        "kind": "text"
+      },
+      {
+        "key": "field-060",
+        "label": "Further announcements will appear here as the Secretariat publishes them.",
+        "value": "Further announcements will appear here as the Secretariat publishes them.",
+        "kind": "text"
+      },
+      {
+        "key": "field-061",
+        "label": "Programs",
+        "value": "Programs",
+        "kind": "text"
+      },
+      {
+        "key": "field-062",
+        "label": "/programs",
+        "value": "/programs",
+        "kind": "link"
+      },
+      {
+        "key": "field-063",
+        "label": "Explore programs ",
+        "value": "Explore programs ",
+        "kind": "text"
+      },
+      {
+        "key": "field-064",
+        "label": "Turning experience into economic opportunity and constructive policy dialogue.",
+        "value": "Turning experience into economic opportunity and constructive policy dialogue.",
+        "kind": "text"
+      },
+      {
+        "key": "field-065",
+        "label": "/polish-nigeria",
+        "value": "/polish-nigeria",
+        "kind": "link"
+      },
+      {
+        "key": "field-066",
+        "label": "01 · Trade & investment",
+        "value": "01 · Trade & investment",
+        "kind": "text"
+      },
+      {
+        "key": "field-067",
+        "label": "Polish Nigeria",
+        "value": "Polish Nigeria",
+        "kind": "text"
+      },
+      {
+        "key": "field-068",
+        "label": "Business connections, investment facilitation and cultural exchange between Poland and Nig",
+        "value": "Business connections, investment facilitation and cultural exchange between Poland and Nigeria.",
+        "kind": "text"
+      },
+      {
+        "key": "field-069",
+        "label": "Explore program ",
+        "value": "Explore program ",
+        "kind": "text"
+      },
+      {
+        "key": "field-070",
+        "label": "/renewed-hope",
+        "value": "/renewed-hope",
+        "kind": "link"
+      },
+      {
+        "key": "field-071",
+        "label": "02 · Policy & peer review",
+        "value": "02 · Policy & peer review",
+        "kind": "text"
+      },
+      {
+        "key": "field-072",
+        "label": "Renewed Hope",
+        "value": "Renewed Hope",
+        "kind": "text"
+      },
+      {
+        "key": "field-073",
+        "label": "Constructive assessment and recommendations to support the Renewed Hope Agenda.",
+        "value": "Constructive assessment and recommendations to support the Renewed Hope Agenda.",
+        "kind": "text"
+      },
+      {
+        "key": "field-074",
+        "label": "In pictures",
+        "value": "In pictures",
+        "kind": "text"
+      },
+      {
+        "key": "field-075",
+        "label": "The Forum in focus",
+        "value": "The Forum in focus",
+        "kind": "text"
+      },
+      {
+        "key": "field-076",
+        "label": "People, conversations and moments that move the Forum forward.",
+        "value": "People, conversations and moments that move the Forum forward.",
+        "kind": "text"
+      },
+      {
+        "key": "field-077",
+        "label": "/media/photos",
+        "value": "/media/photos",
+        "kind": "link"
+      },
+      {
+        "key": "field-078",
+        "label": "Open photo gallery →",
+        "value": "Open photo gallery →",
+        "kind": "text"
+      },
+      {
+        "key": "field-079",
+        "label": "The photo archive is being curated. Images from past conferences will appear here once cle",
+        "value": "The photo archive is being curated. Images from past conferences will appear here once cleared for publication.",
+        "kind": "text"
+      },
+      {
+        "key": "field-080",
+        "label": "Stay informed",
+        "value": "Stay informed",
+        "kind": "text"
+      },
+      {
+        "key": "field-081",
+        "label": "Receive official publications, conference announcements and Forum updates.",
+        "value": "Receive official publications, conference announcements and Forum updates.",
+        "kind": "text"
+      },
+      {
+        "key": "field-082",
+        "label": "Members preview",
+        "value": "Members preview",
+        "kind": "text"
+      },
+      {
+        "key": "field-083",
+        "label": "The membership · ",
+        "value": "The membership · ",
+        "kind": "text"
+      },
+      {
+        "key": "field-084",
+        "label": "profiles are being verified",
+        "value": "profiles are being verified",
+        "kind": "text"
+      },
+      {
+        "key": "field-085",
+        "label": "/members",
+        "value": "/members",
+        "kind": "link"
+      },
+      {
+        "key": "field-086",
+        "label": "Open directory →",
+        "value": "Open directory →",
+        "kind": "text"
+      },
+      {
+        "key": "field-087",
+        "label": "{value1} — official flyer",
+        "value": "{value1} — official flyer",
+        "kind": "text"
+      },
+      {
+        "key": "field-088",
+        "label": "F",
+        "value": "F",
+        "kind": "text"
+      },
+      {
+        "key": "field-089",
+        "label": "Position vacant",
+        "value": "Position vacant",
+        "kind": "text"
+      },
+      {
+        "key": "field-090",
+        "label": "View in gallery: {value1}",
+        "value": "View in gallery: {value1}",
+        "kind": "text"
+      },
+      {
+        "key": "field-091",
+        "label": "{value1} {value2} in this release",
+        "value": "{value1} {value2} in this release",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-partnerships",
+    "title": "Partnerships (temporarily hidden)",
+    "path": "/partnerships",
+    "source": "app/partnerships/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Engagement",
+        "value": "Engagement",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Partnerships",
+        "value": "Partnerships",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "Structured relationships that advance good governance — each with purpose, cooperation are",
+        "value": "Structured relationships that advance good governance — each with purpose, cooperation areas and joint activities.",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Partner organisations",
+        "value": "Partner organisations",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "since ",
+        "value": "since ",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Areas of cooperation",
+        "value": "Areas of cooperation",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Joint events: ",
+        "value": "Joint events: ",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "View →",
+        "value": "View →",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "/contact?subject=Partnership enquiry",
+        "value": "/contact?subject=Partnership%20enquiry",
+        "kind": "link"
+      },
+      {
+        "key": "field-010",
+        "label": "Become a partner",
+        "value": "Become a partner",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Institutions, development partners and private-sector bodies work with the Forum on govern",
+        "value": "Institutions, development partners and private-sector bodies work with the Forum on governance, research and convenings.",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "Start the conversation ",
+        "value": "Start the conversation ",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "Logo of {value1}",
+        "value": "Logo of {value1}",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-peer-review",
+    "title": "Peer review",
+    "path": "/peer-review",
+    "source": "app/peer-review/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Peer Review",
+        "value": "Peer Review",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Engagement",
+        "value": "Engagement",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "/committees",
+        "value": "/committees",
+        "kind": "link"
+      },
+      {
+        "key": "field-004",
+        "label": "Peer review",
+        "value": "Peer review",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Shared experience. Stronger accountability.",
+        "value": "Shared experience. Stronger accountability.",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Learning through dialogue",
+        "value": "Learning through dialogue",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Experience as a resource for better governance.",
+        "value": "Experience as a resource for better governance.",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "The Forum brings together experienced public leaders to exchange perspectives on governanc",
+        "value": "The Forum brings together experienced public leaders to exchange perspectives on governance and institutional performance. Explore its published research and recommendations in the Knowledge Centre.",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "/knowledge?type=Research",
+        "value": "/knowledge?type=Research",
+        "kind": "link"
+      },
+      {
+        "key": "field-010",
+        "label": "Explore research ",
+        "value": "Explore research ",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "People and perspectives",
+        "value": "People and perspectives",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "Peer review members",
+        "value": "Peer review members",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "Get involved",
+        "value": "Get involved",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "Contact the Secretariat for enquiries about peer review activities.",
+        "value": "Contact the Secretariat for enquiries about peer review activities.",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "/contact?subject=Peer%20review%20enquiry",
+        "value": "/contact?subject=Peer%20review%20enquiry",
+        "kind": "link"
+      },
+      {
+        "key": "field-016",
+        "label": "Contact the Secretariat ",
+        "value": "Contact the Secretariat ",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "Peer review brings leadership experience to the assessment of public programmes, supportin",
+        "value": "Peer review brings leadership experience to the assessment of public programmes, supporting accountability and shared learning.",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-programs",
+    "title": "Programmes",
+    "path": "/programs",
+    "source": "app/programs/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Programs",
+        "value": "Programs",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Explore Polish Nigeria and Renewed Hope, the Forum's programmes for economic cooperation a",
+        "value": "Explore Polish Nigeria and Renewed Hope, the Forum's programmes for economic cooperation and constructive policy review.",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "Our programs",
+        "value": "Our programs",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Experience put into action",
+        "value": "Experience put into action",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Economic cooperation and constructive policy dialogue, supported by the Forum's experience",
+        "value": "Economic cooperation and constructive policy dialogue, supported by the Forum's experience and institutional knowledge.",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Program ",
+        "value": "Program ",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Explore program →",
+        "value": "Explore program →",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-renewed-hope",
+    "title": "Renewed Hope roster",
+    "path": "/renewed-hope",
+    "source": "app/renewed-hope/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Composition / ",
+        "value": "Composition / ",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": " members",
+        "value": " members",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "Members of the Group",
+        "value": "Members of the Group",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Group membership table",
+        "value": "Group membership table",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Members of the Renewed Hope Agenda Peer Review Group",
+        "value": "Members of the Renewed Hope Agenda Peer Review Group",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "S/N",
+        "value": "S/N",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Name",
+        "value": "Name",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Zone",
+        "value": "Zone",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Position",
+        "value": "Position",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "Mobile",
+        "value": "Mobile",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Email",
+        "value": "Email",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "The composition of the Group has not yet been published.",
+        "value": "The composition of the Group has not yet been published.",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-search",
+    "title": "Search",
+    "path": "/search",
+    "source": "app/search/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Search",
+        "value": "Search",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Knowledge search",
+        "value": "Knowledge search",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "Search the institution",
+        "value": "Search the institution",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "One query across members, events, documents, news, committees.",
+        "value": "One query across members, events, documents, news, committees.",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Try \"health\", \"federal\", \"conference\"…",
+        "value": "Try \"health\", \"federal\", \"conference\"…",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": " results for “",
+        "value": " results for “",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "”",
+        "value": "”",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "No results",
+        "value": "No results",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": " · ",
+        "value": " · ",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-sitemap",
+    "title": "Sitemap",
+    "path": "/sitemap",
+    "source": "app/sitemap/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "/about",
+        "value": "/about",
+        "kind": "link"
+      },
+      {
+        "key": "field-002",
+        "label": "/about/history",
+        "value": "/about/history",
+        "kind": "link"
+      },
+      {
+        "key": "field-003",
+        "label": "/about/governance",
+        "value": "/about/governance",
+        "kind": "link"
+      },
+      {
+        "key": "field-004",
+        "label": "/leadership",
+        "value": "/leadership",
+        "kind": "link"
+      },
+      {
+        "key": "field-005",
+        "label": "/members",
+        "value": "/members",
+        "kind": "link"
+      },
+      {
+        "key": "field-006",
+        "label": "/events",
+        "value": "/events",
+        "kind": "link"
+      },
+      {
+        "key": "field-007",
+        "label": "/knowledge",
+        "value": "/knowledge",
+        "kind": "link"
+      },
+      {
+        "key": "field-008",
+        "label": "/news",
+        "value": "/news",
+        "kind": "link"
+      },
+      {
+        "key": "field-009",
+        "label": "/committees",
+        "value": "/committees",
+        "kind": "link"
+      },
+      {
+        "key": "field-010",
+        "label": "/peer-review",
+        "value": "/peer-review",
+        "kind": "link"
+      },
+      {
+        "key": "field-011",
+        "label": "/mentorship",
+        "value": "/mentorship",
+        "kind": "link"
+      },
+      {
+        "key": "field-012",
+        "label": "/contact",
+        "value": "/contact",
+        "kind": "link"
+      },
+      {
+        "key": "field-013",
+        "label": "/programs",
+        "value": "/programs",
+        "kind": "link"
+      },
+      {
+        "key": "field-014",
+        "label": "/polish-nigeria",
+        "value": "/polish-nigeria",
+        "kind": "link"
+      },
+      {
+        "key": "field-015",
+        "label": "/renewed-hope",
+        "value": "/renewed-hope",
+        "kind": "link"
+      },
+      {
+        "key": "field-016",
+        "label": "Resources",
+        "value": "Resources",
+        "kind": "text"
+      },
+      {
+        "key": "field-017",
+        "label": "Sitemap",
+        "value": "Sitemap",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "ffdgn.org.ng",
+        "value": "ffdgn.org.ng",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "/",
+        "value": "/",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "page-speakers-slug",
+    "title": "Speaker profiles",
+    "path": "/speakers/{slug}",
+    "source": "app/speakers/[slug]/page.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Events",
+        "value": "Events",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "/events",
+        "value": "/events",
+        "kind": "link"
+      },
+      {
+        "key": "field-003",
+        "label": "Keynote speaker",
+        "value": "Keynote speaker",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": " Back to ",
+        "value": " Back to ",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Fellow speakers",
+        "value": "Fellow speakers",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "All speakers →",
+        "value": "All speakers →",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": " Speaker records are CMS-managed — bios and portraits are updated by the Secretariat.",
+        "value": " Speaker records are CMS-managed — bios and portraits are updated by the Secretariat.",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Portrait of {value1}",
+        "value": "Portrait of {value1}",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Profile being compiled by the Secretariat — check back shortly for the full biography.",
+        "value": "Profile being compiled by the Secretariat — check back shortly for the full biography.",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "conference",
+        "value": "conference",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "shared-program-detail",
+    "title": "Program detail",
+    "path": "",
+    "source": "components/program-detail.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Programs",
+        "value": "Programs",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "/programs",
+        "value": "/programs",
+        "kind": "link"
+      },
+      {
+        "key": "field-003",
+        "label": "#program-content",
+        "value": "#program-content",
+        "kind": "link"
+      },
+      {
+        "key": "field-004",
+        "label": "Explore the programme ",
+        "value": "Explore the programme ",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Programme sections",
+        "value": "Programme sections",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "In this programme",
+        "value": "In this programme",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "#program-people",
+        "value": "#program-people",
+        "kind": "link"
+      },
+      {
+        "key": "field-008",
+        "label": "Members of the Group",
+        "value": "Members of the Group",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "All programmes ",
+        "value": "All programmes ",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": " / ",
+        "value": " / ",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Cooperation",
+        "value": "Cooperation",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "Peer review",
+        "value": "Peer review",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "The programme in detail",
+        "value": "The programme in detail",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "PNBC 2026 Strategic Plan",
+        "value": "PNBC 2026 Strategic Plan",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "Explore the priorities and plans for Polish–Nigeria cooperation.",
+        "value": "Explore the priorities and plans for Polish–Nigeria cooperation.",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "/assets/programs/pnbc-2026-strategic-plan.pdf",
+        "value": "/assets/programs/pnbc-2026-strategic-plan.pdf",
+        "kind": "link"
+      },
+      {
+        "key": "field-017",
+        "label": " Read the strategic plan",
+        "value": " Read the strategic plan",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "Continue the conversation",
+        "value": "Continue the conversation",
+        "kind": "text"
+      },
+      {
+        "key": "field-019",
+        "label": "Connect with the Secretariat.",
+        "value": "Connect with the Secretariat.",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": "Programme enquiries ",
+        "value": "Programme enquiries ",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "shared-chrome",
+    "title": "Chrome",
+    "path": "",
+    "source": "components/chrome.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "FFDGN home",
+        "value": "FFDGN home",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "/accessibility",
+        "value": "/accessibility",
+        "kind": "link"
+      },
+      {
+        "key": "field-003",
+        "label": "Accessibility",
+        "value": "Accessibility",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "/search",
+        "value": "/search",
+        "kind": "link"
+      },
+      {
+        "key": "field-005",
+        "label": "Search",
+        "value": "Search",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "|",
+        "value": "|",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Member Portal",
+        "value": "Member Portal",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "/assets/events/conference.png",
+        "value": "/assets/events/conference.png",
+        "kind": "image"
+      },
+      {
+        "key": "field-009",
+        "label": " · ",
+        "value": " · ",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "View flyer & register →",
+        "value": "View flyer & register →",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Dismiss announcement",
+        "value": "Dismiss announcement",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "Primary",
+        "value": "Primary",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "Toggle menu",
+        "value": "Toggle menu",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "Mobile",
+        "value": "Mobile",
+        "kind": "text"
+      },
+      {
+        "key": "field-015",
+        "label": "— ",
+        "value": "— ",
+        "kind": "text"
+      },
+      {
+        "key": "field-016",
+        "label": "/contact",
+        "value": "/contact",
+        "kind": "link"
+      },
+      {
+        "key": "field-017",
+        "label": "Contact",
+        "value": "Contact",
+        "kind": "text"
+      },
+      {
+        "key": "field-018",
+        "label": "/login",
+        "value": "/login",
+        "kind": "link"
+      },
+      {
+        "key": "field-019",
+        "label": "Sign in",
+        "value": "Sign in",
+        "kind": "text"
+      },
+      {
+        "key": "field-020",
+        "label": " →",
+        "value": " →",
+        "kind": "text"
+      },
+      {
+        "key": "field-021",
+        "label": "Breadcrumb",
+        "value": "Breadcrumb",
+        "kind": "text"
+      },
+      {
+        "key": "field-022",
+        "label": "Home",
+        "value": "Home",
+        "kind": "text"
+      },
+      {
+        "key": "field-023",
+        "label": "/",
+        "value": "/",
+        "kind": "text"
+      },
+      {
+        "key": "field-024",
+        "label": "Featured event banner",
+        "value": "Featured event banner",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "shared-contact-form",
+    "title": "Contact form",
+    "path": "",
+    "source": "components/contact-form.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": " Message received",
+        "value": " Message received",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Thank you — your enquiry has been logged with the Secretariat and a reference will be prov",
+        "value": "Thank you — your enquiry has been logged with the Secretariat and a reference will be provided by email. For urgent conference matters, please call the Secretariat directly.",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "Send another message →",
+        "value": "Send another message →",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Contact form",
+        "value": "Contact form",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Send a message",
+        "value": "Send a message",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Full name",
+        "value": "Full name",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Email",
+        "value": "Email",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Subject",
+        "value": "Subject",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Message",
+        "value": "Message",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "Website",
+        "value": "Website",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "Sending…",
+        "value": "Sending…",
+        "kind": "text"
+      },
+      {
+        "key": "field-012",
+        "label": "Send message →",
+        "value": "Send message →",
+        "kind": "text"
+      },
+      {
+        "key": "field-013",
+        "label": "Messages are handled by the Secretariat. We use your details only to respond to this enqui",
+        "value": "Messages are handled by the Secretariat. We use your details only to respond to this enquiry.",
+        "kind": "text"
+      },
+      {
+        "key": "field-014",
+        "label": "Your message could not be sent. Please try again, or email the Secretariat directly.",
+        "value": "Your message could not be sent. Please try again, or email the Secretariat directly.",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "shared-newsletter-form",
+    "title": "Newsletter form",
+    "path": "",
+    "source": "components/newsletter-form.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Thank you — you have been added to the Forum mailing list.",
+        "value": "Thank you — you have been added to the Forum mailing list.",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Subscribe to Forum updates",
+        "value": "Subscribe to Forum updates",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "Email address",
+        "value": "Email address",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Enter your email address",
+        "value": "Enter your email address",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "…",
+        "value": "…",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Subscribe →",
+        "value": "Subscribe →",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Subscription failed. Please try again.",
+        "value": "Subscription failed. Please try again.",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "shared-auth-button",
+    "title": "Auth button",
+    "path": "",
+    "source": "components/auth-button.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "…",
+        "value": "…",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "/contact",
+        "value": "/contact",
+        "kind": "link"
+      },
+      {
+        "key": "field-003",
+        "label": "Contact",
+        "value": "Contact",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "/login",
+        "value": "/login",
+        "kind": "link"
+      },
+      {
+        "key": "field-005",
+        "label": "Sign in →",
+        "value": "Sign in →",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Member Portal →",
+        "value": "Member Portal →",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Console →",
+        "value": "Console →",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Sign out",
+        "value": "Sign out",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "shared-media",
+    "title": "Media",
+    "path": "",
+    "source": "components/media.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "FFDGN",
+        "value": "FFDGN",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Video · ",
+        "value": "Video · ",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "No photographs yet",
+        "value": "No photographs yet",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Conference photography will be published here by the Secretariat after institutional revie",
+        "value": "Conference photography will be published here by the Secretariat after institutional review.",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": " of ",
+        "value": " of ",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": " · use the arrow keys to move between photographs",
+        "value": " · use the arrow keys to move between photographs",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Previous photograph",
+        "value": "Previous photograph",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Next photograph",
+        "value": "Next photograph",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Close viewer",
+        "value": "Close viewer",
+        "kind": "text"
+      },
+      {
+        "key": "field-010",
+        "label": "Play video: {value1}",
+        "value": "Play video: {value1}",
+        "kind": "text"
+      },
+      {
+        "key": "field-011",
+        "label": "View photograph: {value1}{value2} of {value3}",
+        "value": "View photograph: {value1}{value2} of {value3}",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "shared-forum-moments",
+    "title": "Forum moments",
+    "path": "",
+    "source": "components/forum-moments.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Moments of the Forum",
+        "value": "Moments of the Forum",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "The Forum, together",
+        "value": "The Forum, together",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "In focus · ",
+        "value": "In focus · ",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": " / ",
+        "value": " / ",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Slideshow controls",
+        "value": "Slideshow controls",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Previous photograph",
+        "value": "Previous photograph",
+        "kind": "text"
+      },
+      {
+        "key": "field-007",
+        "label": "Resume slideshow",
+        "value": "Resume slideshow",
+        "kind": "text"
+      },
+      {
+        "key": "field-008",
+        "label": "Pause slideshow",
+        "value": "Pause slideshow",
+        "kind": "text"
+      },
+      {
+        "key": "field-009",
+        "label": "Next photograph",
+        "value": "Next photograph",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "shared-hero-carousel",
+    "title": "Hero carousel",
+    "path": "",
+    "source": "components/hero-carousel.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Hero slides",
+        "value": "Hero slides",
+        "kind": "text"
+      },
+      {
+        "key": "field-002",
+        "label": "Previous slide",
+        "value": "Previous slide",
+        "kind": "text"
+      },
+      {
+        "key": "field-003",
+        "label": "Next slide",
+        "value": "Next slide",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Resume slideshow",
+        "value": "Resume slideshow",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Pause slideshow",
+        "value": "Pause slideshow",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Go to slide {value1} of {value2}",
+        "value": "Go to slide {value1} of {value2}",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "shared-hero",
+    "title": "Hero",
+    "path": "",
+    "source": "components/hero.tsx",
+    "fields": [
+      {
+        "key": "field-003",
+        "label": "Introduction",
+        "value": "Introduction",
+        "kind": "text"
+      },
+      {
+        "key": "field-004",
+        "label": "Est.",
+        "value": "Est.",
+        "kind": "text"
+      },
+      {
+        "key": "field-005",
+        "label": "Seat",
+        "value": "Seat",
+        "kind": "text"
+      },
+      {
+        "key": "field-006",
+        "label": "Character",
+        "value": "Character",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "shared-metrics-strip",
+    "title": "Metrics strip",
+    "path": "",
+    "source": "components/metrics-strip.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Institutional figures",
+        "value": "Institutional figures",
+        "kind": "text"
+      }
+    ]
+  },
+  {
+    "id": "shared-ui",
+    "title": "Empty states",
+    "path": "",
+    "source": "components/ui.tsx",
+    "fields": [
+      {
+        "key": "field-001",
+        "label": "Empty state label",
+        "value": "No records",
+        "kind": "text"
+      }
+    ]
+  }
+]

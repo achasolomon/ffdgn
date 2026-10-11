@@ -8,11 +8,13 @@ import { asRoute } from "@/lib/routes";
 const ICONS = {
   "/admin": LayoutDashboard,
   "/admin/website": FileText,
+  "/admin/website/designs": FileText,
+  "/admin/website/status": FileText,
   "/admin/content": Settings2,
   "/admin/content/pages": FileText,
   "/admin/content/structure": LayoutDashboard,
   "/admin/content/navigation": Link2,
-  "/admin/content/peer-review": UsersRound,
+  "/admin/programs": UsersRound,
   "/admin/events": CalendarDays,
   "/admin/news": Newspaper,
   "/admin/committees": Landmark,
@@ -25,8 +27,8 @@ const ICONS = {
 
 const SECTIONS = [
   { label: "Workspace", hrefs: ["/admin"] },
-  { label: "Site content", hrefs: ["/admin/website", "/admin/content", "/admin/content/pages", "/admin/content/structure", "/admin/content/navigation", "/admin/content/peer-review"] },
-  { label: "Publishing", hrefs: ["/admin/events", "/admin/news", "/admin/knowledge", "/admin/media"] },
+  { label: "Site content", hrefs: ["/admin/website", "/admin/website/designs", "/admin/website/status", "/admin/content", "/admin/content/pages", "/admin/content/structure", "/admin/content/navigation", "/admin/programs"] },
+  { label: "Publishing", hrefs: ["/admin/events", "/admin/events/speakers", "/admin/news", "/admin/knowledge", "/admin/media"] },
   { label: "Governance", hrefs: ["/admin/committees", "/admin/partnerships", "/admin/membership"] },
   { label: "Communications", hrefs: ["/admin/communications"] },
 ];

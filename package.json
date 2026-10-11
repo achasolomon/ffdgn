@@ -19,6 +19,9 @@
     "db:harden": "tsx scripts/harden-db.ts",
     "db:setup": "prisma migrate dev && tsx prisma/seed.ts && tsx scripts/import-leadership.ts && tsx scripts/import-real-news.ts && tsx scripts/seed-about.ts",
     "assets:sync": "tsx scripts/sync-assets.ts",
+    "cms:migrate": "tsx scripts/seed-cms-migration.ts",
+    "cms:status": "tsx scripts/report-cms-status.ts",
+    "check:cms": "tsx scripts/check-cms-migration.ts",
     "smoke": "tsx scripts/smoke-test.ts",
     "check:ratelimit": "tsx scripts/check-rate-limit.ts",
     "check:csp": "tsx scripts/check-csp-browser.ts"

@@ -1,3 +1,5 @@
+import { getTemplateCopy } from "@/lib/template-repo";
+import { asRoute as templateRoute } from "@/lib/routes";
 import { websiteMetadata } from "@/lib/website-repo";
 import { managedWebsitePage } from "@/components/website-page";
 import type { Metadata } from "next";
@@ -8,19 +10,25 @@ import { SectionHeading, Reveal } from "@/components/ui";
 import { AssetImage } from "@/components/media";
 import { getSettings, listLeadership, listMembers } from "@/lib/repo";
 
-const FUNCTIONS = [
-  ["Administration", "Membership records, meetings, logistics and day-to-day operations of the Forum."],
-  ["Research & knowledge", "Policy support, publications pipeline and the Knowledge Centre."],
-  ["Communications", "Official statements, press relations, website and media library."],
-  ["Conference delivery", "Planning and delivery of the national conference and dialogue programmes."],
-];
+
 
 export async function generateMetadata(): Promise<Metadata> {
+  const copy = await getTemplateCopy("page-about-governance-secretariat");
+
  const authored = await websiteMetadata("/about/governance/secretariat");
- return authored ?? { title: "Secretariat" };
+ return authored ?? { title: copy("field-001") };
 }
 
 export default async function SecretariatPage() {
+  const copy = await getTemplateCopy("page-about-governance-secretariat");
+
+const FUNCTIONS = [
+  [copy("field-002"), copy("field-003")],
+  [copy("field-004"), copy("field-005")],
+  [copy("field-006"), copy("field-007")],
+  [copy("field-008"), copy("field-009")],
+];
+
   const managed = await managedWebsitePage("/about/governance/secretariat");
   if (managed) return managed;
 
@@ -31,30 +39,30 @@ export default async function SecretariatPage() {
 
   return (
     <div className="secretariat-page mx-auto max-w-shell px-5 py-12">
-      <Breadcrumbs items={[{ label: "About", href: "/about" }, { label: "Governance", href: "/about/governance" }, { label: "Secretariat" }]} />
-      <SectionHeading as="h1" eyebrow="Governance" title="The Secretariat" lede="The operational arm of the Forum — administration, research, communications and conference delivery." />
+      <Breadcrumbs items={[{ label: copy("field-010"), href: templateRoute(copy("field-011")) }, { label: copy("field-012"), href: templateRoute(copy("field-013")) }, { label: copy("field-001") }]} />
+      <SectionHeading as="h1" eyebrow={copy("field-012")} title={copy("field-014")} lede={copy("field-015")} />
 
       {dg && (
         <Reveal>
           <div className="secretariat-lead mt-8 grid gap-6 bg-forest-950 p-6 text-white md:grid-cols-[160px_1fr] md:p-8">
             {dg.photo ? (
-              <AssetImage src={dg.photo} alt={`Portrait of ${dg.name}`} width={320} height={320} className="h-48 w-36 object-cover object-top" sizes="144px" />
+              <AssetImage src={dg.photo} alt={copy("field-021", {value1: dg.name})} width={320} height={320} className="h-48 w-36 object-cover object-top" sizes="144px" />
             ) : (
               <span className="grid h-36 w-36 place-items-center rounded-full bg-forest-900 font-display text-4xl text-gold" aria-hidden>
                 {dg.name.replace("Dr ", "")[0]}
               </span>
             )}
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold">Director-General</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold">{copy("field-016")}</p>
               <h2 className="font-display mt-1 text-3xl">{dg.name}</h2>
               <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-white/75">{dg.bio}</p>
-              <Link href={`/members/${dg.slug}`} className="mt-4 inline-block text-sm font-semibold text-gold link-underline">Full profile →</Link>
+              <Link href={`/members/${dg.slug}`} className="mt-4 inline-block text-sm font-semibold text-gold link-underline">{copy("field-017")}</Link>
             </div>
           </div>
         </Reveal>
       )}
 
-      <h2 className="font-display mt-10 text-2xl text-forest-950">What the Secretariat does</h2>
+      <h2 className="font-display mt-10 text-2xl text-forest-950">{copy("field-018")}</h2>
       <div className="secretariat-functions mt-6 grid gap-4 sm:grid-cols-2">
         {FUNCTIONS.map(([t, d]) => (
           <div key={t} className="border hairline bg-white p-6">
@@ -69,7 +77,7 @@ export default async function SecretariatPage() {
           <p className="flex items-center gap-2"><Phone size={14} className="text-primary" /> {settings["site.phone"]}</p>
           <p className="mt-1 flex items-center gap-2"><Mail size={14} className="text-primary" /> {settings["site.email"]}</p>
         </div>
-        <Link href="/contact" className="inline-flex shrink-0 items-center gap-2 bg-primary px-5 py-2.5 text-sm font-semibold text-white">Contact the Secretariat <ArrowRight size={15} /></Link>
+        <Link href={templateRoute(copy("field-019"))} className="inline-flex shrink-0 items-center gap-2 bg-primary px-5 py-2.5 text-sm font-semibold text-white">{copy("field-020")}<ArrowRight size={15} /></Link>
       </div>
     </div>
   );

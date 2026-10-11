@@ -58,7 +58,8 @@ export function AdminInstitutionalSections({ slug, sections }: { slug: string; s
     const draft = drafts[index];
     setBusyId(`new-${index}`); setMessage(null);
     try {
-      await api(`/api/v1/cms/pages/${slug}/sections`, "POST", draft);
+      const result = await api(`/api/v1/cms/pages/${slug}/sections`, "POST", draft);
+      setDrafts(current => current.map((row, i) => i === index ? { ...row, id: String(result.data.id), position: Number(result.data.position) } : row));
       setMessage({ ok: true, text: "Section added." });
       refresh();
     } catch (error) { setMessage({ ok: false, text: error instanceof Error ? error.message : "Could not add section." }); }
@@ -80,6 +81,7 @@ export function AdminInstitutionalSections({ slug, sections }: { slug: string; s
   async function removeSection(index: number) {
     const draft = drafts[index];
     if (!draft.id) return;
+    if (!window.confirm("Remove this section permanently?")) return;
     setBusyId(draft.id); setMessage(null);
     try {
       await api(`/api/v1/cms/pages/${slug}/sections?id=${encodeURIComponent(draft.id)}`, "DELETE");
@@ -113,7 +115,7 @@ export function AdminInstitutionalSections({ slug, sections }: { slug: string; s
       ) : (
         <div className="grid gap-px bg-[#e2e8e2]">
           {drafts.map((draft, index) => (
-            <fieldset key={draft.id ?? `new-${index}`} className="bg-white p-5">
+            <fieldset disabled={busyId !== null} key={draft.id ?? `new-${index}`} className="bg-white p-5">
               <legend className="sr-only">Section {index + 1}</legend>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="sm:col-span-2">
@@ -128,7 +130,7 @@ export function AdminInstitutionalSections({ slug, sections }: { slug: string; s
                   <label className={label} htmlFor={`section-image-${index}`}>Section image path</label>
                   <div className="flex flex-wrap items-center gap-2">
                     <input id={`section-image-${index}`} className={`${field} flex-1`} value={draft.imageUrl} onChange={(event) => change(index, { imageUrl: event.target.value })} placeholder="/media/site/example.jpg" />
-                    <AdminMediaPicker onSelect={(url, item) => change(index, { imageUrl: url, imageAlt: draft.imageAlt || item.altText || "" })} />
+                    <AdminMediaPicker publicOnly onSelect={(url, item) => change(index, { imageUrl: url, imageAlt: draft.imageAlt || item.altText || "" })} />
                   </div>
                   <p className="mt-1 text-[11px] text-[#7d887f]">Optional. Choose from the library or type an existing /public path.</p>
                 </div>
@@ -139,6 +141,7 @@ export function AdminInstitutionalSections({ slug, sections }: { slug: string; s
                   </div>
                 )}
               </div>
+              <label className="mt-4 block text-sm">Display order (lower numbers first)<input type="number" min={0} max={100000} className={field} value={draft.position} onChange={event => change(index, { position: Number(event.target.value) })} /></label>
               <div className="mt-4 flex flex-wrap items-center gap-2">
                 <label className="inline-flex items-center gap-2 text-[12px] text-[#58655c]">
                   <input type="checkbox" checked={draft.published} onChange={(event) => change(index, { published: event.target.checked })} />
@@ -148,6 +151,7 @@ export function AdminInstitutionalSections({ slug, sections }: { slug: string; s
                 <button type="button" onClick={() => (draft.id ? saveSection(index) : createSection(index))} disabled={busyId !== null} className="inline-flex items-center gap-2 bg-[#174b31] px-4 py-2.5 text-[12px] font-semibold text-white disabled:opacity-60">
                   <Save size={14} />{draft.id ? "Save section" : "Add section"}
                 </button>
+                {!draft.id && <button type="button" onClick={() => setDrafts(current => current.filter((_, i) => i !== index))} className="border px-3 py-2 text-sm">Discard new section</button>}
                 {draft.id && (
                   <button type="button" onClick={() => removeSection(index)} disabled={busyId !== null} className="inline-flex items-center gap-2 border border-red-300 px-3 py-2.5 text-[12px] font-semibold text-red-800 disabled:opacity-60">
                     <Trash2 size={14} /> Remove

@@ -17,7 +17,7 @@ export const getWebsitePage = cache(async (path: string): Promise<WebsitePage | 
 });
 export async function websiteMetadata(path:string):Promise<Metadata|null> {
   const page=await getWebsitePage(path);
-  return page ? {title:page.seoTitle || page.title,description:page.description || page.introduction,openGraph:{title:page.seoTitle || page.title,description:page.description || page.introduction}} : null;
+  return page && page.layout !== "extend" ? {title:page.seoTitle || page.title,description:page.description || page.introduction,openGraph:{title:page.seoTitle || page.title,description:page.description || page.introduction}} : null;
 }
 export async function listWebsiteRecords(): Promise<WebsiteRecord[]> {
   if (!(await dbReady())) return [];

@@ -8,7 +8,7 @@ export async function generateMetadata({params}:{params:Promise<{slug:string[]}>
 }
 export default async function CustomPage({params}:{params:Promise<{slug:string[]}>}) {
   const page=await getWebsitePage(`/${(await params).slug.join("/")}`);
-  if(!page)notFound();
+  if(!page || page.layout === "extend")notFound();
   return <WebsitePageView page={page}/>;
 }
 export const dynamic="force-dynamic";

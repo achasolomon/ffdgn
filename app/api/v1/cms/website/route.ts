@@ -1,7 +1,7 @@
 import { db, dbReady, fail, failFrom, ok } from "../../_lib";
 import { audit, requirePermission } from "@/lib/server-auth";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
-import { validateWebsitePage, validPagePath, type WebsitePage } from "@/lib/website-content";
+import { validateWebsitePage, validPagePath, PAGE_CATALOG, type WebsitePage } from "@/lib/website-content";
 import { parseWebsiteDraft, websiteKey } from "@/lib/website-repo";
 import { imagePathResolves } from "@/lib/media-path";
 import { revalidatePublicSite } from "@/lib/revalidate";
@@ -30,6 +30,12 @@ export async function POST(req: Request) {
     if(error) return fail("VALIDATION",error,422);
     if(!["save","publish","unpublish"].includes(body.action) || !Number.isInteger(body.version) || body.version < 0) return fail("VALIDATION","Choose a valid save action and version.",422);
     const page=body.page;
+    if (page.layout === "extend" && !PAGE_CATALOG.some(([path]) => path === page.path)) {
+      const match = /^\/(events|news|members|knowledge|speakers)\/([a-z0-9-]+)$/.exec(page.path);
+      const slug = match?.[2];
+      const found = !match ? null : match[1] === "events" ? await db.forumEvent.findUnique({where:{slug}}) : match[1] === "news" ? await db.newsArticle.findUnique({where:{slug}}) : match[1] === "members" ? await db.member.findUnique({where:{slug}}) : match[1] === "knowledge" ? await db.knowledgeDoc.findUnique({where:{slug}}) : await db.speaker.findUnique({where:{slug}});
+      if (!found) return fail("VALIDATION", "Adding sections applies to an existing page or record. Choose Replace for a new page.", 422);
+    }
     const images=[page.image,...page.sections.flatMap(section => [section.image,...section.items.map(item => item.image), section.type === "video" && section.href.startsWith("/") ? section.href : ""])].filter(Boolean);
     for(const image of [...new Set(images)]) {
       if(!(await imagePathResolves(image))) return fail("VALIDATION",`Media not found: ${image}. Choose an asset from the library.`,422);

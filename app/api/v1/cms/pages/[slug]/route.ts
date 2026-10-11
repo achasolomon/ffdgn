@@ -20,8 +20,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ slug: 
     const eyebrow = formText(body.eyebrow);
     const lede = formText(body.lede);
     const copy = typeof body.body === "string" ? body.body.trim() : "";
-    if (!title || title.length > 255 || !eyebrow || eyebrow.length > 128 || !lede || lede.length > 5000 || !copy || copy.length > 30000) {
-      return fail("VALIDATION", "Title, eyebrow, lede, and page copy are required and must fit their field limits.", 422);
+    if (!title || title.length > 255 || !eyebrow || eyebrow.length > 128 || !lede || lede.length > 5000 || typeof body.body !== "string" || copy.length > 30000) {
+      return fail("VALIDATION", "Provide a title, small heading and introduction within their limits. Closing text is optional (up to 30,000 characters).", 422);
     }
     const existing = await db.institutionalPage.findUnique({ where: { slug } });
     const page = await db.institutionalPage.upsert({

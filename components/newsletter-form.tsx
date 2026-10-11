@@ -1,4 +1,6 @@
 "use client";
+import { useTemplateCopy } from "@/components/template-content-provider";
+
 import { useState } from "react";
 
 /**
@@ -6,6 +8,8 @@ import { useState } from "react";
  * Secretariat contact form — email only, never placed in the URL.
  */
 export function NewsletterForm() {
+  const copy = useTemplateCopy("shared-newsletter-form");
+
   const [email, setEmail] = useState("");
   const [state, setState] = useState<"idle" | "pending" | "done">("idle");
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +37,7 @@ export function NewsletterForm() {
       }
       setState("done");
     } catch {
-      setError("Subscription failed. Please try again.");
+      setError(copy("field-007"));
       setState("idle");
     }
   }
@@ -41,22 +45,21 @@ export function NewsletterForm() {
   if (state === "done") {
     return (
       <p role="status" className="text-sm font-semibold text-forest-950">
-        Thank you — you have been added to the Forum mailing list.
-      </p>
+        {copy("field-001")}</p>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="w-full max-w-md" aria-label="Subscribe to Forum updates">
+    <form onSubmit={onSubmit} className="w-full max-w-md" aria-label={copy("field-002")}>
       <div className="flex gap-2">
-        <label htmlFor="nl-email" className="sr-only">Email address</label>
+        <label htmlFor="nl-email" className="sr-only">{copy("field-003")}</label>
         <input id="nl-email" name="email" type="email" required autoComplete="email"
-          placeholder="Enter your email address" value={email}
+          placeholder={copy("field-004")} value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full border hairline bg-white px-4 py-2.5 text-sm" />
         <button disabled={state === "pending"}
           className="shrink-0 bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-forest-700 disabled:opacity-60">
-          {state === "pending" ? "…" : "Subscribe →"}
+          {state === "pending" ? copy("field-005") : copy("field-006")}
         </button>
       </div>
       {error && <p role="alert" className="mt-2 text-[12.5px] text-red-800">{error}</p>}

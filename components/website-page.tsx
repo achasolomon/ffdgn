@@ -37,5 +37,9 @@ export async function WebsitePageView({page}: {page:WebsitePage}) {
 }
 export async function managedWebsitePage(path:string) {
   const page=await getWebsitePage(path);
-  return page ? <WebsitePageView page={page} /> : null;
+  return page && page.layout !== "extend" ? <WebsitePageView page={page} /> : null;
+}
+export async function WebsiteExtraSections({ page }: { page: WebsitePage }) {
+  const sections = await Promise.all(page.sections.filter(section => !section.hidden).map(async section => <div key={section.id}>{await Section({section})}</div>));
+  return <div className="cms-public-page cms-page-extension mx-auto max-w-shell px-5 pb-12">{sections}</div>;
 }

@@ -10,6 +10,7 @@ export interface WebsiteSection {
   columns: string[]; rows: string[][]; collection: Collection; limit: number;
 }
 export interface WebsitePage {
+  layout?: "replace" | "extend";
   path: string; title: string; label: string; introduction: string; image: string; alt: string;
   seoTitle: string; description: string; sections: WebsiteSection[];
 }
@@ -58,6 +59,7 @@ function text(value: unknown, max: number): value is string { return typeof valu
 export function validateWebsitePage(value: unknown): string | null {
   if (!value || typeof value !== "object") return "Provide a page document.";
   const page = value as WebsitePage;
+  if (page.layout !== undefined && !["replace", "extend"].includes(page.layout)) return "Choose how these sections appear on the page.";
   if (!validPagePath(page.path)) return "Choose a lowercase page URL outside the administration and system routes.";
   if (!text(page.title,255) || !page.title.trim()) return "A page title is required (up to 255 characters).";
   if (!text(page.label,128) || !text(page.introduction,5000) || !text(page.seoTitle,255) || !text(page.description,5000) || !text(page.image,255) || !text(page.alt,500)) return "Page fields exceed their limits.";

@@ -1,4 +1,6 @@
 "use client";
+import { useTemplateCopy } from "@/components/template-content-provider";
+
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -13,11 +15,13 @@ export function AssetImage({
   src: string; alt: string; width?: number; height?: number;
   className?: string; priority?: boolean; sizes?: string;
 }) {
+  const copy = useTemplateCopy("shared-media");
+
   const [failed, setFailed] = useState(false);
   if (!src || failed) {
     return (
       <div className={`grid place-items-center bg-forest-900 ${className}`} role="img" aria-label={alt}>
-        <span className="font-display p-6 text-center text-lg text-gold/80">FFDGN</span>
+        <span className="font-display p-6 text-center text-lg text-gold/80">{copy("field-001")}</span>
       </div>
     );
   }
@@ -40,6 +44,8 @@ export function MediaCredit({ item, light = false }: { item: Pick<MediaItem, "ph
 
 /* Privacy-hardened video player: YouTube nocookie / Vimeo / direct file. */
 export function VideoPlayer({ item }: { item: MediaItem }) {
+  const copy = useTemplateCopy("shared-media");
+
   const [playing, setPlaying] = useState(false);
   const embed =
     item.provider === "YOUTUBE" && item.providerId
@@ -66,7 +72,7 @@ export function VideoPlayer({ item }: { item: MediaItem }) {
   }
   return (
     <button
-      onClick={() => setPlaying(true)} aria-label={`Play video: ${item.title}`}
+      onClick={() => setPlaying(true)} aria-label={copy("field-010", {value1: item.title})}
       className="group relative block aspect-video w-full overflow-hidden bg-forest-950 text-left"
     >
       {item.thumbnailUrl ? (
@@ -87,7 +93,7 @@ export function VideoPlayer({ item }: { item: MediaItem }) {
         </motion.span>
       </span>
       <span className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 pt-10">
-        <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-gold">Video · {item.category}</span>
+        <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-gold">{copy("field-002")}{item.category}</span>
         <span className="block font-semibold text-white">{item.title}</span>
       </span>
     </button>
@@ -96,6 +102,8 @@ export function VideoPlayer({ item }: { item: MediaItem }) {
 
 /* Gallery grid with accessible lightbox. */
 export function Gallery({ items, columns = 3 }: { items: MediaItem[]; columns?: 3 | 4 }) {
+  const copy = useTemplateCopy("shared-media");
+
   const [active, setActive] = useState<MediaItem | null>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   // The tile that opened the viewer, so focus can go back where it came from.
@@ -180,8 +188,8 @@ export function Gallery({ items, columns = 3 }: { items: MediaItem[]; columns?: 
   if (!items.length) {
     return (
       <div className="border hairline bg-white px-8 py-12 text-center">
-        <p className="eyebrow">No photographs yet</p>
-        <p className="mt-2 text-sm text-ink/60">Conference photography will be published here by the Secretariat after institutional review.</p>
+        <p className="eyebrow">{copy("field-003")}</p>
+        <p className="mt-2 text-sm text-ink/60">{copy("field-004")}</p>
       </div>
     );
   }
@@ -196,7 +204,7 @@ export function Gallery({ items, columns = 3 }: { items: MediaItem[]; columns?: 
                 setActive(it);
               }}
               className="group block w-full text-left"
-              aria-label={`View photograph: ${it.title}${i + 1} of ${items.length}`}
+              aria-label={copy("field-011", {value1: it.title, value2: i + 1, value3: items.length})}
               whileHover={{ scale: 1.02, transition: { duration: DUR.fast, ease: EASE_OUT } }}
               whileTap={{ scale: 0.99 }}
             >
@@ -236,22 +244,21 @@ export function Gallery({ items, columns = 3 }: { items: MediaItem[]; columns?: 
                   <MediaCredit item={active} />
                   {items.length > 1 && (
                     <span className="mt-1 block text-[11.5px] text-ink/45">
-                      {items.findIndex((it) => it.id === active.id) + 1} of {items.length} · use the arrow keys to move between photographs
-                    </span>
+                      {items.findIndex((it) => it.id === active.id) + 1} {copy("field-005")}{items.length} {copy("field-006")}</span>
                   )}
                 </span>
                 <span className="flex shrink-0 items-center gap-2">
                   {items.length > 1 && (
                     <>
-                      <button onClick={() => step(-1)} className="border hairline p-2 hover:border-primary" aria-label="Previous photograph">
+                      <button onClick={() => step(-1)} className="border hairline p-2 hover:border-primary" aria-label={copy("field-007")}>
                         <ChevronLeft size={16} />
                       </button>
-                      <button onClick={() => step(1)} className="border hairline p-2 hover:border-primary" aria-label="Next photograph">
+                      <button onClick={() => step(1)} className="border hairline p-2 hover:border-primary" aria-label={copy("field-008")}>
                         <ChevronRight size={16} />
                       </button>
                     </>
                   )}
-                  <button onClick={close} className="border hairline p-2 hover:border-primary" aria-label="Close viewer">
+                  <button onClick={close} className="border hairline p-2 hover:border-primary" aria-label={copy("field-009")}>
                     <X size={16} />
                   </button>
                 </span>
