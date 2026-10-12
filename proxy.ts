@@ -1,6 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { NextResponse, type NextRequest } from "next/server";
 import { PORTAL_ROLES, STAFF_ROLES } from "./lib/auth";
+import { guestDeskPathAllowed, GUEST_DESK_HOME } from "./lib/conference/staff-access";
 
 const DEV = process.env.NODE_ENV !== "production";
 
@@ -56,14 +57,19 @@ function routeAuthorized(path: string, role: string | undefined) {
  */
 export default async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  const guestSurface = pathname === "/invite" || pathname === "/staff/setup" || pathname === "/api/v1/conference/staff/setup" || pathname.startsWith("/api/v1/conference/guest/");
   const privateSurface = pathname.startsWith("/portal") || pathname.startsWith("/admin") || pathname.startsWith("/site-preview");
 
   // Read the token before minting the nonce so an unauthenticated request to a
   // private surface redirects without doing CSP work that will be discarded.
-  if (privateSurface) {
+  if (privateSurface || pathname.startsWith("/api/v1/")) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     const role = token?.role as string | undefined;
-    if (!token || !role || role === "revoked" || !routeAuthorized(pathname, role)) {
+    if (role === "guest_desk" && !guestDeskPathAllowed(pathname)) {
+      if (pathname.startsWith("/api/")) return NextResponse.json({ status: "error", data: null, errors: [{ code: "FORBIDDEN", message: "This account can only use the conference guest desk." }] }, { status: 403, headers: { "Cache-Control": "private, no-store" } });
+      return NextResponse.redirect(new URL(GUEST_DESK_HOME, req.nextUrl.origin));
+    }
+    if (privateSurface && (!token || !role || role === "revoked" || !routeAuthorized(pathname, role))) {
       const login = new URL("/login", req.nextUrl.origin);
       login.searchParams.set("callbackUrl", req.nextUrl.pathname + req.nextUrl.search);
       return NextResponse.redirect(login);
@@ -81,9 +87,9 @@ export default async function proxy(req: NextRequest) {
   const res = NextResponse.next({ request: { headers: requestHeaders } });
   res.headers.set("Content-Security-Policy", buildCsp(nonce));
   res.headers.set("X-Content-Type-Options", "nosniff");
-  res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.headers.set("Referrer-Policy", guestSurface ? "no-referrer" : "strict-origin-when-cross-origin");
 
-  if (privateSurface) {
+  if (privateSurface || guestSurface) {
     res.headers.set("X-Robots-Tag", "noindex, nofollow");
     res.headers.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
   }
@@ -98,6 +104,10 @@ export const config = {
    * proxy path entirely.
    */
   matcher: [
+    "/api/v1/:path*",
+    "/admin/:path*",
+    "/portal/:path*",
+    "/site-preview/:path*",
     {
       source: "/((?!_next/static|_next/image|_next/webpack-hmr|favicon.ico|assets|images|uploads|.*\\.(?:svg|png|jpg|jpeg|gif|webp|avif|ico|woff|woff2|ttf|mp4|webm|pdf|txt|xml|webmanifest)$).*)",
     },

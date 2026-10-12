@@ -18,6 +18,9 @@ const nextConfig = {
       "node_modules/.prisma/client/*",
       "node_modules/@img/sharp-linux-x64/**/*",
       "node_modules/@img/sharp-libvips-linux-x64/**/*",
+      "public/assets/fonts/NotoSans-Regular.ttf",
+      "public/assets/fonts/OFL.txt",
+      "public/assets/brand/logo-conference.png",
     ],
   },
   images: {
@@ -71,8 +74,11 @@ const nextConfig = {
     return [
       { source: "/:path*", headers },
       { source: "/admin/:path*", headers: [...headers, ...privateHeaders] },
+      { source: "/admin/events/gate", headers: [...headers, ...privateHeaders, { key: "Permissions-Policy", value: "camera=(self), microphone=(), geolocation=()" }, { key: "Referrer-Policy", value: "no-referrer" }] },
       { source: "/portal/:path*", headers: [...headers, ...privateHeaders] },
       { source: "/api/:path*", headers: [...headers, { key: "Cache-Control", value: "no-store" }] },
+      { source: "/invite", headers: [...headers, ...privateHeaders, { key: "Referrer-Policy", value: "no-referrer" }] },
+      { source: "/api/v1/conference/guest/:path*", headers: [...headers, ...privateHeaders, { key: "Referrer-Policy", value: "no-referrer" }] },
     ];
   },
 

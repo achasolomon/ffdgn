@@ -49,7 +49,7 @@ export function ChangePasswordForm() {
     <form onSubmit={submit} className="mt-6 border hairline bg-white p-6" aria-label="Change password">
       <h2 className="font-display text-xl text-forest-950">Change password</h2>
       <p className="mt-1 text-[13px] text-ink/70">
-        At least 12 characters. Changing it signs out every other session on this account.
+        At least 6 characters. Changing it signs out every other session on this account.
       </p>
 
       {msg && (
@@ -88,7 +88,7 @@ export function ChangePasswordForm() {
             id="cp-new"
             type="password"
             autoComplete="new-password"
-            minLength={12}
+            minLength={6}
             required
             value={newPassword}
             onChange={(e) => setNext(e.target.value)}
@@ -103,7 +103,7 @@ export function ChangePasswordForm() {
             id="cp-confirm"
             type="password"
             autoComplete="new-password"
-            minLength={12}
+            minLength={6}
             required
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}

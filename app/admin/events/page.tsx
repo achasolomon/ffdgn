@@ -67,6 +67,7 @@ export default async function AdminEventsPage() {
       </div>
       {!live && <p role="alert" className="mb-5 border border-[#e4d3a8] bg-[#fffaf0] px-4 py-3 text-[13px] text-[#755b23]">MySQL is unavailable. Connect the database to manage events.</p>}
       <Link href="/admin/events/speakers" className="mb-5 inline-block border bg-white px-4 py-3 text-sm font-semibold">Manage conference speakers, biographies & photos</Link>
+      <Link href="/admin/events/operations" className="mb-5 ml-3 inline-block border bg-white px-4 py-3 text-sm font-semibold">Open conference guest desk</Link>
       <AdminEventManager
         events={events}
         docTitles={docTitles}

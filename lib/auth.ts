@@ -14,7 +14,7 @@ export type Permission = (typeof PERMISSIONS)[number];
 export type Role =
   | "super_admin" | "secretariat_admin" | "membership_admin" | "content_editor"
   | "events_manager" | "knowledge_manager" | "committee_manager" | "communications_officer"
-  | "auditor" | "member" | "associate" | "public";
+  | "auditor" | "member" | "associate" | "guest_desk" | "public";
 
 const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
   super_admin: [...PERMISSIONS],
@@ -29,6 +29,7 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
   member: ["members.view","documents.view","events.view"],
   associate: ["members.view","documents.view","events.view"],
   public: [],
+  guest_desk: [],
 };
 
 export function hasPermission(role: Role, permission: Permission): boolean {
@@ -38,10 +39,10 @@ export function can(role: Role, permission: Permission): boolean { return hasPer
 
 export const STAFF_ROLES: Role[] = [
   "super_admin", "secretariat_admin", "membership_admin", "content_editor",
-  "events_manager", "knowledge_manager", "committee_manager", "communications_officer", "auditor",
+  "events_manager", "knowledge_manager", "committee_manager", "communications_officer", "auditor", "guest_desk",
 ];
 
-export const PORTAL_ROLES: Role[] = [...STAFF_ROLES, "member", "associate"];
+export const PORTAL_ROLES: Role[] = [...STAFF_ROLES.filter(role => role !== "guest_desk"), "member", "associate"];
 
 /* Audit trail (§30) — writes go to the append-only `audit_log` table via
  * lib/server-auth.ts `audit()`, which is the only supported path.

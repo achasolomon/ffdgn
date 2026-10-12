@@ -94,8 +94,9 @@ async function main() {
       [cfg.database],
     )) as [Array<{ t: string }>, unknown];
 
+    const appendOnlyTables = new Set(["audit_log", "conference_rsvp_actions", "conference_admissions", "conference_badge_print_actions"]);
     for (const { t } of tables) {
-      if (t === "audit_log") continue;
+      if (appendOnlyTables.has(t)) continue;
       const quoted = `\`${t.replace(/`/g, "``")}\``;
       await conn.query(`GRANT UPDATE, DELETE ON ${db}.${quoted} TO ${user}@'%'`);
     }
@@ -105,7 +106,7 @@ async function main() {
     console.log(`Hardened ${appUser}:`, "");
     console.log(`  schema ${cfg.database}: SELECT, INSERT, DDL`);
     console.log(
-      `  UPDATE/DELETE on ${tables.length - 1} tables, omitted for audit_log (append-only)`,
+      `  UPDATE/DELETE on ${tables.filter(({ t }) => !appendOnlyTables.has(t)).length} tables, omitted for ${[...appendOnlyTables].join(", ")} (append-only)`,
     );
     console.log(`  no GRANT OPTION, no *.* privileges`);
     console.log(`\nVerify: SHOW GRANTS FOR '${appUser}'@'%';`);

@@ -3,6 +3,24 @@
 Institutional digital platform for the Forum of Former Deputy Governors of Nigeria.
 Modular monolith: Next.js 16 + MySQL 8 (Prisma) + NextAuth credentials + capability RBAC.
 
+## Conference guest lists, QR emails, RSVP and gate check-in
+
+Administrators can create accounts restricted to the guest desk from **Event settings → Invite a guest-desk staff member**. Choose registration, gate check-in, attendance viewing or event management duties. Staff receive a one-use email link, create their own password on their phone and sign in directly to assigned events without wider console access. The configured SMTP worker sends these setup emails. See [staff account setup](docs/CONFERENCE_STAFF_ACCOUNTS.md). Apply `20261011200000_conference_staff_accounts` and the seventh conference migration, `20261012030000_conference_staff_invitations`, after the five conference migrations described below and regenerate Prisma before using this version.
+
+The console entry is now **Conference guest desk**, with a task menu and separate screens for registration, finding/printing guest tags, uploading invited guests, gate check-in, attendance and settings. See the [plain-language staff guide](docs/CONFERENCE_STAFF_GUIDE.md).
+
+Staff can now register walk-ins without email and prepare a QR tag before gate entry. Imported dignitaries can receive the same QR by email and have their tag printed on arrival. Open **Conference operations** in the sidebar, select the event, then use **Register a walk-in guest** or **Print a guest QR tag**. Registration and printing do not count as attendance; the gate officer scans and confirms entry. See [walk-in and dignitary setup](docs/CONFERENCE_WALKIN_SETUP.md). Apply the additional `20261011180000_conference_walkins` migration and regenerate Prisma along with the four earlier migrations below.
+
+Staff can upload already-invited guests, validate/commit a CSV preview, assign VIP/VVIP categories, add guests individually and search event registrations. Select guests to issue/queue their QR email, resend, regenerate or revoke invitations. The email contains their entry QR, downloadable PNG/PDF and a simple RSVP link; guests do not need accounts or registration forms. QR delivery does not wait for RSVP. Importing alone sends nothing. Online gate check-in and printable badge PDF are available; attendance reports and browser badge printing with explicit collection confirmation are available. Hardware validation remains outstanding.
+
+Apply all four additive conference migrations (`20261011100000_conference_foundation`, `20261011120000_conference_invitations`, `20261011140000_conference_gate`, `20261011160000_conference_printing`) to a backed-up development/staging database with `npm run prisma:deploy`, then configure the encryption key and existing cPanel SMTP settings, set `CONFERENCE_MODULE_ENABLED=true` and restart the application. These migrations are required before deploying this version even when the feature flag is false: the generated Prisma client expects the extended registration schema. Open `/admin/events/operations` as a super administrator or Secretariat administrator, select an event and enable its guest list. Assign existing institutional staff to that event if needed. Invitation-only events block member self-registration while the module is enabled; events without conference configuration retain existing portal behavior. Leave the flag false on production until release validation is complete. See [SMTP/worker setup](docs/CONFERENCE_EMAIL_SETUP.md); email jobs need a supervised worker or scheduled command and do not run in web requests.
+
+Select **Open gate check-in** to verify QR codes by camera/reader, review guests and record duplicate-safe admission. Manual lookup requires an identity-check reason; RSVP is optional unless a manager explicitly requires acceptance. Admitted guests can receive a printable badge PDF. See [gate setup](docs/CONFERENCE_GATE_SETUP.md) and [reporting/printing setup](docs/CONFERENCE_REPORTING_PRINTING.md). Physical printer and host/device rehearsal remain outstanding.
+
+CSV uploads use the downloadable template, with a 500-row/512 KB batch limit. Every row must pass validation before commit. The initial identity policy allows one person per normalized email; shared assistant addresses and conflicting identities require review, rather than automatic merging. Committed preview payloads are purged; uncommitted previews expire after 24 hours. Schedule `npm run conference:purge-previews` at least daily after migration to remove expired private payloads even when no new uploads occur.
+
+Validation: `npm run check:conference`; `npm run check:conference:db` uses an isolated temporary database in the local `ffdgn-mysql` Docker container. Add `-- --api --browser --worker-bundle` to the latter after a production build to test the real APIs, a localhost SMTP capture server, account-free RSVP in headless Chrome/Edge on port 3119 and the packaged standalone worker. It never migrates the database in `DATABASE_URL` or sends real guest mail. See [the integration proposal](docs/CONFERENCE_MODULE_INTEGRATION.md) and [implementation status](docs/CONFERENCE_IMPLEMENTATION.md).
+
 ## Quick start (local)
 ```bash
 npm install
@@ -76,7 +94,7 @@ Seeded accounts (LOCAL ONLY — rotate before any deployment):
 - `/portal` greets the signed-in user; `/admin` shows live MySQL counts + audit excerpt.
 
 ## Security posture
-- Passwords: bcrypt cost 12, never logged; 12-char minimum; current-password required for changes.
+- Passwords: bcrypt cost 12, never logged; 6-char minimum; current-password required for changes.
 - Sessions: JWT, 8h max age; the jwt callback re-reads the account on every token read, so
   deactivation and password changes revoke live sessions immediately rather than within the hour.
 - Auth: per-email+IP rate limits, account lockout, login audit entries, generic error messages (no enumeration).

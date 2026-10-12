@@ -37,7 +37,7 @@ export function AuthButton({ compact = false }: { compact?: boolean }) {
         {data.user.name}
       </span>
       <Link href={landingFor(role)} className="whitespace-nowrap bg-primary px-3 py-2 text-[12px] font-semibold text-white hover:bg-forest-700">
-        {member ? copy("field-006") : copy("field-007")}
+        {role === "guest_desk" ? "Guest desk" : member ? copy("field-006") : copy("field-007")}
       </Link>
       <button
         onClick={() => signOut({ callbackUrl: "/" })}

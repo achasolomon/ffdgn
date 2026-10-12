@@ -1,6 +1,7 @@
 "use client";
 import { Suspense, useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
+import { guestDeskPathAllowed, GUEST_DESK_HOME } from "@/lib/conference/staff-access";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
@@ -34,6 +35,12 @@ function LoginForm() {
     // crafted ?callbackUrl=https://evil.example cannot be used to bounce a
     // freshly authenticated user off-site.
     const target = /^\/(?!\/)/.test(callbackUrl) ? callbackUrl : "/portal";
+    const session = await getSession();
+    if ((session?.user as { role?: string } | undefined)?.role === "guest_desk") {
+      const path = new URL(target, window.location.origin).pathname;
+      window.location.href = path.startsWith("/admin/") && guestDeskPathAllowed(path) ? target : GUEST_DESK_HOME;
+      return;
+    }
     window.location.href = res.url ?? target;
   }
 

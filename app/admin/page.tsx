@@ -18,7 +18,7 @@ import { asRoute } from "@/lib/routes";
  * than a bare string means a typo here is a compile error instead of a link that
  * 404s in front of staff.
  */
-type ConsoleRoute = "/admin/media" | "/admin/content" | "/admin/content/structure" | "/admin/content/navigation" | "/admin/content/pages" | "/admin/programs" | "/admin/knowledge" | "/admin/membership" | "/admin/events" | "/admin/news" | "/admin/committees" | "/admin/partnerships" | "/admin/communications";
+type ConsoleRoute = "/admin/media" | "/admin/content" | "/admin/content/structure" | "/admin/content/navigation" | "/admin/content/pages" | "/admin/programs" | "/admin/knowledge" | "/admin/membership" | "/admin/events" | "/admin/events/operations" | "/admin/news" | "/admin/committees" | "/admin/partnerships" | "/admin/communications";
 type Module = { title: string; items: string[]; href: ConsoleRoute | null; live: string | null };
 const MODULES: Module[] = [
   { title: "Media Library", items: ["Photos", "Videos", "Uploads", "Embeds"], href: "/admin/media", live: "Upload, edit, delete and audit media assets." },
@@ -30,6 +30,7 @@ const MODULES: Module[] = [
   { title: "Knowledge", items: ["Documents", "Categories", "Approvals"], href: "/admin/knowledge", live: "Run a document through the full approval chain, with visibility per record." },
   { title: "Membership", items: ["Members", "Accounts", "Roles", "Verification"], href: "/admin/membership", live: "Roster, account roles, activation and member status." },
   { title: "Events", items: ["Events", "Conferences", "Programmes", "Speakers"], href: "/admin/events", live: "Manage event records, schedules, speakers, linked documents, and publication." },
+  { title: "Conference guest desk", items: ["Register guests", "Print guest tags", "Send invitations", "Gate check-in & attendance"], href: "/admin/events/operations", live: "Choose an event to manage invited guests, send their QR invitations, check them in and view attendance." },
   { title: "News & media", items: ["News", "Press releases", "Statements", "Speeches"], href: "/admin/news", live: "Create, publish, and archive official communications." },
   { title: "Committees", items: ["Committees", "Mandates", "Chairs", "Member assignments"], href: "/admin/committees", live: "Maintain public committee records and membership assignments." },
   { title: "Partnerships", items: ["Partners", "Cooperation areas", "Related events"], href: "/admin/partnerships", live: "Manage institutional relationships and linked event records." },

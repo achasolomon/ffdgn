@@ -36,6 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const requestHeaders = await headers();
   const nonce = requestHeaders.get("x-nonce") ?? undefined;
   const currentPath = requestHeaders.get("x-site-path") ?? "/";
+  if (currentPath === "/invite" || currentPath === "/staff/setup" || currentPath === "/admin/events/print") return <html lang="en"><body className={`${display.variable} ${sans.variable}`}><main id="main">{children}</main></body></html>;
   const authored = /^\/(admin|portal|api|site-preview|login)(\/|$)/.test(currentPath) ? null : await getWebsitePage(currentPath);
   const [settings, navigation, footer, copyValues] = await Promise.all([getSettings(), getSiteNavigation(), getSiteFooter(), getPublicTemplateValues()]);
   const orgSchema = {

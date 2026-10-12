@@ -2,6 +2,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./auth-options";
 import { db } from "./db";
 import { hasPermission, type Permission, type Role } from "./auth";
+import { headers } from "next/headers";
+import { guestDeskPathAllowed } from "./conference/staff-access";
+import { redirect } from "next/navigation";
 
 export interface AuthContext {
   user: { id: string; name: string; email: string; role: Role };
@@ -17,11 +20,20 @@ export class AuthError extends Error {
   }
 }
 
-/** Server-side session (JWT, role refreshed from DB hourly). Null when signed out. */
+/** Server-side session; account activity, password epoch and role refreshed on every read. */
 export async function getAuth(): Promise<AuthContext | null> {
   const session = await getServerSession(authOptions);
   const u = session?.user as { id?: string; name?: string; email?: string; role?: string } | undefined;
   if (!u?.id || !u?.role || u.role === "revoked") return null;
+  // The proxy overwrites this header. Deny restricted accounts on all other
+  // server contexts, including requests carrying an old broader-role JWT.
+  if (u.role === "guest_desk") {
+    const path = (await headers()).get("x-site-path") ?? "";
+    if (!guestDeskPathAllowed(path)) {
+      if (/^\/(admin|portal|site-preview)(\/|$)/.test(path)) redirect("/admin/events/operations");
+      return null;
+    }
+  }
   return { user: { id: u.id, name: u.name ?? "Unknown", email: u.email ?? "", role: u.role as Role } };
 }
 

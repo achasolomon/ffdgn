@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const auth = await requireAuth();
     const body = (await req.json().catch(() => null)) as { currentPassword?: string; newPassword?: string } | null;
     if (!body?.currentPassword || !body?.newPassword) return fail("VALIDATION", "Current and new passwords are required.", 422);
-    if (body.newPassword.length < 12) return fail("VALIDATION", "New password must be at least 12 characters.", 422);
+    if (body.newPassword.length < 6) return fail("VALIDATION", "New password must be at least 6 characters.", 422);
 
     const user = await db.user.findUnique({ where: { id: auth.user.id } });
     if (!user) return fail("NOT_FOUND", "Account not found.", 404);

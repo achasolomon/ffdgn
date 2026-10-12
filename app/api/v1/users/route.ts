@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail("VALIDATION", "A valid email is required.", 422);
     if (!name) return fail("VALIDATION", "A display name is required.", 422);
-    if (password.length < 12) return fail("VALIDATION", "Password must be at least 12 characters.", 422);
+    if (password.length < 6) return fail("VALIDATION", "Password must be at least 6 characters.", 422);
     if (!(ASSIGNABLE as readonly string[]).includes(role as never) && role !== "super_admin") {
       return fail("VALIDATION", "Unknown role.", 422);
     }

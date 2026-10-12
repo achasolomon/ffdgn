@@ -8,6 +8,7 @@ type PortalEvent = {
   slug: string; title: string; kind: string; startDate: string; endDate: string;
   venue: string; city: string; status: string; summary: string;
   registration: "Registered" | "Cancelled" | null; registrations: number;
+  registrationAllowed?: boolean;
 };
 
 export function PortalEventList() {
@@ -46,7 +47,7 @@ export function PortalEventList() {
     {!events.length && <p className="border border-[#dce2dc] bg-white px-5 py-10 text-center text-sm text-[#718077]">No published events are available.</p>}
     {events.map((event) => <article key={event.slug} className="grid gap-4 border border-[#dce2dc] bg-white p-5 sm:grid-cols-[minmax(0,1fr)_190px] sm:items-center">
       <div className="min-w-0"><p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#5b8065]">{event.kind} · {event.status}</p><h2 className="mt-1 text-[17px] font-semibold text-[#20372a]">{event.title}</h2><p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[12px] text-[#69776d]"><span className="inline-flex items-center gap-1"><CalendarDays size={13} />{event.startDate}{event.endDate !== event.startDate ? ` – ${event.endDate}` : ""}</span><span className="inline-flex items-center gap-1"><MapPin size={13} />{event.venue}, {event.city}</span><span className="inline-flex items-center gap-1"><Users size={13} />{event.registrations} registered</span></p><p className="mt-2 text-[13px] leading-relaxed text-[#59675d]">{event.summary}</p></div>
-      <button type="button" disabled={busy === event.slug || event.status === "Past"} onClick={() => toggle(event)} className={`px-4 py-2.5 text-[12px] font-semibold disabled:opacity-50 ${event.registration === "Registered" ? "border border-[#cbd8cd] bg-white text-[#28543a]" : "bg-[#174b31] text-white hover:bg-[#23613f]"}`}>{busy === event.slug ? "Saving…" : event.registration === "Registered" ? "Cancel registration" : event.status === "Past" ? "Registration closed" : "Register"}</button>
+      <button type="button" disabled={busy === event.slug || event.status === "Past" || (event.registrationAllowed === false && event.registration !== "Registered")} onClick={() => toggle(event)} className={`px-4 py-2.5 text-[12px] font-semibold disabled:opacity-50 ${event.registration === "Registered" ? "border border-[#cbd8cd] bg-white text-[#28543a]" : "bg-[#174b31] text-white hover:bg-[#23613f]"}`}>{busy === event.slug ? "Saving…" : event.registration === "Registered" ? "Cancel registration" : event.status === "Past" ? "Registration closed" : event.registrationAllowed === false ? "Invitation only" : "Register"}</button>
     </article>)}
   </div>;
 }

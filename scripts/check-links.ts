@@ -110,10 +110,9 @@ async function ensureServer(): Promise<ChildProcess | null> {
   }
 
   console.log(`no server on ${BASE}; starting one for the duration of the check\n`);
-  const child = spawn("npx", ["next", "start", "-p", String(PORT)], {
+  const child = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "-p", String(PORT)], {
     stdio: "ignore",
     windowsHide: true,
-    shell: true,
   });
 
   const deadline = Date.now() + 90_000;

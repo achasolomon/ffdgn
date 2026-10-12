@@ -197,6 +197,7 @@ export const PORTAL_LINKS: { label: string; href: Route; desc: string }[] = [
 
 /** Where a signed-in user lands: staff to the console, members to the portal. */
 export function landingFor(role: string | undefined): Route {
+  if (role === "guest_desk") return "/admin/events/operations" as Route;
   return role && ["member", "associate"].includes(role) ? PORTAL_ROOT : ("/admin" as Route);
 }
 

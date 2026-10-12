@@ -340,6 +340,9 @@ export function AccountRowActions({ account }: { account: EditableAccount }) {
           {account.role === "super_admin" && (
             <option value="super_admin">super admin</option>
           )}
+          {account.role === "guest_desk" && (
+            <option value="guest_desk" disabled>guest desk only</option>
+          )}
         </select>
 
         {account.isActive ? (
@@ -448,13 +451,13 @@ export function CreateAccountForm({ assignable }: { assignable: readonly string[
             id="ca-password"
             type="password"
             required
-            minLength={12}
+            minLength={6}
             autoComplete="new-password"
             className={field}
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
-          <p className="mt-1 text-[11.5px] text-ink/50">At least 12 characters. bcrypt cost 12.</p>
+          <p className="mt-1 text-[11.5px] text-ink/50">At least 6 characters.</p>
         </div>
         <div>
           <label htmlFor="ca-role" className="text-[11px] font-bold uppercase tracking-wider text-ink/55">Role</label>

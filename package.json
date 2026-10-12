@@ -5,7 +5,7 @@
   "description": "Forum of Former Deputy Governors of Nigeria — Institutional Digital Platform",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && node scripts/build-conference-worker.mjs",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
@@ -24,21 +24,32 @@
     "check:cms": "tsx scripts/check-cms-migration.ts",
     "smoke": "tsx scripts/smoke-test.ts",
     "check:ratelimit": "tsx scripts/check-rate-limit.ts",
-    "check:csp": "tsx scripts/check-csp-browser.ts"
+    "check:csp": "tsx scripts/check-csp-browser.ts",
+    "check:conference": "tsx scripts/check-conference.ts",
+    "check:conference:db": "tsx scripts/check-conference-db.ts",
+    "conference:purge-previews": "tsx scripts/purge-conference-previews.ts",
+    "conference:email-worker": "tsx scripts/conference-email-worker.ts",
+    "build:conference-worker": "node scripts/build-conference-worker.mjs",
+    "deploy:prepare-linux": "node scripts/prepare-linux-runtime.mjs"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@pdf-lib/fontkit": "^1.1.1",
     "@prisma/client": "^5.22.0",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "framer-motion": "^13.4.6",
     "ioredis": "^5.11.1",
+    "jsqr": "^1.4.0",
     "lucide-react": "^0.453.0",
     "next": "16.3.8",
     "next-auth": "^4.24.15",
+    "nodemailer": "^7.0.13",
+    "pdf-lib": "^1.17.1",
     "prisma": "^5.22.0",
+    "qrcode": "^1.5.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sharp": "^0.35.5",
@@ -47,13 +58,18 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.16.0",
+    "@types/nodemailer": "^8.0.2",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/smtp-server": "^3.5.13",
     "autoprefixer": "^10.4.20",
+    "esbuild": "^0.28.2",
     "eslint": "9.39.5",
     "eslint-config-next": "16.3.8",
     "mysql2": "^3.24.5",
     "postcss": "^8.4.47",
+    "smtp-server": "^3.19.21",
     "tailwindcss": "^3.4.13",
     "typescript": "^5.6.2"
   }
